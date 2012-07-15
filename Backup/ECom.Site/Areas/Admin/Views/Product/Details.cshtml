@@ -1,0 +1,20 @@
+﻿@using ECom.Site.Helpers
+@using ECom.Messages
+
+@model ECom.ReadModel.Views.ProductDetailsDto
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="span-16 colborder prepend-1" id="content">
+	<h2>Product Details</h2>
+
+	@Html.DisplayForModel()
+
+	<br />
+	<br />
+
+	@Html.Command(new ChangeProductPrice(Model.ID) { NewPrice = Model.Price })
+</div>

@@ -1,0 +1,49 @@
+﻿@using MvcContrib.UI.Grid;
+@using MvcContrib.Pagination;
+
+@model ECom.Site.Areas.Shop.Models.CartViewModel
+
+@{
+    ViewBag.Title = "Checkout";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="content">
+
+<script type="text/javascript">
+    function submitPage() {
+        //serialize all forms and submit via ajax
+
+        var data = $('#frmAddress').serialize() + '&' + $('#frmCreditCard').serialize();
+
+        $.ajax({
+            url: '@Url.Action("Checkout")',
+            data: data,
+            type: 'POST',
+            cache: false,
+            success: function (html) { $('#content').html(html); }
+        });
+    }
+
+</script>
+
+	<h2>Checkout</h2>
+
+	@Html.Grid(Model.Items).Columns(column =>
+{
+    column.For(x => x.ProductName);
+    column.For(x => x.Quantity);
+    column.For(x => x.Price);
+}).Attributes(@class => "table table-striped")
+     	
+	<br />
+	<br />
+@Html.EditorFor(m => m.Address)
+    <br />
+    <hr />
+@Html.EditorFor(m => m.CreditCard)
+    <br />
+    <hr />
+
+    <a href="#" class="btn btn-success" onclick="submitPage(); return false;">Checkout</a>
+</div>

@@ -1,0 +1,80 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="$(SolutionDir)\Libraries\MessageContracts.dll" #>
+<#@ assembly name="$(SolutionDir)\ECom.Dsl\Bin\Debug\ECom.Dsl.dll" #>
+<#@ import namespace="MessageContracts" #>
+<#@ import namespace="ECom.Dsl" #>
+
+using System;
+using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations;
+
+namespace ECom.Messages 
+{
+	<# var generator = new CommandsEventsGenerator();	
+	var dsl = @"
+
+
+
+
+// common fragments
+let orderId = OrderId OrderId;
+let productId = ProductId ProductId;
+let catalogId = CatalogId CatalogId;
+let categoryName = string CategoryName;
+let discountId = DiscountId DiscountId;
+let name = string Name;
+let quantity = int Quantity;
+
+
+// CATALOG
+AddProduct? (productId, name, decimal Price)
+ProductAdded! (productId, name, decimal Price)
+
+RemoveProduct? (productId)
+ProductRemoved! (productId)
+
+ChangeProductPrice? (productId, decimal NewPrice)
+ProductPriceChanged! (productId, decimal NewPrice)
+
+CreateCategory?(name)
+CategoryCreated!(catalogId, name)
+
+MoveCategory?(name, string TargetCategory)
+CategoryMoved!(catalogId, name, string TargetCategory)
+
+AddProductToCategory?(productId, categoryName)
+ProductAddedToCategory!(productId, categoryName)
+
+
+
+// ORDERS
+CreateNewOrder?(orderId)
+NewOrderCreated!(orderId)
+
+AddProductToOrder?(orderId, productId, quantity)
+ProductAddedToOrder!(orderId, productId, quantity)
+
+RemoveProductFromOrder?(orderId, productId)
+ProductRemovedFromOrder!(orderId, productId)
+
+SubmitOrder?(orderId)
+OrderSubmited!(orderId)
+
+
+
+// MARKETING
+CreateDiscount?(discountId, name, decimal Value)
+DiscountCreated!(discountId, name, decimal Value)
+
+AssignDiscountToProduct?(discountId, productId)
+DiscountAassignedToProduct!(discountId, productId)
+
+
+
+
+
+
+
+	";	#>
+	<#= GeneratorUtil.Build(dsl, generator) #>
+}

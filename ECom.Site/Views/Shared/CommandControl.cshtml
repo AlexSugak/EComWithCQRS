@@ -1,0 +1,28 @@
+﻿@using ECom.Site.Helpers
+@using System.Globalization
+
+@model ECom.Site.Models.ICommandEnvelopeViewModel
+
+@{ 
+	var cmdName = Model.Command.GetType().Name;
+    var cmdFriendlyName = Html.SplitCamelCase(cmdName);
+	var cmdId = Model.Id;
+
+    var containerId = String.Format(CultureInfo.InvariantCulture, "cmdModal_{0}_{1}", cmdId, cmdName);
+
+    var withIcon = ViewData.ContainsKey("cmd-icon");
+}
+
+<a class="@(withIcon ? String.Empty : "btn btn-small")" href="#@(containerId)" data-toggle="modal">
+@if(withIcon){
+    <i class="@ViewData["cmd-icon"]"></i>    
+} else {
+    @cmdFriendlyName
+}
+</a>
+
+<div id="@(containerId)" class="modal hide fade">
+
+@{ Html.RenderPartial("CommandBody", Model, ViewData); }
+
+</div>

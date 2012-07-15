@@ -1,0 +1,47 @@
+﻿@model ECom.Site.Areas.Shop.Models.AddressViewModel
+
+@functions
+{ 
+    bool HasErrors(string propertyName)
+    {
+        return ViewData.ModelState.ContainsKey(propertyName)
+            && ViewData.ModelState[propertyName] != null
+            && ViewData.ModelState[propertyName].Errors != null
+            && ViewData.ModelState[propertyName].Errors.Count > 0;
+    }
+}
+
+@helper FormRow(string propName, MvcHtmlString editor, MvcHtmlString validator)
+{
+    <div class="control-group @(HasErrors(propName) ? "error" : String.Empty)">
+            <label class="control-label">@propName</label>
+            <div class="controls">
+            @editor @validator
+            </div>
+    </div>
+}
+
+<div id="divAddressContainer">
+
+<script type="text/javascript">
+        $(function () {
+            $('#frmAddress').ajaxForm({
+                target: '#divAddressContainer'
+            });
+        });
+</script>
+
+@using (Html.BeginForm("Address", "Order", FormMethod.Post, new { id="frmAddress", @class = "form-horizontal" }))
+{
+               
+    @FormRow("City", Html.EditorFor(m => m.City), Html.ValidationMessageFor(m => m.City))
+    @FormRow("Street", Html.EditorFor(m => m.Street), Html.ValidationMessageFor(m => m.Street))
+    @FormRow("ZipCode", Html.EditorFor(m => m.ZipCode), Html.ValidationMessageFor(m => m.ZipCode))
+
+<input type="submit" class="btn" value="Save"/>
+}
+
+</div>
+
+
+

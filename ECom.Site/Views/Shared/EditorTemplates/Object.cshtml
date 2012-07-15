@@ -1,0 +1,39 @@
+﻿@using ECom.Messages
+
+@functions
+{ 
+    bool ShouldShow(ModelMetadata metadata) { 
+        return metadata.ShowForEdit 
+            && !ViewData.TemplateInfo.Visited(metadata); 
+    } 
+    
+    bool HasErrors(string propertyName) {
+        return ViewData.ModelState[propertyName] != null
+            && ViewData.ModelState[propertyName].Errors != null
+            && ViewData.ModelState[propertyName].Errors.Count > 0;
+    }
+}
+
+@if (ViewData.TemplateInfo.TemplateDepth > 1) {
+    if (Model == null) {
+        @ViewData.ModelMetadata.NullDisplayText
+    } else { 
+        @ViewData.ModelMetadata.SimpleDisplayText
+    }
+} else {
+    foreach (var prop in ViewData.ModelMetadata.Properties.Where(pm => ShouldShow(pm))) {
+        <div class="control-group @(HasErrors(prop.PropertyName) ? "error" : String.Empty)">
+        @if (typeof(IIdentity).IsAssignableFrom(prop.ModelType)) { 
+            @Html.Hidden(prop.PropertyName, ((IIdentity)prop.Model).ToString())
+        }
+        else if (prop.HideSurroundingHtml) {
+            @Html.Editor(prop.PropertyName)
+        } else {
+            <label for="@prop.PropertyName" class="control-label">@(String.IsNullOrEmpty(prop.DisplayName) ? prop.PropertyName : prop.DisplayName)</label>
+            <div class="controls">
+            @Html.Editor(prop.PropertyName) @Html.ValidationMessage(prop.PropertyName, new { @class = "help-inline" }) 
+            </div>
+        }
+        </div>
+    }
+}

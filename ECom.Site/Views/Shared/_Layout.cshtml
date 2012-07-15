@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+
+    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap.css")" />
+    <style>
+        body
+        {
+            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        }
+    </style>
+    <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap-responsive.css")" />
+
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="@Url.Content("~/Content/images/bootstrap/apple-touch-icon-114-precomposed.png")" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="@Url.Content("~/Content/images/bootstrap/apple-touch-icon-72-precomposed.png")" />
+    <link rel="apple-touch-icon-precomposed" href="@Url.Content("~/Content/images/bootstrap/apple-touch-icon-57-precomposed.png")" />
+
+
+    <script src="@Url.Content("~/Scripts/jquery.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.form.js")"></script>
+
+</head>
+
+@helper MenuItem(string text, string action, string controller, string area = null)
+{
+    var currentController = ViewContext.RouteData.GetRequiredString("controller");
+    var currentAction = ViewContext.RouteData.GetRequiredString("action");
+    
+    <li @(controller.Equals(currentController) && action.Equals(currentAction) ? "class=active" : "")>
+        @Html.ActionLink(text, action, controller, new { Area = area }, null)
+    </li>
+}
+
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span
+                    class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                </a><a class="brand" href="#">CQRS Shop</a>
+                <div class="nav-collapse">
+                    <ul class="nav">
+                        @MenuItem("Home", "Index", "Home")
+                        @MenuItem("Checkout", "Checkout", "Order", "Shop")
+                        @MenuItem("Products", "Index", "Product", "Admin")
+                        @MenuItem("Categories", "Index", "Category", "Admin")
+                    </ul>
+                    <p class="navbar-text pull-right">@Html.Partial("_LogOnPartial")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        @RenderBody()
+        
+        <br />
+        <hr />
+    </div>
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-transition.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-alert.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-modal.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-dropdown.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-scrollspy.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-tab.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-tooltip.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-popover.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-button.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-collapse.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-carousel.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-typeahead.js")"></script>
+    
+</body>
+</html>

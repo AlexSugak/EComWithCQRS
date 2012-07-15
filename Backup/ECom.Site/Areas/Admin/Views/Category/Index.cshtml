@@ -1,0 +1,30 @@
+﻿@using ECom.Site.Helpers
+@using ECom.Messages
+@using MvcContrib.UI.Grid;
+@using MvcContrib.UI.Pager;
+@using MvcContrib.Pagination;
+
+@model ECom.Site.Areas.Admin.Models.CategoriesListViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<div class="span-16 colborder prepend-1" id="content">
+	<h2>Categories</h2>
+
+	@Html.Grid(Model.Categories).Columns(column => {
+		column.For(x => x.Name);
+	})
+     	
+	@Html.Pager(Model.Categories)
+
+	<br />
+	<br />
+	<br />
+
+	@Html.Command(Model.CreateCategory)
+</div>

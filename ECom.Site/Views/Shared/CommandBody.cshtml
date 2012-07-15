@@ -1,0 +1,60 @@
+﻿@using ECom.Site.Helpers
+@using System.Globalization
+
+@model ECom.Site.Models.ICommandEnvelopeViewModel
+		   
+@{ 
+	var cmdId = Model.Id;
+	var cmdName = Model.Command.GetType().Name;
+    var cmdFriendlyName = Html.SplitCamelCase(cmdName);
+
+    var formId = String.Format(CultureInfo.InvariantCulture, "frm_{0}_{1}", cmdId, cmdName);
+    var containerId = String.Format(CultureInfo.InvariantCulture, "cmdModal_{0}_{1}", cmdId, cmdName);
+}
+
+<div class="modal-header">
+        <a class="close" data-dismiss="modal" >&times;</a>
+		<h3>@cmdFriendlyName</h3>
+</div>
+
+@if (ViewData.ContainsKey("CommandProcessed") && (bool)ViewData["CommandProcessed"])
+{
+    <div class="modal-body">
+	    <span class="label label-success">Done!</span>
+    </div>
+	
+	<script type="text/javascript">
+		function refreshPage() {
+			window.location.reload(true);
+		}
+
+		setTimeout('refreshPage();', 200);
+	</script>
+}
+else
+{
+    <script type="text/javascript">
+        $(function () {
+            $('#@(formId)').ajaxForm({
+                target: '#@(containerId)'
+            });
+        });
+    </script>
+
+	var controllerName = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+
+    <div class="modal-body">
+	    @using (Html.BeginForm(cmdName, controllerName, FormMethod.Post, new { id = formId, @class = "form-horizontal" }))
+	    {
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.Id)
+		    @Html.EditorFor(m => m.Command)
+        }
+    </div>
+	
+    <div class="modal-footer">
+		<button onclick="$('#@(formId)').submit(); return false;" class="btn btn-primary" >Submit</button>
+        <a href="#" class="btn" data-dismiss="modal" >Cancel</a>
+    </div>
+}
+

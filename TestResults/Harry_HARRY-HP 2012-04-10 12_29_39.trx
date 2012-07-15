@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="d3b32284-4a73-4930-93cb-ef886ec3ef43" name="Harry@HARRY-HP 2012-04-10 12:29:39" runUser="Harry-HP\Harry" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="Local" id="cea19d41-6cbd-46b6-b1ad-ed83a2b7d7fb">
+    <Description>These are default test settings for a local test run.</Description>
+    <Deployment enabled="false" runDeploymentRoot="Harry_HARRY-HP 2012-04-10 12_29_39">
+      <DeploymentItem filename="C:\Users\Harry\Dropbox\Code\EComWithCQRS\ECom.Utility\bin\Debug\ECom.Utility.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2012-04-10T12:29:39.2984820+03:00" queuing="2012-04-10T12:29:39.3534851+03:00" start="2012-04-10T12:29:39.3664859+03:00" finish="2012-04-10T12:29:39.7565082+03:00" />
+  <ResultSummary outcome="Completed">
+    <Counters total="14" executed="14" passed="14" error="0" failed="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="ArgumentChecker_PassedFalseCondition_ShouldThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="2915dd87-65ba-5db2-4d15-6cbc498f9c30">
+      <Execution id="ba400896-e705-45b5-a10a-c2625c5e0192" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedFalseCondition_ShouldThrowException" />
+    </UnitTest>
+    <UnitTest name="ArgumentChecker_PassedEmptyString_ShouldThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="2383f518-7878-0165-501a-9a3b5957cce9">
+      <Execution id="8d55687c-9f88-43d3-8088-54ccea3814bc" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedEmptyString_ShouldThrowException" />
+    </UnitTest>
+    <UnitTest name="ArgumentChecker_PassedTrueCondition_ShouldNotThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="4db7008b-c63a-1ca5-18ae-00b1fdf8a47c">
+      <Execution id="4c417112-bbc7-4c65-9a26-a7818a74e2ae" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedTrueCondition_ShouldNotThrowException" />
+    </UnitTest>
+    <UnitTest name="ArgumentChecker_PassedEmptyGuidStringExpression_ShouldThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="de84f97e-6e54-3a63-597a-08f1ccab04cb">
+      <Execution id="7b6adef4-5bd2-4de4-9312-66740831d0e7" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedEmptyGuidStringExpression_ShouldThrowException" />
+    </UnitTest>
+    <UnitTest name="ArgumentChecker_PassedNullString_ShouldThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="36c931ce-f29e-c43a-4ea7-07092f8ff6a6">
+      <Execution id="3ae4bd5f-e98e-4dc9-ab7b-26c44a158b2e" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedNullString_ShouldThrowException" />
+    </UnitTest>
+    <UnitTest name="ArgumentChecker_PassedNullStringExpression_ShouldThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="5aee6dcf-9313-de42-fbdf-f6fdfb7ede5b">
+      <Execution id="955ddfbf-f6f5-4350-ac04-2c73bb364881" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedNullStringExpression_ShouldThrowException" />
+    </UnitTest>
+    <UnitTest name="ArgumentChecker_PassedNotEmptyStringExpression_ShouldNotThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="123ab6d0-576e-7238-28bb-af69756167c3">
+      <Execution id="9918445e-ff67-4929-bf6a-3c7c676b00c8" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedNotEmptyStringExpression_ShouldNotThrowException" />
+    </UnitTest>
+    <UnitTest name="ArgumentChecker_PassedEmptyStringExpression_ShouldThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="94ce33ea-ea21-1395-d5f4-8651fd575a21">
+      <Execution id="f8ed16ee-ff6c-4809-88cb-757ddf19b389" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedEmptyStringExpression_ShouldThrowException" />
+    </UnitTest>
+    <UnitTest name="ArgumentChecker_PassedNullExpression_ShouldThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="4c848af4-d456-1cc3-681a-a327cbf81ab0">
+      <Execution id="ed9771fe-bde8-4151-8b42-a2922adfc520" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedNullExpression_ShouldThrowException" />
+    </UnitTest>
+    <UnitTest name="ArgumentChecker_PassedWhiteSpaceStringExpression_ShouldThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="8b730576-1e8b-e7f7-697f-4b341fbbfc81">
+      <Execution id="134138c4-5f4f-49a1-86e2-5a2eaca93397" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedWhiteSpaceStringExpression_ShouldThrowException" />
+    </UnitTest>
+    <UnitTest name="ArgumentChecker_PassedWhiteSpaceString_ShouldThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="059db0a2-88ba-f772-5484-000f779b9348">
+      <Execution id="0b71a110-1b82-4288-b4c0-ccf37079650c" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedWhiteSpaceString_ShouldThrowException" />
+    </UnitTest>
+    <UnitTest name="ArgumentChecker_PassedNotEmptyGuidExpression_ShouldNotThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="0116cc0b-e067-4c42-c988-6271e1c0d153">
+      <Execution id="ce28ad84-9929-4b78-85d8-700f256a7cbf" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedNotEmptyGuidExpression_ShouldNotThrowException" />
+    </UnitTest>
+    <UnitTest name="ArgumentChecker_PassedNotNullObjectExpression_ShouldNotThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="ea89121b-635d-81f6-b7fe-d4136b6c39f8">
+      <Execution id="7ef240c5-dbbc-4556-a530-f58d49ba7a04" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedNotNullObjectExpression_ShouldNotThrowException" />
+    </UnitTest>
+    <UnitTest name="ArgumentChecker_PassedNull_ShouldThrowException" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="dea47f32-3e00-4ddb-1038-378d0269cff2">
+      <Execution id="fdd8247b-b683-4e1f-9d05-70608b4b2718" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.ArgumentCheckerTests, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ArgumentChecker_PassedNull_ShouldThrowException" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="dea47f32-3e00-4ddb-1038-378d0269cff2" executionId="fdd8247b-b683-4e1f-9d05-70608b4b2718" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2383f518-7878-0165-501a-9a3b5957cce9" executionId="8d55687c-9f88-43d3-8088-54ccea3814bc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="36c931ce-f29e-c43a-4ea7-07092f8ff6a6" executionId="3ae4bd5f-e98e-4dc9-ab7b-26c44a158b2e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="059db0a2-88ba-f772-5484-000f779b9348" executionId="0b71a110-1b82-4288-b4c0-ccf37079650c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4c848af4-d456-1cc3-681a-a327cbf81ab0" executionId="ed9771fe-bde8-4151-8b42-a2922adfc520" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="94ce33ea-ea21-1395-d5f4-8651fd575a21" executionId="f8ed16ee-ff6c-4809-88cb-757ddf19b389" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5aee6dcf-9313-de42-fbdf-f6fdfb7ede5b" executionId="955ddfbf-f6f5-4350-ac04-2c73bb364881" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8b730576-1e8b-e7f7-697f-4b341fbbfc81" executionId="134138c4-5f4f-49a1-86e2-5a2eaca93397" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="de84f97e-6e54-3a63-597a-08f1ccab04cb" executionId="7b6adef4-5bd2-4de4-9312-66740831d0e7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="123ab6d0-576e-7238-28bb-af69756167c3" executionId="9918445e-ff67-4929-bf6a-3c7c676b00c8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ea89121b-635d-81f6-b7fe-d4136b6c39f8" executionId="7ef240c5-dbbc-4556-a530-f58d49ba7a04" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0116cc0b-e067-4c42-c988-6271e1c0d153" executionId="ce28ad84-9929-4b78-85d8-700f256a7cbf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2915dd87-65ba-5db2-4d15-6cbc498f9c30" executionId="ba400896-e705-45b5-a10a-c2625c5e0192" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4db7008b-c63a-1ca5-18ae-00b1fdf8a47c" executionId="4c417112-bbc7-4c65-9a26-a7818a74e2ae" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="fdd8247b-b683-4e1f-9d05-70608b4b2718" testId="dea47f32-3e00-4ddb-1038-378d0269cff2" testName="ArgumentChecker_PassedNull_ShouldThrowException" computerName="HARRY-HP" duration="00:00:00.0213618" startTime="2012-04-10T12:29:39.3754864+03:00" endTime="2012-04-10T12:29:39.5994992+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fdd8247b-b683-4e1f-9d05-70608b4b2718">
+    </UnitTestResult>
+    <UnitTestResult executionId="8d55687c-9f88-43d3-8088-54ccea3814bc" testId="2383f518-7878-0165-501a-9a3b5957cce9" testName="ArgumentChecker_PassedEmptyString_ShouldThrowException" computerName="HARRY-HP" duration="00:00:00.0008336" startTime="2012-04-10T12:29:39.6014993+03:00" endTime="2012-04-10T12:29:39.6074996+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8d55687c-9f88-43d3-8088-54ccea3814bc">
+    </UnitTestResult>
+    <UnitTestResult executionId="3ae4bd5f-e98e-4dc9-ab7b-26c44a158b2e" testId="36c931ce-f29e-c43a-4ea7-07092f8ff6a6" testName="ArgumentChecker_PassedNullString_ShouldThrowException" computerName="HARRY-HP" duration="00:00:00.0004839" startTime="2012-04-10T12:29:39.6094998+03:00" endTime="2012-04-10T12:29:39.6155001+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3ae4bd5f-e98e-4dc9-ab7b-26c44a158b2e">
+    </UnitTestResult>
+    <UnitTestResult executionId="0b71a110-1b82-4288-b4c0-ccf37079650c" testId="059db0a2-88ba-f772-5484-000f779b9348" testName="ArgumentChecker_PassedWhiteSpaceString_ShouldThrowException" computerName="HARRY-HP" duration="00:00:00.0006434" startTime="2012-04-10T12:29:39.6185003+03:00" endTime="2012-04-10T12:29:39.6325011+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0b71a110-1b82-4288-b4c0-ccf37079650c">
+    </UnitTestResult>
+    <UnitTestResult executionId="ed9771fe-bde8-4151-8b42-a2922adfc520" testId="4c848af4-d456-1cc3-681a-a327cbf81ab0" testName="ArgumentChecker_PassedNullExpression_ShouldThrowException" computerName="HARRY-HP" duration="00:00:00.0021288" startTime="2012-04-10T12:29:39.6355012+03:00" endTime="2012-04-10T12:29:39.6425016+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ed9771fe-bde8-4151-8b42-a2922adfc520">
+    </UnitTestResult>
+    <UnitTestResult executionId="f8ed16ee-ff6c-4809-88cb-757ddf19b389" testId="94ce33ea-ea21-1395-d5f4-8651fd575a21" testName="ArgumentChecker_PassedEmptyStringExpression_ShouldThrowException" computerName="HARRY-HP" duration="00:00:00.0017234" startTime="2012-04-10T12:29:39.6455018+03:00" endTime="2012-04-10T12:29:39.6505021+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f8ed16ee-ff6c-4809-88cb-757ddf19b389">
+    </UnitTestResult>
+    <UnitTestResult executionId="955ddfbf-f6f5-4350-ac04-2c73bb364881" testId="5aee6dcf-9313-de42-fbdf-f6fdfb7ede5b" testName="ArgumentChecker_PassedNullStringExpression_ShouldThrowException" computerName="HARRY-HP" duration="00:00:00.0011656" startTime="2012-04-10T12:29:39.6555024+03:00" endTime="2012-04-10T12:29:39.6605027+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="955ddfbf-f6f5-4350-ac04-2c73bb364881">
+    </UnitTestResult>
+    <UnitTestResult executionId="134138c4-5f4f-49a1-86e2-5a2eaca93397" testId="8b730576-1e8b-e7f7-697f-4b341fbbfc81" testName="ArgumentChecker_PassedWhiteSpaceStringExpression_ShouldThrowException" computerName="HARRY-HP" duration="00:00:00.0013361" startTime="2012-04-10T12:29:39.6655030+03:00" endTime="2012-04-10T12:29:39.6745035+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="134138c4-5f4f-49a1-86e2-5a2eaca93397">
+    </UnitTestResult>
+    <UnitTestResult executionId="7b6adef4-5bd2-4de4-9312-66740831d0e7" testId="de84f97e-6e54-3a63-597a-08f1ccab04cb" testName="ArgumentChecker_PassedEmptyGuidStringExpression_ShouldThrowException" computerName="HARRY-HP" duration="00:00:00.0021702" startTime="2012-04-10T12:29:39.6795038+03:00" endTime="2012-04-10T12:29:39.6855041+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7b6adef4-5bd2-4de4-9312-66740831d0e7">
+    </UnitTestResult>
+    <UnitTestResult executionId="9918445e-ff67-4929-bf6a-3c7c676b00c8" testId="123ab6d0-576e-7238-28bb-af69756167c3" testName="ArgumentChecker_PassedNotEmptyStringExpression_ShouldNotThrowException" computerName="HARRY-HP" duration="00:00:00.0007618" startTime="2012-04-10T12:29:39.6895043+03:00" endTime="2012-04-10T12:29:39.6935046+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9918445e-ff67-4929-bf6a-3c7c676b00c8">
+    </UnitTestResult>
+    <UnitTestResult executionId="7ef240c5-dbbc-4556-a530-f58d49ba7a04" testId="ea89121b-635d-81f6-b7fe-d4136b6c39f8" testName="ArgumentChecker_PassedNotNullObjectExpression_ShouldNotThrowException" computerName="HARRY-HP" duration="00:00:00.0016795" startTime="2012-04-10T12:29:39.7005050+03:00" endTime="2012-04-10T12:29:39.7065053+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7ef240c5-dbbc-4556-a530-f58d49ba7a04">
+    </UnitTestResult>
+    <UnitTestResult executionId="ce28ad84-9929-4b78-85d8-700f256a7cbf" testId="0116cc0b-e067-4c42-c988-6271e1c0d153" testName="ArgumentChecker_PassedNotEmptyGuidExpression_ShouldNotThrowException" computerName="HARRY-HP" duration="00:00:00.0009888" startTime="2012-04-10T12:29:39.7095055+03:00" endTime="2012-04-10T12:29:39.7155058+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ce28ad84-9929-4b78-85d8-700f256a7cbf">
+    </UnitTestResult>
+    <UnitTestResult executionId="ba400896-e705-45b5-a10a-c2625c5e0192" testId="2915dd87-65ba-5db2-4d15-6cbc498f9c30" testName="ArgumentChecker_PassedFalseCondition_ShouldThrowException" computerName="HARRY-HP" duration="00:00:00.0008368" startTime="2012-04-10T12:29:39.7195060+03:00" endTime="2012-04-10T12:29:39.7275065+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ba400896-e705-45b5-a10a-c2625c5e0192">
+    </UnitTestResult>
+    <UnitTestResult executionId="4c417112-bbc7-4c65-9a26-a7818a74e2ae" testId="4db7008b-c63a-1ca5-18ae-00b1fdf8a47c" testName="ArgumentChecker_PassedTrueCondition_ShouldNotThrowException" computerName="HARRY-HP" duration="00:00:00.0004492" startTime="2012-04-10T12:29:39.7295066+03:00" endTime="2012-04-10T12:29:39.7345069+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4c417112-bbc7-4c65-9a26-a7818a74e2ae">
+    </UnitTestResult>
+  </Results>
+</TestRun>

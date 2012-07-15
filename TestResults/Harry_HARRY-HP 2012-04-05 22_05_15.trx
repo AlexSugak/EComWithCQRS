@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="49cf589c-dc17-44a7-9ae5-a479f422193c" name="Harry@HARRY-HP 2012-04-05 22:05:15" runUser="Harry-HP\Harry" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="Local" id="cea19d41-6cbd-46b6-b1ad-ed83a2b7d7fb">
+    <Description>These are default test settings for a local test run.</Description>
+    <Deployment enabled="false" runDeploymentRoot="Harry_HARRY-HP 2012-04-05 22_05_15">
+      <DeploymentItem filename="C:\Users\Harry\Dropbox\Code\EComWithCQRS\ECom.Utility\bin\Debug\ECom.Utility.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2012-04-05T22:05:15.7107258+03:00" queuing="2012-04-05T22:05:15.7747294+03:00" start="2012-04-05T22:05:15.7977307+03:00" finish="2012-04-05T22:05:16.0567455+03:00" />
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" error="0" failed="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="must_split_camel_case" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="649c4c37-fae5-1328-131f-d26166ae551b">
+      <Execution id="d0ae739b-0542-402e-b437-5cbcd4f38567" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.StringExtentionsClass+WordifyMethod, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="must_split_camel_case" />
+    </UnitTest>
+    <UnitTest name="must_not_split_acronyms" storage="c:\users\harry\dropbox\code\ecomwithcqrs\ecom.utility.tests\bin\debug\ecom.utility.tests.dll" id="eb25f9e5-c7e6-0120-3cec-b3334e2cc8ee">
+      <Execution id="04c3c3a9-71cb-4169-8c96-c284960849bb" />
+      <TestMethod codeBase="C:/Users/Harry/Dropbox/Code/EComWithCQRS/ECom.Utility.Tests/bin/Debug/ECom.Utility.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="ECom.Utility.Tests.StringExtentionsClass+WordifyMethod, ECom.Utility.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="must_not_split_acronyms" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="649c4c37-fae5-1328-131f-d26166ae551b" executionId="d0ae739b-0542-402e-b437-5cbcd4f38567" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="eb25f9e5-c7e6-0120-3cec-b3334e2cc8ee" executionId="04c3c3a9-71cb-4169-8c96-c284960849bb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="d0ae739b-0542-402e-b437-5cbcd4f38567" testId="649c4c37-fae5-1328-131f-d26166ae551b" testName="must_split_camel_case" computerName="HARRY-HP" duration="00:00:00.0133009" startTime="2012-04-05T22:05:15.8057312+03:00" endTime="2012-04-05T22:05:16.0307441+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d0ae739b-0542-402e-b437-5cbcd4f38567">
+    </UnitTestResult>
+    <UnitTestResult executionId="04c3c3a9-71cb-4169-8c96-c284960849bb" testId="eb25f9e5-c7e6-0120-3cec-b3334e2cc8ee" testName="must_not_split_acronyms" computerName="HARRY-HP" duration="00:00:00.0002423" startTime="2012-04-05T22:05:16.0327442+03:00" endTime="2012-04-05T22:05:16.0377445+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="04c3c3a9-71cb-4169-8c96-c284960849bb">
+    </UnitTestResult>
+  </Results>
+</TestRun>

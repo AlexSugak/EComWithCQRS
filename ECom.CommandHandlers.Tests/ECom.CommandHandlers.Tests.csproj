@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{70AEB059-E7D0-4D8B-94F2-934BBD94134E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ECom.CommandHandlers.Tests</RootNamespace>
+    <AssemblyName>ECom.CommandHandlers.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommandSpecification.cs" />
+    <Compile Include="CommandSpecificationTest.cs" />
+    <Compile Include="EventsComparer.cs" />
+    <Compile Include="EventsComparerTests.cs" />
+    <Compile Include="FailingCommandSpecification.cs" />
+    <Compile Include="FakeEventStore.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Specifications\ProductCommandsSpecifications.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ECom.Bus\ECom.Bus.csproj">
+      <Project>{B7955834-0FD4-492C-9464-89A7ED23B191}</Project>
+      <Name>ECom.Bus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECom.CommandHandlers\ECom.CommandHandlers.csproj">
+      <Project>{49BF44EA-5C62-47FB-9FA3-44BF70A42039}</Project>
+      <Name>ECom.CommandHandlers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECom.Domain.Catalog\ECom.Domain.Catalog.csproj">
+      <Project>{01195C0C-D4F1-4B44-BD1A-6B652B7EA7F6}</Project>
+      <Name>ECom.Domain.Catalog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECom.Domain.Order\ECom.Domain.Order.csproj">
+      <Project>{33B105B3-B3BF-4D1D-BDC1-009FEFD0D1A5}</Project>
+      <Name>ECom.Domain.Order</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECom.Domain\ECom.Domain.csproj">
+      <Project>{B23E0F3C-00F1-4947-9A54-0541558E1E67}</Project>
+      <Name>ECom.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECom.Infrustructure\ECom.Infrastructure.csproj">
+      <Project>{5600C6B0-89ED-4E30-BEF2-DD566E8F5454}</Project>
+      <Name>ECom.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECom.Messages\ECom.Messages.csproj">
+      <Project>{1A2F56CD-4A1C-4435-8D11-3736D18ABAE6}</Project>
+      <Name>ECom.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECom.Utility\ECom.Utility.csproj">
+      <Project>{7236D0AE-E702-4E06-9165-14D28E2678A0}</Project>
+      <Name>ECom.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
