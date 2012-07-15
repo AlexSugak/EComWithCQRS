@@ -90,7 +90,7 @@
     <SuppressTSqlWarnings />
   </PropertyGroup>
   <!--Import the settings-->
-  <Import Project="$(SolutionDir)Externals\MSBuild\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Project="$(SolutionRoot)Externals\MSBuild\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Pre-Deployment" />
