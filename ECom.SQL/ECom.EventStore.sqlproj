@@ -155,6 +155,12 @@
     <Folder Include="Schema Objects\Database Level Objects\Storage\Full Text Catalogs\" />
     <Folder Include="Schema Objects\Database Level Objects\Storage\Partition Functions\" />
     <Folder Include="Schema Objects\Database Level Objects\Storage\Partition Schemes\" />
+    <Folder Include="Externals" />
+    <Folder Include="Externals\MSBuild" />
+    <Folder Include="Externals\MSBuild\Microsoft" />
+    <Folder Include="Externals\MSBuild\Microsoft\VisualStudio" />
+    <Folder Include="Externals\MSBuild\Microsoft\VisualStudio\v11.0" />
+    <Folder Include="Externals\MSBuild\Microsoft\VisualStudio\v11.0\SSDT" />
   </ItemGroup>
   <ItemGroup>
     <BuildContributorArgument Include="OutDir=$(OutDir)" />
@@ -177,6 +183,9 @@
   <ItemGroup>
     <None Include="Debug.publish.xml" />
     <None Include="Release.publish.xml" />
+    <None Include="Externals\MSBuild\Microsoft\VisualStudio\v11.0\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\Pre-Deployment\Script.PreDeployment.sql" />
