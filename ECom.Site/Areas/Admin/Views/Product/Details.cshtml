@@ -1,4 +1,5 @@
 ﻿@using ECom.Site.Helpers
+@using ECom.Site.Models
 @using ECom.Messages
 
 @model ECom.ReadModel.Views.ProductDetailsDto
@@ -16,5 +17,5 @@
 	<br />
 	<br />
 
-	@Html.Command(new ChangeProductPrice(Model.ID) { NewPrice = Model.Price })
+	@Html.Command(new ChangeProductPrice(new ProductId(Model.ID), Model.Price ).WithEnvelope())
 </div>

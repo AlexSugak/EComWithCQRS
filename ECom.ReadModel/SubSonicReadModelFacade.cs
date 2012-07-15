@@ -47,7 +47,8 @@ namespace ECom.ReadModel
         {
 			Argument.ExpectNotNull(() => id);
 
-            return _repository.Single<ProductDetailsDto>(p => p.ID == id.GetId());
+			var productId = id.GetId();
+			return _repository.Single<ProductDetailsDto>(p => p.ID == productId);
         }
 
 		private IEnumerable<T> GetDtosPaged<T>(int pageNum, int pageSize, out int totalCount)
