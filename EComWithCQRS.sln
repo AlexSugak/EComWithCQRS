@@ -55,9 +55,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Console", "ECom.Console\ECom.Console.csproj", "{3333C43E-0CC2-468B-9EF1-DB7B8AAE5A05}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = EComWithCQRS.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -91,14 +88,11 @@ Global
 		{10CB5E6E-0CDD-4D6E-8F7C-E119DF6D1D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10CB5E6E-0CDD-4D6E-8F7C-E119DF6D1D25}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{10CB5E6E-0CDD-4D6E-8F7C-E119DF6D1D25}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{10CB5E6E-0CDD-4D6E-8F7C-E119DF6D1D25}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{10CB5E6E-0CDD-4D6E-8F7C-E119DF6D1D25}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{10CB5E6E-0CDD-4D6E-8F7C-E119DF6D1D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10CB5E6E-0CDD-4D6E-8F7C-E119DF6D1D25}.Release|Any CPU.Build.0 = Release|Any CPU
 		{10CB5E6E-0CDD-4D6E-8F7C-E119DF6D1D25}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{10CB5E6E-0CDD-4D6E-8F7C-E119DF6D1D25}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{10CB5E6E-0CDD-4D6E-8F7C-E119DF6D1D25}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{10CB5E6E-0CDD-4D6E-8F7C-E119DF6D1D25}.Release|Mixed Platforms.Deploy.0 = Release|Any CPU
 		{10CB5E6E-0CDD-4D6E-8F7C-E119DF6D1D25}.Release|x86.ActiveCfg = Release|Any CPU
 		{1A2F56CD-4A1C-4435-8D11-3736D18ABAE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1A2F56CD-4A1C-4435-8D11-3736D18ABAE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
