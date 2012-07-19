@@ -16,6 +16,7 @@ namespace ECom.ReadModel
         public SubSonicReadModelFacade(SimpleRepository repository)
         {
 			Argument.ExpectNotNull(() => repository);
+
             _repository = repository;
         }
 
@@ -24,11 +25,11 @@ namespace ECom.ReadModel
 			return _repository.All<CategoryNodeDto>();
 		}
 
-		public CategoryNodeDto GetCategoryDetails(string id)
+		public CategoryDetailsDto GetCategoryDetails(string name)
 		{
-			Argument.ExpectNotNullOrWhiteSpace(() => id);
+			Argument.ExpectNotNullOrWhiteSpace(() => name);
 
-			return _repository.Single<CategoryNodeDto>(p => p.ID == id);
+			return _repository.Single<CategoryDetailsDto>(p => p.ID == name);
 		}
 
 		public IEnumerable<ProductListDto> GetProducts(int pageNum, int pageSize, out int totalCount)

@@ -42,6 +42,9 @@ CategoryCreated!(catalogId, name)
 MoveCategory?(name, string TargetCategory)
 CategoryMoved!(catalogId, name, string TargetCategory)
 
+RemoveCategory?(name)
+CategoryRemoved!(catalogId, name)
+
 AddProductToCategory?(productId, categoryName)
 ProductAddedToCategory!(productId, categoryName)
 

@@ -16,7 +16,8 @@
 @helper TreeNode(CategoriesTreeNodeViewModel node)
 {
     <li >
-        <span><a href="#">@node.Name</a></span> <span>@Html.Command(node.MoveCategoryCommand.WithEnvelope(node.MoveCategoryCommand.Name), "icon-move")</span>
+        <span><a href="@Url.Action("Details", new {id = node.Name})">@node.Name</a></span> 
+		<span>@Html.Command(node.MoveCategoryCommand.WithEnvelope(node.MoveCategoryCommand.Name), "icon-move")</span>
 
         @if(node.ChildNodes.Count > 0)
         {

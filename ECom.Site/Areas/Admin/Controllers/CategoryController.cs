@@ -24,5 +24,12 @@ namespace ECom.Site.Areas.Admin.Controllers
 
 			return View(new CategoriesTreeViewModel(categories));
 		}
+
+		[HttpGet]
+		public ActionResult Details(string id)
+		{
+			var model = _readModel.GetCategoryDetails(id);
+			return View(model);
+		}
 	}
 }

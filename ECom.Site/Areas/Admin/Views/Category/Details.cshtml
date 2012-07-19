@@ -1,0 +1,19 @@
+﻿@using ECom.Site.Helpers
+@using ECom.Site.Models
+@using ECom.Messages
+
+@model ECom.ReadModel.Views.CategoryDetailsDto
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="content">
+	<h2>Category Details</h2>
+
+	@Html.DisplayForModel()
+
+	<br />
+	<br />
+</div>

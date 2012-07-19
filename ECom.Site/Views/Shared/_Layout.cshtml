@@ -24,10 +24,10 @@
 
 @helper MenuItem(string text, string action, string controller, string area = null)
 {
-    var currentController = ViewContext.RouteData.GetRequiredString("controller");
-    var currentAction = ViewContext.RouteData.GetRequiredString("action");
-    
-    <li @(controller.Equals(currentController) && action.Equals(currentAction) ? "class=active" : "")>
+    <li @(controller.Equals(ViewContext.RouteData.GetRequiredString("controller")) 
+			&& action.Equals(ViewContext.RouteData.GetRequiredString("action")) 
+			? "class=active" : String.Empty)>
+
         @Html.ActionLink(text, action, controller, new { Area = area }, null)
     </li>
 }
@@ -38,10 +38,10 @@
             <div class="container">
                 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span
                     class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                </a><a class="brand" href="#">CQRS Shop</a>
+                </a>
+				@Html.ActionLink("CQRS Shop", "Index", "Home", new { area = ""}, new { @class = "brand" })
                 <div class="nav-collapse">
                     <ul class="nav">
-                        @MenuItem("Home", "Index", "Home")
                         @MenuItem("Checkout", "Checkout", "Order", "Shop")
                         @MenuItem("Products", "Index", "Product", "Admin")
                         @MenuItem("Categories", "Index", "Category", "Admin")

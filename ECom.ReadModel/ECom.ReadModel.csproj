@@ -50,6 +50,7 @@
     <Compile Include="SubSonicDtoManager.cs" />
     <Compile Include="SubSonicReadModelFacade.cs" />
     <Compile Include="Views\CategoriesTreeView.cs" />
+    <Compile Include="Views\CategoryDetailsView.cs" />
     <Compile Include="Views\ProductDetailsView.cs" />
     <Compile Include="Views\ProductListView.cs" />
   </ItemGroup>

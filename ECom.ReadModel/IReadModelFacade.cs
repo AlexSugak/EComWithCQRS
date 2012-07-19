@@ -10,7 +10,7 @@ namespace ECom.ReadModel
     public interface IReadModelFacade
     {
 		IEnumerable<CategoryNodeDto> GetCategories();
-		CategoryNodeDto GetCategoryDetails(string id);
+		CategoryDetailsDto GetCategoryDetails(string name);
 
         IEnumerable<ProductListDto> GetCategoryProducts(string categoryName);
 

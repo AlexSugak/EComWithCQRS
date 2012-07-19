@@ -150,6 +150,32 @@ namespace ECom.Messages
 	}
 	
 	[Serializable]
+	public sealed class RemoveCategory : IFunctionalCommand
+	{
+		public int Version { get; set; }
+		public string Name { get; set; }
+		public RemoveCategory () {}
+		public RemoveCategory (string name)
+		{
+			Name = name;
+		}
+	}
+	
+	[Serializable]
+	public sealed class CategoryRemoved : IEvent<CatalogId>
+	{
+		public CatalogId Id { get; set; }
+		public int Version { get; set; }
+		public string Name { get; set; }
+		public CategoryRemoved () {}
+		public CategoryRemoved (CatalogId catalogId, string name)
+		{
+			Id = catalogId;
+			Name = name;
+		}
+	}
+	
+	[Serializable]
 	public sealed class AddProductToCategory : ICommand<ProductId>
 	{
 		public ProductId Id { get; set; }

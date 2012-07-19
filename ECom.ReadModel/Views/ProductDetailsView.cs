@@ -8,6 +8,7 @@ using ECom.Utility;
 
 namespace ECom.ReadModel.Views
 {
+	[Serializable]
 	public class ProductDetailsDto : Dto
 	{
 		public string ID { get; set; }
