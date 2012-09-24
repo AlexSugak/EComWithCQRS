@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ECom.ReadModel.Parsers;
 using ECom.Site.Areas.Shop.Models;
 using ECom.Site.Controllers;
 using ECom.Site.Core;
+using ECom.Utility;
 
 namespace ECom.Site.Areas.Shop.Controllers
 {
+	[Authorize]
     public class OrderController : CqrsController
     {
         protected override string GetAreaPath()
@@ -16,6 +20,63 @@ namespace ECom.Site.Areas.Shop.Controllers
             return "~/Areas/Shop/";
         }
 
+		[HttpGet]
+		public ActionResult Add()
+		{
+			var model = new AddNewOrderViewModel();
+			return View(model);
+		}
+
+		[HttpPost]
+		public ActionResult Add(AddNewOrderViewModel model)
+		{
+			Argument.ExpectNotNull(() => model);
+
+			if (ModelState.IsValid)
+			{
+
+
+				return RedirectToAction("Add");
+			}
+
+			return View(model);
+		}
+
+		[HttpGet]
+		[OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+		public JsonResult ParseProductUrl(string productUrl)
+		{
+			Argument.ExpectNotNullOrWhiteSpace(() => productUrl);
+
+			ProductPageInfo productInfo = null;
+
+			try
+			{
+				var url = new Uri(productUrl);
+				var parser = ServiceLocator.ProductPageParserFactory.Create(url);
+
+				productInfo = parser.Parse(url);
+
+				if (productInfo != null)
+				{
+					return Json(new 
+					{ 
+						parsed = true, 
+						name = productInfo.Name, 
+						description = productInfo.Description, 
+						price = productInfo.Price,
+						image = productInfo.ImageUrl
+					}, JsonRequestBehavior.AllowGet);
+				}
+			}
+			catch (Exception)//if product page parsing failed - ignore and let user enter product details manually
+			{
+			}
+
+			return Json(new { parsed = false }, JsonRequestBehavior.AllowGet);
+		}
+
+		[HttpGet]
         public ActionResult Checkout()
         {
             var model = GetStubCartModelFull();

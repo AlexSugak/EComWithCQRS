@@ -24,7 +24,7 @@ namespace ECom.Domain
 
 		public AggregateRoot()
 		{
-			Version = -1;
+			Version = 0;
 		}
 
         public abstract T Id { get; }
@@ -43,9 +43,10 @@ namespace ECom.Domain
 
         public void LoadsFromHistory(IEnumerable<IEvent<T>> history)
         {
-            foreach (var e in history) ApplyChange(e, false);
-
-			Version = history.Last().Version;
+			foreach (var e in history)
+			{
+				ApplyChange(e, false);
+			}
         }
 
         protected void ApplyChange(IEvent<T> @event)
@@ -56,7 +57,13 @@ namespace ECom.Domain
         private void ApplyChange(IEvent<T> @event, bool isNew)
         {
             this.AsDynamic().Apply(@event);
-            if (isNew) _changes.Add(@event);
+			Version += 1;
+
+			if (isNew)
+			{
+				@event.Version = Version;
+				_changes.Add(@event);
+			}
         }
     }
 }

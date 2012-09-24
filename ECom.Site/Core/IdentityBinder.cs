@@ -18,20 +18,18 @@ namespace ECom.Site.Core
                 return NullId.Instance;
             }
 
-            var args = attemptedValue.Split(new[] { '-' }, 2);
-            var id = args[1];
-            switch (args[0])
+            switch (bindingContext.ModelType.Name)
             {
-                case NullId.TagValue:
+                case "NullId":
                     return NullId.Instance;
-                case ProductId.TagValue:
-                    return new ProductId(Guid.Parse(id));
-                case CatalogId.TagValue:
-                    return new CatalogId(Guid.Parse(id));
-                case DiscountId.TagValue:
-                    return new DiscountId(Guid.Parse(id));
-                case OrderId.TagValue:
-                    return new OrderId(Guid.Parse(id));
+                case "ProductId":
+					return new ProductId(attemptedValue);
+                case "CatalogId":
+					return new CatalogId(Guid.Parse(attemptedValue));
+                case "DiscountId":
+					return new DiscountId(Guid.Parse(attemptedValue));
+                case "OrderId":
+					return new OrderId(attemptedValue);
                 default:
                     var message = string.Format("Unknown identity: {0}", attemptedValue);
                     throw new InvalidOperationException(message);

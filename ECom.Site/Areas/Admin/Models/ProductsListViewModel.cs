@@ -19,61 +19,22 @@ namespace ECom.Site.Areas.Admin.Models
         {
         }
 
-		public ProductsListViewModel(IPagination<ProductListDto> products)
+		public ProductsListViewModel(IPagination<ProductList> products)
         {
 			Argument.ExpectNotNull(() => products);
 
             Products = products;
         }
 
-        public IPagination<ProductListDto> Products { get; set; }
+        public IPagination<ProductList> Products { get; set; }
 
         public AddProduct AddProductCommand 
         {
             get 
             {
-                var cmd = new AddProduct { Id = new ProductId(Guid.NewGuid()) };
+                var cmd = new AddProduct();
                 return cmd;
             }
-        }
-    }
-
-
-    interface IProp
-    {
-        string Value { get; set; }
-    }
-
-    class Prop : IProp
-    {
-        public string Value { get; set; }
-    }
-
-    interface ITest<out T>
-        where T : IProp
-    {
-        T Prop { get; }
-    }
-
-    class Test : ITest<Prop>
-    {
-        public Prop Prop { get; set; }
-    }
-
-    static class TestExtentions
-    {
-        public static string Test(this ITest<IProp> t)
-        {
-            return t.Prop.Value;
-        }
-    }
-
-    class TestProg
-    {
-        void Test()
-        {
-            var test = new Test();
-            var value = test.Test();
         }
     }
 }

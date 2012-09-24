@@ -44,9 +44,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\Libraries\FluentValidation\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation.Mvc">
+      <HintPath>..\Libraries\FluentValidation\FluentValidation.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MvcContrib">
       <HintPath>..\Libraries\MvcContrib.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Libraries\Json.Net\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SubSonic.Core">
       <HintPath>..\Libraries\SubSonic.Core.dll</HintPath>
@@ -79,10 +88,13 @@
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Models\CategoriesTreeViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ProductDetailsViewModel.cs" />
     <Compile Include="Areas\Shop\Controllers\OrderController.cs" />
+    <Compile Include="Areas\Shop\Models\AddNewOrderViewModel.cs" />
     <Compile Include="Areas\Shop\Models\AddressViewModel.cs" />
     <Compile Include="Areas\Shop\Models\CartViewModel.cs" />
     <Compile Include="Areas\Shop\Models\CreditCardViewModel.cs" />
+    <Compile Include="Areas\Shop\Models\OrderItemViewModel.cs" />
     <Compile Include="Areas\Shop\ShopAreaRegistration.cs" />
     <Compile Include="Models\CommandEnvelopeViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductsListViewModel.cs" />
@@ -116,6 +128,7 @@
     <Content Include="Content\images\forward_disabled.png" />
     <Content Include="Content\images\forward_enabled.png" />
     <Content Include="Content\images\forward_enabled_hover.png" />
+    <Content Include="Content\images\loader.gif" />
     <Content Include="Content\images\sort_asc.png" />
     <Content Include="Content\images\sort_asc_disabled.png" />
     <Content Include="Content\images\sort_both.png" />
@@ -168,6 +181,7 @@
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\linkToProductPreview.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
     <Content Include="Web.config" />
@@ -177,7 +191,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\custom.css" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -198,7 +212,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LogOnPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -212,18 +228,6 @@
     <ProjectReference Include="..\ECom.Bus\ECom.Bus.csproj">
       <Project>{B7955834-0FD4-492C-9464-89A7ED23B191}</Project>
       <Name>ECom.Bus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ECom.CommandHandlers\ECom.CommandHandlers.csproj">
-      <Project>{49BF44EA-5C62-47FB-9FA3-44BF70A42039}</Project>
-      <Name>ECom.CommandHandlers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ECom.Domain.Catalog\ECom.Domain.Catalog.csproj">
-      <Project>{01195C0C-D4F1-4B44-BD1A-6B652B7EA7F6}</Project>
-      <Name>ECom.Domain.Catalog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ECom.Domain.Order\ECom.Domain.Order.csproj">
-      <Project>{33B105B3-B3BF-4D1D-BDC1-009FEFD0D1A5}</Project>
-      <Name>ECom.Domain.Order</Name>
     </ProjectReference>
     <ProjectReference Include="..\ECom.Domain\ECom.Domain.csproj">
       <Project>{B23E0F3C-00F1-4947-9A54-0541558E1E67}</Project>
@@ -286,6 +290,12 @@
   <ItemGroup>
     <Content Include="Areas\Admin\Views\Category\Details.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shop\Views\Order\Add.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\LoginWith.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -306,12 +316,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>20117</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://crowdshop.com/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

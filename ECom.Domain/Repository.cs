@@ -29,7 +29,8 @@ namespace ECom.Domain
 
         public void Save(TAggregate aggregate)
         {
-            _storage.SaveAggregateEvents(aggregate.Id, aggregate.GetType().FullName, aggregate.GetUncommittedChanges(), aggregate.Version);
+            _storage.SaveAggregateEvents(aggregate.Id, aggregate.GetType().FullName, aggregate.GetUncommittedChanges());
+			aggregate.MarkChangesAsCommitted();
         }
 
 		public TAggregate Get(TIdentity id)

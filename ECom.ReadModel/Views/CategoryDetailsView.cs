@@ -8,15 +8,15 @@ using ECom.Utility;
 namespace ECom.ReadModel.Views
 {
 	[Serializable]
-	public class CategoryDetailsDto : Dto
+	public class CategoryDetails : Dto
 	{
 		public string ID { get; set; }
 
-		public CategoryDetailsDto()
+		public CategoryDetails()
 		{
 		}
 
-		public CategoryDetailsDto(string name)
+		public CategoryDetails(string name)
 		{
 			ID = name;
 		}
@@ -37,12 +37,12 @@ namespace ECom.ReadModel.Views
 
 		public void Handle(CategoryCreated message)
 		{
-			_manager.Add<CategoryDetailsDto>(new CategoryDetailsDto(message.Name));
+			_manager.Add<CategoryDetails>(new CategoryDetails(message.Name));
 		}
 
 		public void Handle(CategoryRemoved message)
 		{
-			_manager.Delete<CategoryDetailsDto>(message.Name);
+			_manager.Delete<CategoryDetails>(message.Name);
 		}
 	}
 }

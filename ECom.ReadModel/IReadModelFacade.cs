@@ -9,12 +9,19 @@ namespace ECom.ReadModel
 {
     public interface IReadModelFacade
     {
-		IEnumerable<CategoryNodeDto> GetCategories();
-		CategoryDetailsDto GetCategoryDetails(string name);
+		IEnumerable<CategoryNode> GetCategories();
+		CategoryDetails GetCategoryDetails(string name);
 
-        IEnumerable<ProductListDto> GetCategoryProducts(string categoryName);
+        IEnumerable<ProductList> GetCategoryProducts(string categoryName);
 
-        IEnumerable<ProductListDto> GetProducts(int pageNum, int pageSize, out int totalCount);
-        ProductDetailsDto GetProductDetails(ProductId id);
+        IEnumerable<ProductList> GetProducts(int pageNum, int pageSize, out int totalCount);
+
+        ProductDetails GetProductDetails(ProductId id);
+
+		IEnumerable<ProductRelationship> GetProductRelationships(ProductId id);
+
+
+
+		IEnumerable<OrderItemDetails> GetOrderItems(OrderId orderId);
     }
 }

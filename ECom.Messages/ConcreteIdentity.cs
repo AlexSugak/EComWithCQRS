@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using ECom.Utility;
@@ -51,6 +52,19 @@ namespace ECom.Messages
 		public override string Id { get; protected set; }
 	}
 
+	[Serializable]
+	public abstract class IntIdentity : AbstractIdentity<int>
+	{
+		public IntIdentity() { }
+
+		public IntIdentity(int id)
+		{
+			Id = id;
+		}
+
+		public override int Id { get; protected set; }
+	}
+
     [Serializable]
 	public sealed class CatalogId : GuidIdentity
 	{
@@ -69,18 +83,14 @@ namespace ECom.Messages
 	}
 
     [Serializable]
-	public sealed class ProductId : GuidIdentity
+	public sealed class ProductId : StringIdentity
 	{
         public const string TagValue = "product";
 
 		public ProductId() { }
-		public ProductId(Guid id)
-			: base(id)
-		{
-		}
 
         public ProductId(string id)
-            : base(new Guid(id))
+            : base(id)
         {
         }
 
@@ -108,12 +118,12 @@ namespace ECom.Messages
 	}
 
     [Serializable]
-	public sealed class OrderId : GuidIdentity
+	public sealed class OrderId : StringIdentity
 	{
         public const string TagValue = "order";
 
 		public OrderId() { }
-		public OrderId(Guid id)
+		public OrderId(string id)
 			: base(id)
 		{
 		}
@@ -123,4 +133,39 @@ namespace ECom.Messages
 			return TagValue;
 		}
 	}
+
+	[Serializable]
+	public sealed class OrderItemId : IntIdentity
+	{
+		public const string TagValue = "order-item";
+
+		public OrderItemId() { }
+		public OrderItemId(int itemId)
+			: base(itemId)
+		{
+		}
+
+		public override string GetTag()
+		{
+			return TagValue;
+		}
+	}
+
+	[Serializable]
+	public sealed class UserId : StringIdentity
+	{
+		public const string TagValue = "user";
+
+		public UserId(string email)
+			: base(email)
+		{
+		}
+
+		public override string GetTag()
+		{
+			return TagValue;
+		}
+	}
+
+
 }

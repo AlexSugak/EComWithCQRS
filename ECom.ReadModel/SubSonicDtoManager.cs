@@ -5,6 +5,7 @@ using System.Text;
 using SubSonic.Repository;
 using ECom.Utility;
 using ECom.Messages;
+using System.Linq.Expressions;
 
 namespace ECom.ReadModel
 {
@@ -17,6 +18,11 @@ namespace ECom.ReadModel
 			Argument.ExpectNotNull(() => repository);
 
 			_repository = repository;
+		}
+
+		public T Get<T>(Expression<Func<T, bool>> by) where T : Dto, new()
+		{
+			return _repository.Single<T>(by);
 		}
 
 		public void Add<T>(T dto) where T : Dto, new()

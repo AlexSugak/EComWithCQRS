@@ -7,17 +7,17 @@ using ECom.Messages;
 
 namespace ECom.ReadModel.Views
 {
-	public class CategoryNodeDto : Dto
+	public class CategoryNode : Dto
 	{
 		public string ID { get; set; }
 		public string Name { get; set; }
 		public string ParentName { get; set; }
 
-		public CategoryNodeDto()
+		public CategoryNode()
 		{
 		}
 
-		public CategoryNodeDto(string id, string name)
+		public CategoryNode(string id, string name)
 		{
 			ID = id;
             Name = name;
@@ -40,12 +40,12 @@ namespace ECom.ReadModel.Views
 
 		public void Handle(CategoryCreated message)
 		{
-			_manager.Add(new CategoryNodeDto(message.Name, message.Name));
+			_manager.Add(new CategoryNode(message.Name, message.Name));
 		}
 
 		public void Handle(CategoryMoved message)
 		{
-			_manager.Update<CategoryNodeDto>(message.Name, c => c.ParentName = message.TargetCategory); 
+			_manager.Update<CategoryNode>(message.Name, c => c.ParentName = message.TargetCategory); 
 		}
 	}
 }

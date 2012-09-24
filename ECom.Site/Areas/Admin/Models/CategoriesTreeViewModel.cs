@@ -11,7 +11,7 @@ namespace ECom.Site.Areas.Admin.Models
 {
 	public class CategoriesTreeViewModel
 	{
-		public CategoriesTreeViewModel(IEnumerable<CategoryNodeDto> categories)
+		public CategoriesTreeViewModel(IEnumerable<CategoryNode> categories)
 		{
 			Argument.ExpectNotNull(() => categories);
 
@@ -22,7 +22,7 @@ namespace ECom.Site.Areas.Admin.Models
 
 		public CreateCategory CreateCategory { get { return new CreateCategory(); } }
 
-		private IEnumerable<CategoriesTreeNodeViewModel> LoadTree(IEnumerable<CategoryNodeDto> categories)
+		private IEnumerable<CategoriesTreeNodeViewModel> LoadTree(IEnumerable<CategoryNode> categories)
 		{
 			Dictionary<string, CategoriesTreeNodeViewModel> categoriesTree = new Dictionary<string, CategoriesTreeNodeViewModel>();
 
@@ -46,7 +46,7 @@ namespace ECom.Site.Areas.Admin.Models
 
 	public class CategoriesTreeNodeViewModel
 	{
-		public CategoriesTreeNodeViewModel(CategoryNodeDto dto)
+		public CategoriesTreeNodeViewModel(CategoryNode dto)
 		{
 			Name = dto.Name;
 			ParentName = dto.ParentName;

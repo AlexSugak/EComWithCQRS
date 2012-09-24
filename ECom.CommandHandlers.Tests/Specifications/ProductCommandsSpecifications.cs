@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using ECom.Messages;
 using ECom.Utility;
-using ECom.Domain.Catalog;
 using ECom.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ECom.Domain.Exceptions;
-using ECom.Domain.Catalog.Exceptions;
+using ECom.Domain.Aggregates.Product.Exceptions;
 
 namespace ECom.CommandHandlers.Tests.Specifications
 {
@@ -23,7 +22,7 @@ namespace ECom.CommandHandlers.Tests.Specifications
         {
             base.SetUp();
 
-            _productId = new ProductId(Guid.NewGuid());
+            _productId = new ProductId("123");
         }
     }
 
@@ -146,4 +145,67 @@ namespace ECom.CommandHandlers.Tests.Specifications
 			Assert(spec);
         }
     }
+
+	[TestClass]
+	public class AddRelatedProductSpecs : ProductCommandSpecificationTest<AddRelatedProduct>
+	{
+		[TestMethod]
+		public void when_adding_valid_product_relationship()
+		{
+			var product1 = new ProductId("123");
+			var product2 = new ProductId("234");
+
+			var spec = new CommandSpecification<AddRelatedProduct>
+			{
+				Given = new[] { 
+					new ProductAdded(product1, "Shirt", 11),
+					new ProductAdded(product2, "Pants", 34) 
+				},
+				When = new AddRelatedProduct(product1, product2),
+				Expect = new[] { 
+					new RelatedProductAdded(product1, product2),
+				}
+			};
+
+			Assert(spec);
+		}
+
+		[TestMethod]
+		public void when_trying_to_add_duplicate_relationship()
+		{
+			var product1 = new ProductId("123");
+			var product2 = new ProductId("234");
+
+			var spec = new FailingCommandSpecification<AddRelatedProduct>
+			{
+				Given = new IEvent[] { 
+					new ProductAdded(product1, "Shirt", 11),
+					new ProductAdded(product2, "Pants", 34),
+					new RelatedProductAdded(product1, product2)
+				},
+				When = new AddRelatedProduct(product1, product2),
+				ExpectException = new InvalidOperationException()
+			};
+
+			Assert(spec);
+		}
+
+		[TestMethod]
+		public void when_trying_to_add_relationship_to_not_existing_product()
+		{
+			var product1 = new ProductId("123");
+			var product2 = new ProductId("234");
+
+			var spec = new FailingCommandSpecification<AddRelatedProduct>
+			{
+				Given = new IEvent[] { 
+					new ProductAdded(product1, "Shirt", 11),
+				},
+				When = new AddRelatedProduct(product1, product2),
+				ExpectException = new AggregateRootNotFoundException()
+			};
+
+			Assert(spec);
+		}
+	}
 }

@@ -69,5 +69,25 @@ namespace ECom.Messages
 				return (Id.GetHashCode() * 397) ^ (GetTag().GetHashCode());
 			}
 		}
+
+		public static bool operator ==(AbstractIdentity<TKey> a, AbstractIdentity<TKey> b)
+		{
+			if (Object.ReferenceEquals(a, b))
+			{
+				return true;
+			}
+
+			if (((object)a == null) || ((object)b == null))
+			{
+				return false;
+			}
+
+			return a.Equals(b);
+		}
+
+		public static bool operator !=(AbstractIdentity<TKey> a, AbstractIdentity<TKey> b)
+		{
+			return !(a == b);
+		}
 	}
 }

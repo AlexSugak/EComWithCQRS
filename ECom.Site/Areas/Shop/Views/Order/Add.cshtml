@@ -1,0 +1,85 @@
+﻿@using ECom.Site.Helpers
+@using ECom.Site.Models
+@using ECom.Messages
+@using MvcContrib.UI.Grid;
+@using MvcContrib.UI.Pager;
+@using MvcContrib.Pagination;
+
+@model ECom.Site.Areas.Shop.Models.AddNewOrderViewModel
+
+@{
+    ViewBag.Title = "Add new order";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+}
+
+@functions
+{ 
+    bool HasErrors(string propertyName)
+    {
+        return ViewData.ModelState.ContainsKey(propertyName)
+            && ViewData.ModelState[propertyName] != null
+            && ViewData.ModelState[propertyName].Errors != null
+            && ViewData.ModelState[propertyName].Errors.Count > 0;
+    }
+}
+
+@helper FormRow(string propName, MvcHtmlString editor, MvcHtmlString validator)
+{
+    <div class="control-group @(HasErrors(propName) ? "error" : String.Empty)">
+            <label class="control-label">@propName</label>
+            <div class="controls">
+            @editor @validator
+            </div>
+    </div>
+}
+
+<script src="@Url.Content("~/Scripts/linkToProductPreview.js")"></script>
+
+<script type="text/javascript">
+	$(function () {
+		$('#ProductUrl').linkToProductPreview({
+			url: '@Url.Action("ParseProductUrl", "Order", new {Area = "Shop"})',
+			loaderImage: '@Url.Content("~/Content/images/loader.gif")',
+			productImageContainer: 'divProductImageContainer',
+			productImageHidden: 'ImageUrl'
+		});
+	});
+</script>
+
+<div id="content">
+	<h2>Add new order</h2>
+
+	<div class="row">
+		<div class="span6">
+			@FormRow("Product Url", Html.TextBoxFor(m => m.ProductUrl, new { @class ="input-xxlarge" }), Html.ValidationMessageFor(m => m.ProductUrl))
+			@FormRow("Product Name", Html.TextBoxFor(m => m.Name, new { @class ="input-xxlarge" }), Html.ValidationMessageFor(m => m.Name))
+			@FormRow("Description", Html.TextBoxFor(m => m.Description, new { @class ="input-xxlarge" }), Html.ValidationMessageFor(m => m.Description))
+			@FormRow("Price", Html.TextBoxFor(m => m.Price, new { @class ="input-xxlarge" }), Html.ValidationMessageFor(m => m.Price))
+			@FormRow("Size", Html.TextBoxFor(m => m.Size), Html.ValidationMessageFor(m => m.Size))
+			@FormRow("Color", Html.TextBoxFor(m => m.Color), Html.ValidationMessageFor(m => m.Color))
+
+			<input type="submit" class="btn btn-primary" value="Add"/>
+		</div>
+		<div class="span3">
+			<div id="divProductImageContainer">
+				@if (!String.IsNullOrWhiteSpace(Model.ImageUrl))
+				{
+					<img src="@Model.ImageUrl" />
+				}
+			</div>
+			@Html.HiddenFor(m => m.ImageUrl)
+		</div>
+	</div>
+	<div class="row">
+		@Html.Grid(Model.Items).Columns(column =>
+		{
+			column.For(x => MvcHtmlString.Create("<img src='" + x.ImageUrl + "' />"));
+			column.For(x => x.Name);
+			column.For(x => x.Price);
+			column.For(x => x.Size);
+			column.For(x => x.Color);
+			column.For(x => Html.Command(new RemoveItemFromOrder(new OrderId(x.OrderId), new OrderItemId(x.ItemId)))).Encode(false);
+		}).Attributes(@class => "table table-striped").Empty("Add some items to your order.")
+
+	</div>
+</div>

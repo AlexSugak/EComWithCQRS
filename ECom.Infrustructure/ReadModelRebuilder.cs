@@ -32,9 +32,34 @@ namespace ECom.Infrastructure
 			var dtoTypes = readModelAssembly.GetTypes().Where(t => t != typeof(Dto) && typeof(Dto).IsAssignableFrom(t));
 			foreach (var dtoType in dtoTypes)
 			{
-				var sql = String.Format("IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{0}s')) DROP TABLE [{0}s];\r\n", dtoType.Name);
+				//dtop dto tables
+				var sql = String.Format(
+					@"
+declare @cmd varchar(4000)
+declare cmds cursor for 
+Select
+    'drop table [' + Table_Name + ']'
+From
+    INFORMATION_SCHEMA.TABLES
+Where
+    Table_Name like '{0}%'
+
+open cmds
+while 1=1
+begin
+    fetch cmds into @cmd
+    if @@fetch_status != 0 break
+    exec(@cmd)
+end
+close cmds
+deallocate cmds
+						", 
+
+					dtoType.Name);
+
 				readModelDbProvider.ExecuteQuery(new QueryCommand(sql, readModelDbProvider));
 
+				//creates table for dto type
 				var genericRegister = readModelDbProvider.GetType().GetMethod("MigrateToDatabase").MakeGenericMethod(new[] { dtoType });
 				genericRegister.Invoke(readModelDbProvider, new[] { readModelAssembly });
 			}
@@ -42,9 +67,9 @@ namespace ECom.Infrastructure
 			var readModelRepo = new SimpleRepository(readModelDbProvider, SimpleRepositoryOptions.None);
 			var dtoManager = new SubSonicDtoManager(readModelRepo);
 
-			MessageHandlersRegister.RegisterEventHandlers(readModelAssembly, bus, dtoManager);
+			MessageHandlersRegister.RegisterEventHandlers(new [] { readModelAssembly }, bus, dtoManager);
 
-			//republish all events to build read model views
+			//republish all events to read model views
 			IDataProvider eventStoreDbProvider = ProviderFactory.GetProvider(eventStoreConnectionString, DbClientTypeName.MsSql);
 			var formatter = new BinaryFormatter();
 			using (var reader = eventStoreDbProvider.ExecuteReader(new QueryCommand("SELECT * FROM [Events] ORDER BY [Date] ASC", eventStoreDbProvider)))

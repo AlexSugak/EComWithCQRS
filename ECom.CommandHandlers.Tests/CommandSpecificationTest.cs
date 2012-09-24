@@ -22,10 +22,10 @@ namespace ECom.CommandHandlers.Tests
         {
             Cought = null;
 
-			var commandHandlersAssembly = Assembly.Load(new AssemblyName("ECom.CommandHandlers"));
+			var commandHandlersAssembly = Assembly.Load(new AssemblyName("ECom.Domain"));
 			FakeEventStore = new FakeEventStore();
 			Bus = new Bus.Bus();
-			MessageHandlersRegister.RegisterCommandHandlers(commandHandlersAssembly, Bus, FakeEventStore);
+			MessageHandlersRegister.RegisterCommandHandlers(new []{ commandHandlersAssembly }, Bus, FakeEventStore);
         }
 
         protected void Assert(CommandSpecification<TCommand> specification)
@@ -62,7 +62,7 @@ namespace ECom.CommandHandlers.Tests
                 producedEvents = FakeEventStore.NewEvents().ToList();
                 expectedEvents = specification.Expect.ToList();
 
-				Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(AssertEvents.AreSame(producedEvents, expectedEvents));
+				CollectionAssert.AreEqual(expectedEvents, producedEvents);
             }
         }
     }

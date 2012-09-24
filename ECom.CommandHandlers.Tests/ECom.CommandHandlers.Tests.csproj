@@ -44,8 +44,6 @@
   <ItemGroup>
     <Compile Include="CommandSpecification.cs" />
     <Compile Include="CommandSpecificationTest.cs" />
-    <Compile Include="EventsComparer.cs" />
-    <Compile Include="EventsComparerTests.cs" />
     <Compile Include="FailingCommandSpecification.cs" />
     <Compile Include="FakeEventStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,18 +53,6 @@
     <ProjectReference Include="..\ECom.Bus\ECom.Bus.csproj">
       <Project>{B7955834-0FD4-492C-9464-89A7ED23B191}</Project>
       <Name>ECom.Bus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ECom.CommandHandlers\ECom.CommandHandlers.csproj">
-      <Project>{49BF44EA-5C62-47FB-9FA3-44BF70A42039}</Project>
-      <Name>ECom.CommandHandlers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ECom.Domain.Catalog\ECom.Domain.Catalog.csproj">
-      <Project>{01195C0C-D4F1-4B44-BD1A-6B652B7EA7F6}</Project>
-      <Name>ECom.Domain.Catalog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ECom.Domain.Order\ECom.Domain.Order.csproj">
-      <Project>{33B105B3-B3BF-4D1D-BDC1-009FEFD0D1A5}</Project>
-      <Name>ECom.Domain.Order</Name>
     </ProjectReference>
     <ProjectReference Include="..\ECom.Domain\ECom.Domain.csproj">
       <Project>{B23E0F3C-00F1-4947-9A54-0541558E1E67}</Project>

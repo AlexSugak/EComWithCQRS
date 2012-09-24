@@ -5,8 +5,7 @@
 <#@ import namespace="ECom.Dsl" #>
 
 using System;
-using System.Web.Mvc;
-using System.ComponentModel.DataAnnotations;
+using System.CodeDom.Compiler;
 
 namespace ECom.Messages 
 {
@@ -16,14 +15,47 @@ namespace ECom.Messages
 
 
 
-// common fragments
+// common args
+let userId = UserId UserId;
 let orderId = OrderId OrderId;
+let orderItemId = OrderItemId OrderItemId;
 let productId = ProductId ProductId;
 let catalogId = CatalogId CatalogId;
 let categoryName = string CategoryName;
 let discountId = DiscountId DiscountId;
 let name = string Name;
 let quantity = int Quantity;
+
+
+
+
+// USER
+
+UserCreated!(userId)
+
+ReportUserLoggedIn?(userId)
+UserLoggedInReported!(userId)
+
+
+// ORDER
+
+NewOrderCreated!(orderId)
+
+AddProductToOrder?(orderId, Uri ProductUri, string Name, string Description, decimal Price, int Quantity, string Size, string Color, Uri ImageUri)
+ProductAddedToOrder!(orderId, orderItemId, Uri ProductUri, string Name, string Description, decimal Price, int Quantity, string Size, string Color, Uri ImageUri)
+
+RemoveItemFromOrder?(orderId, orderItemId)
+ItemRemovedFromOrder!(orderId, orderItemId)
+
+SubmitOrder?(orderId)
+OrderSubmited!(orderId)
+
+
+
+
+
+
+
 
 
 // CATALOG
@@ -36,6 +68,9 @@ ProductRemoved! (productId)
 ChangeProductPrice? (productId, decimal NewPrice)
 ProductPriceChanged! (productId, decimal NewPrice)
 
+AddRelatedProduct? (productId, ProductId TargetProductId)
+RelatedProductAdded! (productId, ProductId TargetProductId)
+
 CreateCategory?(name)
 CategoryCreated!(catalogId, name)
 
@@ -47,34 +82,6 @@ CategoryRemoved!(catalogId, name)
 
 AddProductToCategory?(productId, categoryName)
 ProductAddedToCategory!(productId, categoryName)
-
-
-
-// ORDERS
-CreateNewOrder?(orderId)
-NewOrderCreated!(orderId)
-
-AddProductToOrder?(orderId, productId, quantity)
-ProductAddedToOrder!(orderId, productId, quantity)
-
-RemoveProductFromOrder?(orderId, productId)
-ProductRemovedFromOrder!(orderId, productId)
-
-SubmitOrder?(orderId)
-OrderSubmited!(orderId)
-
-
-
-// MARKETING
-CreateDiscount?(discountId, name, decimal Value)
-DiscountCreated!(discountId, name, decimal Value)
-
-AssignDiscountToProduct?(discountId, productId)
-DiscountAassignedToProduct!(discountId, productId)
-
-
-
-
 
 
 

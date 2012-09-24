@@ -11,6 +11,7 @@
         }
     </style>
     <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap-responsive.css")" />
+	<link rel="stylesheet" href="@Url.Content("~/Content/custom.css")" />
 
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="@Url.Content("~/Content/images/bootstrap/apple-touch-icon-114-precomposed.png")" />
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="@Url.Content("~/Content/images/bootstrap/apple-touch-icon-72-precomposed.png")" />
@@ -39,12 +40,14 @@
                 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span
                     class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
                 </a>
-				@Html.ActionLink("CQRS Shop", "Index", "Home", new { area = ""}, new { @class = "brand" })
+				@Html.ActionLink("Crowd Shop", "Index", "Home", new { area = ""}, new { @class = "brand" })
                 <div class="nav-collapse">
                     <ul class="nav">
-                        @MenuItem("Checkout", "Checkout", "Order", "Shop")
-                        @MenuItem("Products", "Index", "Product", "Admin")
-                        @MenuItem("Categories", "Index", "Category", "Admin")
+						@if(Request.IsAuthenticated) {
+							@MenuItem("New Order", "Add", "Order", "Shop")
+							//MenuItem("Products", "Index", "Product", "Admin")
+							//MenuItem("Categories", "Index", "Category", "Admin")
+						}
                     </ul>
                     <p class="navbar-text pull-right">@Html.Partial("_LogOnPartial")</p>
                 </div>

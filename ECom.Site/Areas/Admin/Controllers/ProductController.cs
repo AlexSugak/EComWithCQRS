@@ -32,9 +32,14 @@ namespace ECom.Site.Areas.Admin.Controllers
         }
 
 		[HttpGet]
-		public ActionResult Details(Guid id)
+		public ActionResult Details(string id)
 		{
-			var model = _readModel.GetProductDetails(new ProductId(id));
+			ProductDetails product = _readModel.GetProductDetails(new ProductId(id));
+			IEnumerable<ProductRelationship> relatedProducts = 
+				_readModel.GetProductRelationships(new ProductId(id));
+
+			var model = new ProductDetailsViewModel(product, relatedProducts);
+
 			return View(model);
 		}
     }

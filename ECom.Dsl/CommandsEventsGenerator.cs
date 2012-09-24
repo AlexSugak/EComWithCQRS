@@ -25,28 +25,29 @@ namespace ECom.Dsl
 		{
 			foreach (Contract contract in context.Contracts)
 			{
-                var firstArgInId = contract.Members.First().Type.EndsWith("Id", StringComparison.InvariantCultureIgnoreCase);
+				var firstArgInId = contract.Members.First().Type.EndsWith("Id", StringComparison.InvariantCultureIgnoreCase);
 
 				writer.WriteLine();
 				//writer.WriteLine("[ProtoContract]");
 				writer.WriteLine("[Serializable]");
+				writer.WriteLine("[GeneratedCodeAttribute(\"MessagesGenerator\", \"1.0.0.0\")]");
 				writer.Write("public sealed class {0}", contract.Name);
 				List<string> interfaces = new List<string>();
 
 				if ((contract.Modifier & ContractModifier.CommandInterface) == ContractModifier.CommandInterface)
 				{
-                    if(firstArgInId)
-                    {
-					    interfaces.Add(String.Format(CultureInfo.InvariantCulture, this.CommandInterface, contract.Members.First().Type));
-                    }
-                    else
-                    {
-                        interfaces.Add(this.FunctionalCommandInterface);
-                    }
+					if (firstArgInId)
+					{
+						interfaces.Add(String.Format(CultureInfo.InvariantCulture, this.CommandInterface, contract.Members.First().Type));
+					}
+					else
+					{
+						interfaces.Add(this.FunctionalCommandInterface);
+					}
 				}
 				if ((contract.Modifier & ContractModifier.EventInterface) == ContractModifier.EventInterface)
 				{
-                    interfaces.Add(String.Format(CultureInfo.InvariantCulture, this.EventInterface, contract.Members.First().Type));
+					interfaces.Add(String.Format(CultureInfo.InvariantCulture, this.EventInterface, contract.Members.First().Type));
 				}
 				if (interfaces.Any<string>())
 				{
@@ -56,22 +57,22 @@ namespace ECom.Dsl
 				writer.WriteLine("{");
 				writer.Indent++;
 
-                if (firstArgInId)
-                {
-                    writer.Write("public {0} ", contract.Members.First().Type);
-                    writer.WriteLine("Id { get; set; }");
-                }
+				if (firstArgInId)
+				{
+					writer.Write("public {0} ", contract.Members.First().Type);
+					writer.WriteLine("Id { get; set; }");
+				}
 
-                writer.WriteLine("public int Version { get; set; }");
+				writer.WriteLine("public int Version { get; set; }");
 
 				if (contract.Members.Count > 0)
 				{
 					this.WriteMembers(contract, writer);
 
-					//add default constructor
-					writer.Write("public {0} () ", contract.Name);
-                    writer.Write("{");
-                    writer.WriteLine("}");
+					//add private default constructor
+					writer.Write("private {0} () ", contract.Name);
+					writer.Write("{");
+					writer.WriteLine("}");
 
 					writer.Write("public {0} (", contract.Name);
 					this.WriteParameters(contract, writer);
@@ -83,6 +84,11 @@ namespace ECom.Dsl
 					writer.Indent--;
 					writer.WriteLine("}");
 				}
+
+				WriteEqualsOverride(contract, writer);
+				WriteGetHashCodeMethod(contract, writer);
+				WriteEqualOperatorOverride(contract, writer);
+
 				writer.Indent--;
 				writer.WriteLine("}");
 			}
@@ -90,49 +96,49 @@ namespace ECom.Dsl
 
 		private void WriteAssignments(Contract contract, IndentedTextWriter writer)
 		{
-            bool first = true;
+			bool first = true;
 
 			foreach (Member member in contract.Members)
 			{
-                string name = member.Name;
+				string name = member.Name;
 
-                if(first && member.Type.EndsWith("Id", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    name = "Id";
-                }
+				if (first && member.Type.EndsWith("Id", StringComparison.InvariantCultureIgnoreCase))
+				{
+					name = "Id";
+				}
 
-                first = false;
+				first = false;
 
-                writer.WriteLine("{0} = {1};", name, GeneratorUtil.ParameterCase(member.Name));
+				writer.WriteLine("{0} = {1};", name, GeneratorUtil.ParameterCase(member.Name));
 			}
 		}
 
 		private void WriteMembers(Contract contract, IndentedTextWriter writer)
 		{
-            bool first = true;
+			bool first = true;
 			foreach (Member member in contract.Members)
 			{
-                if (!(first && member.Type.EndsWith("Id", StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    switch (this.Flavor)
-                    {
-                        case MemberFlavor.ReadOnlyField:
-                            //writer.WriteLine("[ProtoMember({0})] public readonly {1} {2};", idx, member.Type, member.Name);
-                            writer.WriteLine("public {0} {1};", member.Type, member.Name);
-                            break;
+				if (!(first && member.Type.EndsWith("Id", StringComparison.InvariantCultureIgnoreCase)))
+				{
+					switch (this.Flavor)
+					{
+						case MemberFlavor.ReadOnlyField:
+							//writer.WriteLine("[ProtoMember({0})] public readonly {1} {2};", idx, member.Type, member.Name);
+							writer.WriteLine("public {0} {1};", member.Type, member.Name);
+							break;
 
-                        case MemberFlavor.ReadOnlyAutoProperty:
-                            //writer.WriteLine("[ProtoMember({0})]", idx);
-                            writer.Write("public {0} {1} ", member.Type, member.Name);
-                            writer.WriteLine("{ get; set; }");
-                            break;
+						case MemberFlavor.ReadOnlyAutoProperty:
+							//writer.WriteLine("[ProtoMember({0})]", idx);
+							writer.Write("public {0} {1} ", member.Type, member.Name);
+							writer.WriteLine("{ get; set; }");
+							break;
 
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
+						default:
+							throw new ArgumentOutOfRangeException();
+					}
+				}
 
-                first = false;
+				first = false;
 			}
 		}
 
@@ -158,9 +164,122 @@ namespace ECom.Dsl
 			}
 		}
 
-        public string NullIdType { get; set; }
+		private void WriteEqualOperatorOverride(Contract contract, IndentedTextWriter writer)
+		{
+			writer.WriteLine("public static bool operator ==({0} a, {0} b)", contract.Name);
+			writer.WriteLine("{");
+			writer.Indent++;
+
+			writer.WriteLine("if (System.Object.ReferenceEquals(a, b))");
+			writer.WriteLine("{");
+			writer.Indent++;
+			writer.WriteLine("return true;");
+			writer.Indent--;
+			writer.WriteLine("}");
+
+			writer.WriteLine("if (((object)a == null) || ((object)b == null))");
+			writer.WriteLine("{");
+			writer.Indent++;
+			writer.WriteLine("return false;");
+			writer.Indent--;
+			writer.WriteLine("}");
+
+
+			writer.WriteLine("return a.Equals(b);");
+			writer.Indent--;
+			writer.WriteLine("}");
+
+			writer.WriteLine("public static bool operator !=({0} a, {0} b)", contract.Name);
+			writer.WriteLine("{");
+			writer.Indent++;
+			writer.WriteLine("return !(a == b);");
+			writer.Indent--;
+			writer.WriteLine("}");
+		}
+
+		private void WriteEqualsOverride(Contract contract, IndentedTextWriter writer)
+		{
+			writer.WriteLine("public override bool Equals(object obj)");
+			writer.WriteLine("{");
+			writer.Indent++;
+
+			writer.WriteLine("if (obj == null)");
+			writer.WriteLine("{");
+			writer.Indent++;
+			writer.WriteLine("return false;");
+			writer.Indent--;
+			writer.WriteLine("}");
+
+			writer.WriteLine("var target = obj as {0};", contract.Name);
+			writer.WriteLine("if (target == null)");
+			writer.WriteLine("{");
+			writer.Indent++;
+			writer.WriteLine("return false;");
+			writer.Indent--;
+			writer.WriteLine("}");
+
+			writer.Write("return ");
+			bool first = true;
+			foreach (Member member in contract.Members)
+			{
+				string name = member.Name;
+
+				if (first && member.Type.EndsWith("Id", StringComparison.InvariantCultureIgnoreCase))
+				{
+					name = "Id";
+				}
+
+				if (!first)
+				{
+					writer.Write(" && ");
+				}
+
+				writer.Write("{0}.Equals(target.{0})", name);
+
+				first = false;
+			}
+			writer.WriteLine(";");
+
+			writer.Indent--;
+			writer.WriteLine("}");
+		}
+
+		private void WriteGetHashCodeMethod(Contract contract, IndentedTextWriter writer)
+		{
+			writer.WriteLine("public override int GetHashCode()");
+			writer.WriteLine("{");
+			writer.Indent++;
+
+			writer.Write("return ");
+			bool first = true;
+
+			foreach (Member member in contract.Members)
+			{
+				string name = member.Name;
+
+				if (first && member.Type.EndsWith("Id", StringComparison.InvariantCultureIgnoreCase))
+				{
+					name = "Id";
+				}
+
+				if (!first)
+				{
+					writer.Write(" ^ ");
+				}
+
+				writer.Write("{0}.GetHashCode()", name);
+
+				first = false;
+			}
+			writer.WriteLine(";");
+
+			writer.Indent--;
+			writer.WriteLine("}");
+		}
+
+		public string NullIdType { get; set; }
 		public string CommandInterface { get; set; }
-        public string FunctionalCommandInterface { get; set; }
+		public string FunctionalCommandInterface { get; set; }
 		public string EventInterface { get; set; }
 		public MemberFlavor Flavor { get; set; }
 	}

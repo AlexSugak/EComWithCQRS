@@ -20,37 +20,64 @@ namespace ECom.ReadModel
             _repository = repository;
         }
 
-		public IEnumerable<CategoryNodeDto> GetCategories()
+		public IEnumerable<CategoryNode> GetCategories()
 		{
-			return _repository.All<CategoryNodeDto>();
+			return _repository.All<CategoryNode>();
 		}
 
-		public CategoryDetailsDto GetCategoryDetails(string name)
+		public CategoryDetails GetCategoryDetails(string name)
 		{
 			Argument.ExpectNotNullOrWhiteSpace(() => name);
 
-			return _repository.Single<CategoryDetailsDto>(p => p.ID == name);
+			return _repository.Single<CategoryDetails>(p => p.ID == name);
 		}
 
-		public IEnumerable<ProductListDto> GetProducts(int pageNum, int pageSize, out int totalCount)
+		public IEnumerable<ProductList> GetProducts(int pageNum, int pageSize, out int totalCount)
         {
-			return GetDtosPaged<ProductListDto>(pageNum, pageSize, out totalCount);
+			return GetDtosPaged<ProductList>(pageNum, pageSize, out totalCount);
         }
 
-        public IEnumerable<ProductListDto> GetCategoryProducts(string categoryName)
+        public IEnumerable<ProductList> GetCategoryProducts(string categoryName)
         {
             Argument.ExpectNotNullOrWhiteSpace(() => categoryName);
 
-            return _repository.Find<ProductListDto>(p => p.Category == categoryName);
+            return _repository.Find<ProductList>(p => p.Category == categoryName);
         }
 
-        public ProductDetailsDto GetProductDetails(ProductId id)
+        public ProductDetails GetProductDetails(ProductId id)
         {
 			Argument.ExpectNotNull(() => id);
 
 			var productId = id.GetId();
-			return _repository.Single<ProductDetailsDto>(p => p.ID == productId);
+			return _repository.Single<ProductDetails>(p => p.ID == productId);
         }
+
+		public IEnumerable<ProductRelationship> GetProductRelationships(ProductId id)
+		{
+			Argument.ExpectNotNull(() => id);
+
+			var productId = id.GetId();
+			return _repository.Find<ProductRelationship>(p => p.ParentProductId == productId);
+		}
+
+
+		public IEnumerable<OrderItemDetails> GetOrderItems(OrderId orderId)
+		{
+			Argument.ExpectNotNull(() => orderId);
+
+			string rawOrderId = orderId.GetId();
+			return _repository.Find<OrderItemDetails>(i => i.OrderId == rawOrderId);
+		}
+
+
+
+
+
+
+
+
+
+
 
 		private IEnumerable<T> GetDtosPaged<T>(int pageNum, int pageSize, out int totalCount)
 			where T : Dto, new()

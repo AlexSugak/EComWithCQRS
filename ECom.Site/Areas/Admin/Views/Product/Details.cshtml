@@ -1,8 +1,11 @@
 ﻿@using ECom.Site.Helpers
 @using ECom.Site.Models
 @using ECom.Messages
+@using MvcContrib.UI.Grid;
+@using MvcContrib.UI.Pager;
+@using MvcContrib.Pagination;
 
-@model ECom.ReadModel.Views.ProductDetailsDto
+@model ECom.Site.Areas.Admin.Models.ProductDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -12,10 +15,19 @@
 <div id="content">
 	<h2>Product Details</h2>
 
-	@Html.DisplayForModel()
+	@Html.DisplayFor(m => m.ProductDetails)
 
 	<br />
 	<br />
 
-	@Html.Command(new ChangeProductPrice(new ProductId(Model.ID), Model.Price ).WithEnvelope())
+	<h3>Related Products</h3>
+	@Html.Grid(Model.RelatedProducts).Columns(column =>
+	{
+		column.For(x => Html.ActionLink(x.TargetProductId, "Details", new { id = x.TargetProductId })).Header(@<div>Target Product Id</div>).Encode(false);
+		column.For(x => x.TargetProductName);
+	}).Attributes(@class => "table table-striped")
+
+	<br />
+	
+	@Html.Command(new ChangeProductPrice(new ProductId(Model.ProductDetails.ID), Model.ProductDetails.Price ).WithEnvelope())
 </div>

@@ -21,14 +21,13 @@ namespace ECom.Site.Models
         }
 
         public CommandEnvelopeViewModel(T cmd, IIdentity id)
-            : this(cmd, id.GetId())
+            : this(cmd, id != null ? id.GetId() : null)
         {
         }
 
         public CommandEnvelopeViewModel(T cmd, string id)
         {
             Argument.ExpectNotNull(() => cmd);
-            Argument.ExpectNotNullOrWhiteSpace(() => id);
 
             Command = cmd;
             Id = id;

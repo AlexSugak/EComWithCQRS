@@ -33,9 +33,7 @@ namespace ECom.Site.Core
 				return metadata;
 			}
 
-			if (propertyName.EndsWith("id", StringComparison.OrdinalIgnoreCase) 
-				|| 
-				propertyName.Equals("version", StringComparison.OrdinalIgnoreCase))
+			if (propertyName.Equals("version", StringComparison.OrdinalIgnoreCase))
 			{
 				metadata.TemplateHint = "HiddenInput";
 				metadata.HideSurroundingHtml = true;

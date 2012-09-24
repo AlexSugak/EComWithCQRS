@@ -1,27 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
+using ECom.Messages;
 using ECom.Site.Models;
+using Newtonsoft.Json.Linq;
 
 namespace ECom.Site.Controllers
 {
-    public class AccountController : Controller
+	public class AccountController : CqrsController
     {
-
-        //
-        // GET: /Account/LogOn
-
         public ActionResult LogOn()
         {
             return View();
         }
 
-        //
-        // POST: /Account/LogOn
+		[HttpGet]
+		public ActionResult FacebookLogin(string token, string returnUrl)
+		{
+			WebClient client = new WebClient();
+			string JsonResult = client.DownloadString(string.Concat(
+				   "https://graph.facebook.com/me?access_token=", token));
+			// Json.Net is really helpful if you have to deal
+			// with Json from .Net http://json.codeplex.com/
+			JObject jsonUserInfo = JObject.Parse(JsonResult);
+			// you can get more user's info here. Please refer to:
+			//     http://developers.facebook.com/docs/reference/api/user/
+			string username = jsonUserInfo.Value<string>("username");
+			string name = jsonUserInfo.Value<string>("name");
+			string email = jsonUserInfo.Value<string>("email");
+			string locale = jsonUserInfo.Value<string>("locale");
+			string facebook_userID = jsonUserInfo.Value<string>("id");
+
+			// store user's information here...
+			FormsAuthentication.SetAuthCookie(name, true);
+
+			_bus.Send(new ReportUserLoggedIn(new UserId(email)));
+
+			return SuccessfullLoginRedirect(returnUrl);
+		}
+
+		private ActionResult SuccessfullLoginRedirect(string returnUrl)
+		{
+			if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+								   && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+			{
+				return Redirect(returnUrl);
+			}
+			else
+			{
+				return RedirectToAction("Index", "Home");
+			}
+		}
 
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
@@ -31,15 +65,7 @@ namespace ECom.Site.Controllers
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+					return SuccessfullLoginRedirect(returnUrl);
                 }
                 else
                 {

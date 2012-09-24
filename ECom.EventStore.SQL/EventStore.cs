@@ -30,10 +30,15 @@ namespace ECom.EventStore.SQL
             _publisher = publisher;
         }
 
-		public void SaveAggregateEvents<T>(T aggregateId, string aggregateType, IEnumerable<IEvent<T>> events, int expectedVersion)
+		public void SaveAggregateEvents<T>(T aggregateId, string aggregateType, IEnumerable<IEvent<T>> events)
             where T : IIdentity
         {
             var date = DateTime.Now;
+
+			if (!events.Any())
+			{
+				return;
+			}
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -42,12 +47,12 @@ namespace ECom.EventStore.SQL
                 {
                     try
                     {
-                        int version = -1;
-
+                        int currentVersion = -1;
+						
                         const string selectVersionCommandText = @"
                         IF (SELECT COUNT(AggregateId) FROM [Aggregates] WHERE AggregateId = @aggregateId) = 0
                         BEGIN
-                            INSERT INTO [Aggregates] VALUES(@aggregateId, @type, -1)
+                            INSERT INTO [Aggregates] VALUES(@aggregateId, @type, 0)
                         END
                         SELECT Version FROM [Aggregates] WHERE AggregateId = @aggregateId";
 
@@ -56,20 +61,17 @@ namespace ECom.EventStore.SQL
                             selectVersionCommand.Parameters.Add(new SqlParameter("@aggregateId", aggregateId.GetId()));
                             selectVersionCommand.Parameters.Add(new SqlParameter("@type", aggregateType));
 
-                            version = (int)selectVersionCommand.ExecuteScalar();
+                            currentVersion = (int)selectVersionCommand.ExecuteScalar();
                         }
 
-                        if (version != expectedVersion)
+						int expectedVersion = events.First().Version - 1;
+                        if (currentVersion != expectedVersion)
                         {
-                            throw new ConcurrencyViolationException(String.Format("Expected {0} aggreagate verion {1} but was {2}", aggregateType, expectedVersion, version));
+                            throw new ConcurrencyViolationException(String.Format("Expected {0} to have verion {1} but was {2}", aggregateType, expectedVersion, currentVersion));
                         }
 
                         foreach (var @event in events)
                         {
-							version++;
-
-							@event.Version = version;
-
                             const string commandText = "INSERT INTO [Events] VALUES(@aggregateId, @version, @event, @date, @user)";
                             using (var command = new SqlCommand(commandText, transaction.Connection, transaction))
                             {
@@ -91,7 +93,7 @@ namespace ECom.EventStore.SQL
                         using (var updateVersionCommand = new SqlCommand(updateVersionCommandText, transaction.Connection, transaction))
                         {
                             updateVersionCommand.Parameters.Add(new SqlParameter("@aggregateId", aggregateId.GetId()));
-                            updateVersionCommand.Parameters.Add(new SqlParameter("@version", version));
+                            updateVersionCommand.Parameters.Add(new SqlParameter("@version", events.Last().Version));
 
                             updateVersionCommand.ExecuteNonQuery();
                         }

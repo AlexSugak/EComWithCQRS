@@ -63,10 +63,15 @@ namespace ECom.Site
 			var dtoManager = new SubSonicDtoManager(readModelRepo);
 			var readModel = new SubSonicReadModelFacade(readModelRepo);
 
-			var commandHandlersAssembly = Assembly.Load(new AssemblyName("ECom.CommandHandlers"));
-			var eventHandlersAssembly = Assembly.Load(new AssemblyName("ECom.ReadModel"));
-			MessageHandlersRegister.RegisterCommandHandlers(commandHandlersAssembly, bus, eventStore);
-			MessageHandlersRegister.RegisterEventHandlers(eventHandlersAssembly, bus, dtoManager);
+			var commandHandlersAssemblies = new [] 
+			{ 
+				Assembly.Load(new AssemblyName("ECom.Domain"))
+			};
+
+			var eventHandlersAssemblies = new [] { Assembly.Load(new AssemblyName("ECom.ReadModel")) };
+
+			MessageHandlersRegister.RegisterCommandHandlers(commandHandlersAssemblies, bus, eventStore);
+			MessageHandlersRegister.RegisterEventHandlers(eventHandlersAssemblies, bus, dtoManager);
 
             ServiceLocator.Bus = bus;
             ServiceLocator.ReadModel = readModel;

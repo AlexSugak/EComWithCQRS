@@ -8,18 +8,18 @@ using ECom.Utility;
 
 namespace ECom.ReadModel.Views
 {
-	public class ProductListDto : Dto
+	public class ProductList : Dto
 	{
 		public string ID { get; set; }
 		public decimal Price { get; set; }
 		public string Name { get; set; }
         public string Category { get; set; }
 
-		public ProductListDto()
+		public ProductList()
 		{
 		}
 
-		public ProductListDto(string id, decimal price, string name)
+		public ProductList(string id, decimal price, string name)
 		{
 			ID = id;
 			Price = price;
@@ -45,22 +45,22 @@ namespace ECom.ReadModel.Views
 
         public void Handle(ProductAdded message)
         {
-            _manager.Add(new ProductListDto(message.Id.GetId(), message.Price, message.Name));
+            _manager.Add(new ProductList(message.Id.GetId(), message.Price, message.Name));
         }
 
 		public void Handle(ProductPriceChanged message)
 		{
-            _manager.Update<ProductListDto>(message.Id, p => p.Price = message.NewPrice); 
+            _manager.Update<ProductList>(message.Id, p => p.Price = message.NewPrice); 
 		}
 
 		public void Handle(ProductRemoved message)
 		{
-            _manager.Delete<ProductListDto>(message.Id); 
+            _manager.Delete<ProductList>(message.Id); 
 		}
 
         public void Handle(ProductAddedToCategory message)
         {
-            _manager.Update<ProductListDto>(message.Id, p => p.Category = message.CategoryName); 
+            _manager.Update<ProductList>(message.Id, p => p.Category = message.CategoryName); 
         }
     }
 }

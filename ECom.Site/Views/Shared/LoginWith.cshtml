@@ -1,0 +1,61 @@
+﻿
+
+<script type="text/javascript">
+	function getQueryParams(qs) {
+		qs = qs.split("+").join(" ");
+
+		var params = {}, tokens,
+			re = /[?&]?([^=]+)=([^&]*)/g;
+
+		while (tokens = re.exec(qs)) {
+			params[decodeURIComponent(tokens[1])]
+				= decodeURIComponent(tokens[2]);
+		}
+
+		return params;
+	}
+
+	function getReturnUrl() {
+		var query = getQueryParams(document.location.search);
+		return query.ReturnUrl;
+	}
+</script>
+
+
+<div id="divLoginFacebook" class="span6">
+	<fb:login-button perms="email,user_checkins" onlogin="afterFacebookConnect();" 
+       autologoutlink="false" ></fb:login-button>
+    <div id="fb-root" style="display:inline; margin-left:20px;"></div>
+
+	<script type="text/javascript">
+		window.fbAsyncInit = function () {
+			FB.init({
+				appId: '115315185286284',
+				status: true, cookie: false, xfbml: true
+			});
+		};
+
+		var isRedirecting = false;
+		function afterFacebookConnect() {
+			FB.getLoginStatus(function (response) {
+				if (response.status === 'connected' && !isRedirecting) {
+					//not sure why this function is called twice
+					isRedirecting = true;
+					window.location = '@Url.Action("FacebookLogin", "Account", new { Area = String.Empty})' + '?token=' +
+						   response.authResponse.accessToken + '&ReturnUrl=' + getReturnUrl();
+				} else {
+					// user clicked Cancel
+				}
+			});
+		};
+		$(document).ready(function () {
+			if (document.getElementById('fb-root') != undefined) {
+				var e = document.createElement('script');
+				e.type = 'text/javascript';
+				e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+				e.async = true;
+				document.getElementById('fb-root').appendChild(e);
+			}
+		});
+</script>
+</div>

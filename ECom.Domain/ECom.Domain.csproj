@@ -40,6 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aggregates\Catalog\CatalogAggregate.cs" />
+    <Compile Include="Aggregates\Catalog\CatalogApplicationService.cs" />
+    <Compile Include="Aggregates\Catalog\Category.cs" />
+    <Compile Include="Aggregates\Catalog\CategoryTreeNode.cs" />
+    <Compile Include="Aggregates\Order\OrderApplicationService.cs" />
+    <Compile Include="Aggregates\Product\Exceptions\CannotModifyRemovedProductException.cs" />
+    <Compile Include="Aggregates\Catalog\Exceptions\CircularCategoryReferenceDetectedException.cs" />
+    <Compile Include="Aggregates\Order\OrderAggregate.cs" />
+    <Compile Include="Aggregates\Order\OrderItem.cs" />
+    <Compile Include="Aggregates\Product\ProductAggregate.cs" />
+    <Compile Include="Aggregates\Product\ProductApplicationService.cs" />
+    <Compile Include="Aggregates\User\UserAggregate.cs" />
+    <Compile Include="Aggregates\User\UserApplicationService.cs" />
     <Compile Include="AggregateRoot.cs" />
     <Compile Include="Exceptions\AggregateRootNotFoundException.cs" />
     <Compile Include="Exceptions\EntityAlreadyExistsException.cs" />
