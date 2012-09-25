@@ -49,6 +49,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ECom.Domain\ECom.Domain.csproj">
+      <Project>{b23e0f3c-00f1-4947-9a54-0541558e1e67}</Project>
+      <Name>ECom.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECom.Infrustructure\ECom.Infrastructure.csproj">
       <Project>{5600C6B0-89ED-4E30-BEF2-DD566E8F5454}</Project>
       <Name>ECom.Infrastructure</Name>

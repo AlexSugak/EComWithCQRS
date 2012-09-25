@@ -11,44 +11,45 @@ namespace ECom.Domain.Aggregates.Order
     public sealed class OrderAggregate : AggregateRoot<OrderId>
     {
 		private OrderId _id;
+		private UserId _userId;
+
 		private readonly List<OrderItem> _items = new List<OrderItem>();
-		private int _maxOrderItemId = 0;
 
         public OrderAggregate()
         {
         }
 
-        public OrderAggregate(OrderId id)
+		public override OrderId Id
+		{
+			get { return _id; }
+		}
+
+        public void Create(OrderId id, UserId userId)
         {
 			Argument.ExpectNotNull(() => id);
+			Argument.ExpectNotNull(() => userId);
 
-            ApplyChange(new NewOrderCreated(id));
+            ApplyChange(new NewOrderCreated(id, userId));
         }
 
         private void Apply(NewOrderCreated e)
         {
             _id = e.Id;
+			_userId = e.UserId;
         }
 
-		public override OrderId Id
-        {
-            get { return _id; }
-        }
-
-        public void AddProduct(Uri productUri, string name, string description, decimal price, int quantity, string size, string color, Uri imageUrl)
+        public void AddProduct(OrderItemId itemId, Uri productUri, string name, string description, decimal price, int quantity, string size, string color, Uri imageUrl)
         {
 			Argument.ExpectNotNull(() => productUri);
+			Argument.Expect(() => !_items.Any(i => i.Id == itemId) , "itemId", String.Format(CultureInfo.InvariantCulture, "Order already has item with id {0}", itemId));
 			Argument.Expect(() => price > 0, "price", String.Format(CultureInfo.InvariantCulture, "price must be a positive value, was {0}", price));
 			Argument.Expect(() => quantity > 0, "quantity", String.Format(CultureInfo.InvariantCulture, "quantity must be a positive value, was {0}", quantity));
 
-			var newItemId = new OrderItemId(_maxOrderItemId + 1);
-
-			ApplyChange(new ProductAddedToOrder(_id, newItemId, productUri, name, description, price, quantity, size, color, imageUrl));
+			ApplyChange(new ProductAddedToOrder(_id, itemId, productUri, name, description, price, quantity, size, color, imageUrl));
         }
 
         private void Apply(ProductAddedToOrder e)
         {
-			_maxOrderItemId = e.OrderItemId.Id;
             _items.Add(new OrderItem(e.OrderItemId, e.Quantity ));
         }
 

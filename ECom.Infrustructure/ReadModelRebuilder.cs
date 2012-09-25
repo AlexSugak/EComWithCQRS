@@ -23,7 +23,7 @@ namespace ECom.Infrastructure
 			Argument.ExpectNotNullOrWhiteSpace(() => readModelConnectionString);
 
 			var readModelAssembly = Assembly.Load(new AssemblyName("ECom.ReadModel"));
-			var bus = new Bus.Bus();
+			var bus = new Bus.Bus(false);
 			var eventStore = new EventStore.SQL.EventStore(eventStoreConnectionString, bus);
 
 

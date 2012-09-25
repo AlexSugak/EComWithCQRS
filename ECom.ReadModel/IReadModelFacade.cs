@@ -21,6 +21,9 @@ namespace ECom.ReadModel
 		IEnumerable<ProductRelationship> GetProductRelationships(ProductId id);
 
 
+		UserDetails GetUserDetails(UserId userId);
+
+		OrderId GetUserActiveOrderId(UserId userId);
 
 		IEnumerable<OrderItemDetails> GetOrderItems(OrderId orderId);
     }

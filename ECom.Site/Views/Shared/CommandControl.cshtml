@@ -6,7 +6,7 @@
 @{ 
 	var cmdName = Model.Command.GetType().Name;
     var cmdFriendlyName = Html.SplitCamelCase(cmdName);
-	var cmdId = Model.Id;
+	var cmdId = Html.CommandUiId(Model.Command);
 
     var containerId = String.Format(CultureInfo.InvariantCulture, "cmdModal_{0}_{1}", cmdId, cmdName);
 

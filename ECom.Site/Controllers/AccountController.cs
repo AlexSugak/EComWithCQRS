@@ -37,9 +37,9 @@ namespace ECom.Site.Controllers
 			string facebook_userID = jsonUserInfo.Value<string>("id");
 
 			// store user's information here...
-			FormsAuthentication.SetAuthCookie(name, true);
+			FormsAuthentication.SetAuthCookie(email, true);
 
-			_bus.Send(new ReportUserLoggedIn(new UserId(email)));
+			_bus.Send(new ReportUserLoggedIn(new UserId(email), name));
 
 			return SuccessfullLoginRedirect(returnUrl);
 		}

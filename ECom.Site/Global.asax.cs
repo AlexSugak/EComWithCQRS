@@ -11,12 +11,13 @@ using SubSonic.Repository;
 using ECom.ReadModel;
 using ECom.ReadModel.Views;
 using System.Configuration;
-using ECom.Domain.Catalog;
 using ECom.Site.Core;
 using System.Reflection;
 using ECom.Bus;
 using ECom.Infrastructure;
 using ECom.Site.Models;
+using FluentValidation.Mvc;
+using FluentValidation.Attributes;
 
 namespace ECom.Site
 {
@@ -47,17 +48,23 @@ namespace ECom.Site
 
 			ModelMetadataProviders.Current = new CommandMetadataProvider();
 
+			ModelValidatorProviders.Providers.Clear();
+			ModelValidatorProviders.Providers.Add(new FluentValidationModelValidatorProvider(new AttributedValidatorFactory()));
+
             ModelBinders.Binders.Add(typeof(ProductId), new IdentityBinder());
+			ModelBinders.Binders.Add(typeof(OrderId), new IdentityBinder());
+			ModelBinders.Binders.Add(typeof(OrderItemId), new IdentityBinder());
+			ModelBinders.Binders.Add(typeof(UserId), new IdentityBinder());
 
             InitServices();
         }
 
         private static void InitServices()
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["EventStore"].ConnectionString;
+            var eventStoreConnString = ConfigurationManager.ConnectionStrings["EventStore"].ConnectionString;
 
             var bus = new Bus.Bus();
-            var eventStore = new EventStore.SQL.EventStore(connectionString, bus);
+            var eventStore = new EventStore.SQL.EventStore(eventStoreConnString, bus);
 			
 			var readModelRepo = new SimpleRepository("ReadModel", SimpleRepositoryOptions.RunMigrations);
 			var dtoManager = new SubSonicDtoManager(readModelRepo);
@@ -75,6 +82,7 @@ namespace ECom.Site
 
             ServiceLocator.Bus = bus;
             ServiceLocator.ReadModel = readModel;
+			ServiceLocator.IdentityGenerator = new SqlTableDomainIdentityGenerator(eventStoreConnString);
         }
     }
 }

@@ -4,33 +4,13 @@
 @using MvcContrib.UI.Grid;
 @using MvcContrib.UI.Pager;
 @using MvcContrib.Pagination;
+@using ECom.Site.Areas.Shop.Models;
 
-@model ECom.Site.Areas.Shop.Models.AddNewOrderViewModel
+@model AddNewOrderViewModel
 
 @{
     ViewBag.Title = "Add new order";
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
-}
-
-@functions
-{ 
-    bool HasErrors(string propertyName)
-    {
-        return ViewData.ModelState.ContainsKey(propertyName)
-            && ViewData.ModelState[propertyName] != null
-            && ViewData.ModelState[propertyName].Errors != null
-            && ViewData.ModelState[propertyName].Errors.Count > 0;
-    }
-}
-
-@helper FormRow(string propName, MvcHtmlString editor, MvcHtmlString validator)
-{
-    <div class="control-group @(HasErrors(propName) ? "error" : String.Empty)">
-            <label class="control-label">@propName</label>
-            <div class="controls">
-            @editor @validator
-            </div>
-    </div>
 }
 
 <script src="@Url.Content("~/Scripts/linkToProductPreview.js")"></script>
@@ -49,14 +29,18 @@
 <div id="content">
 	<h2>Add new order</h2>
 
+	@using (Html.BeginForm()) {
 	<div class="row">
 		<div class="span6">
-			@FormRow("Product Url", Html.TextBoxFor(m => m.ProductUrl, new { @class ="input-xxlarge" }), Html.ValidationMessageFor(m => m.ProductUrl))
-			@FormRow("Product Name", Html.TextBoxFor(m => m.Name, new { @class ="input-xxlarge" }), Html.ValidationMessageFor(m => m.Name))
-			@FormRow("Description", Html.TextBoxFor(m => m.Description, new { @class ="input-xxlarge" }), Html.ValidationMessageFor(m => m.Description))
-			@FormRow("Price", Html.TextBoxFor(m => m.Price, new { @class ="input-xxlarge" }), Html.ValidationMessageFor(m => m.Price))
-			@FormRow("Size", Html.TextBoxFor(m => m.Size), Html.ValidationMessageFor(m => m.Size))
-			@FormRow("Color", Html.TextBoxFor(m => m.Color), Html.ValidationMessageFor(m => m.Color))
+			@Html.FormInputFor(m => m.ProductUrl, "Product Url", "input-xxlarge")
+			@Html.FormInputFor(m => m.Name, "Product Name", "input-xxlarge")
+			@Html.FormInputFor(m => m.Description, "Description", "input-xxlarge" )
+			@Html.FormInputFor(m => m.Price, "Price", "input-xxlarge" )
+			@Html.FormInputFor(m => m.Size, "Size")
+			@Html.FormInputFor(m => m.Color, "Color")
+			@Html.FormInputFor(m => m.Quantity, "Quantity")
+
+			@Html.Hidden("OrderId", Model.OrderId.Id)
 
 			<input type="submit" class="btn btn-primary" value="Add"/>
 		</div>
@@ -70,16 +54,34 @@
 			@Html.HiddenFor(m => m.ImageUrl)
 		</div>
 	</div>
+	}
 	<div class="row">
 		@Html.Grid(Model.Items).Columns(column =>
 		{
-			column.For(x => MvcHtmlString.Create("<img src='" + x.ImageUrl + "' />"));
-			column.For(x => x.Name);
-			column.For(x => x.Price);
+			column.For(x => !String.IsNullOrWhiteSpace(x.ImageUrl) 
+								? MvcHtmlString.Create("<a href='"  + x.ProductUrl + "' target='_blank'><img style='height:40px;' src='" + x.ImageUrl + "' /></a>") 
+								: MvcHtmlString.Empty);
+			column.For(x => MvcHtmlString.Create("<a href='"  + x.ProductUrl + "' target='_blank'>" + x.Name + "</a>"));
 			column.For(x => x.Size);
 			column.For(x => x.Color);
-			column.For(x => Html.Command(new RemoveItemFromOrder(new OrderId(x.OrderId), new OrderItemId(x.ItemId)))).Encode(false);
+			column.For(x => x.Price);
+			column.For(x => x.Quantity);
+			column.For(x => x.Total);
+			column.For(x => Html.Command(new RemoveItemFromOrder(new OrderId(x.OrderId), new OrderItemId(x.ItemId)).WithEnvelope())).Encode(false);
 		}).Attributes(@class => "table table-striped").Empty("Add some items to your order.")
-
 	</div>
+
+	@if(Model.Items.Any())
+	{
+	<div class="row">
+		<div class="span3 offset9">
+			<strong>Total:</strong> @Model.Total 
+		</div>
+		<br />
+		<br />
+		<div class="span3 offset9">
+			<input type="submit" class="btn btn-success" value="Submit"/>
+		</div>
+	</div>
+	}
 </div>

@@ -29,7 +29,9 @@ namespace ECom.Site.Core
                 case "DiscountId":
 					return new DiscountId(Guid.Parse(attemptedValue));
                 case "OrderId":
-					return new OrderId(attemptedValue);
+					return new OrderId(Int32.Parse(attemptedValue));
+				case "OrderItemId":
+					return new OrderItemId(Int32.Parse(attemptedValue));
                 default:
                     var message = string.Format("Unknown identity: {0}", attemptedValue);
                     throw new InvalidOperationException(message);

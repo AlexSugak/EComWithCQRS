@@ -11,6 +11,17 @@ namespace ECom.Bus
     public class Bus : IBus
     {
         private readonly Dictionary<Type, List<Action<IMessage>>> _routes = new Dictionary<Type, List<Action<IMessage>>>();
+		private readonly bool _isAsynchronousEventsHandling;
+
+		public Bus()
+			: this(true)
+		{
+		}
+
+		public Bus(bool isAsynchronousEventsHandling)
+		{
+			_isAsynchronousEventsHandling = isAsynchronousEventsHandling;
+		}
 
         public void RegisterHandler<T>(Action<T> handler) where T : IMessage
         {
@@ -44,7 +55,15 @@ namespace ECom.Bus
             foreach (var handler in handlers)
             {
                 var handler1 = handler;
-                ThreadPool.QueueUserWorkItem(x => handler1(@event));
+
+				if (_isAsynchronousEventsHandling)
+				{
+					ThreadPool.QueueUserWorkItem(x => handler1(@event));
+				}
+				else
+				{
+					handler1(@event);
+				}
             }
         }
     }

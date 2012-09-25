@@ -118,12 +118,12 @@ namespace ECom.Messages
 	}
 
     [Serializable]
-	public sealed class OrderId : StringIdentity
+	public sealed class OrderId : IntIdentity
 	{
         public const string TagValue = "order";
 
 		public OrderId() { }
-		public OrderId(string id)
+		public OrderId(int id)
 			: base(id)
 		{
 		}

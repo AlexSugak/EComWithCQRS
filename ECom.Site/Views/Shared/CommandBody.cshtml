@@ -4,7 +4,7 @@
 @model ECom.Site.Models.ICommandEnvelopeViewModel
 		   
 @{ 
-	var cmdId = Model.Id;
+	var cmdId = Html.CommandUiId(Model.Command);
 	var cmdName = Model.Command.GetType().Name;
     var cmdFriendlyName = Html.SplitCamelCase(cmdName);
 

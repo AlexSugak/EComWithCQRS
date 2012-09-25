@@ -31,17 +31,18 @@ let quantity = int Quantity;
 
 // USER
 
-UserCreated!(userId)
+UserCreated!(userId, string UserName)
 
-ReportUserLoggedIn?(userId)
-UserLoggedInReported!(userId)
+ReportUserLoggedIn?(userId, string UserName)
+UserLoggedInReported!(userId, string UserName)
 
 
 // ORDER
 
-NewOrderCreated!(orderId)
+CreateNewOrder?(orderId, userId)
+NewOrderCreated!(orderId, userId)
 
-AddProductToOrder?(orderId, Uri ProductUri, string Name, string Description, decimal Price, int Quantity, string Size, string Color, Uri ImageUri)
+AddProductToOrder?(orderId, orderItemId, Uri ProductUri, string Name, string Description, decimal Price, int Quantity, string Size, string Color, Uri ImageUri)
 ProductAddedToOrder!(orderId, orderItemId, Uri ProductUri, string Name, string Description, decimal Price, int Quantity, string Size, string Color, Uri ImageUri)
 
 RemoveItemFromOrder?(orderId, orderItemId)

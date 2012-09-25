@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using ECom.Messages;
 using ECom.ReadModel.Parsers;
+using ECom.ReadModel.Views;
 using ECom.Site.Areas.Shop.Models;
 using ECom.Site.Controllers;
 using ECom.Site.Core;
@@ -21,20 +25,47 @@ namespace ECom.Site.Areas.Shop.Controllers
         }
 
 		[HttpGet]
+		[OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
 		public ActionResult Add()
 		{
-			var model = new AddNewOrderViewModel();
+			var userId = new UserId(User.Identity.Name);
+			OrderId activeOrderId = _readModel.GetUserActiveOrderId(userId);
+
+			if (activeOrderId == null)
+			{
+				activeOrderId = new OrderId(ServiceLocator.IdentityGenerator.GenerateNewId());
+				_bus.Send(new CreateNewOrder(activeOrderId, userId));
+			}
+
+			var model = new AddNewOrderViewModel(activeOrderId);
+
 			return View(model);
 		}
 
 		[HttpPost]
+		[ValidateInput(false)]
 		public ActionResult Add(AddNewOrderViewModel model)
 		{
 			Argument.ExpectNotNull(() => model);
 
 			if (ModelState.IsValid)
 			{
+				var itemId = new OrderItemId(ServiceLocator.IdentityGenerator.GenerateNewId());
+				var cmd = new AddProductToOrder(
+								model.OrderId, 
+								itemId,
+								new Uri(model.ProductUrl), 
+								model.Name, 
+								model.Description, 
+								model.Price.Value, 
+								model.Quantity.Value, 
+								model.Size, 
+								model.Color, 
+								String.IsNullOrEmpty(model.ImageUrl) ? null : new Uri(model.ImageUrl));
+				_bus.Send(cmd);
 
+				//TODO: figure out how to avoid this
+				Thread.Sleep(100);
 
 				return RedirectToAction("Add");
 			}
@@ -75,80 +106,5 @@ namespace ECom.Site.Areas.Shop.Controllers
 
 			return Json(new { parsed = false }, JsonRequestBehavior.AllowGet);
 		}
-
-		[HttpGet]
-        public ActionResult Checkout()
-        {
-            var model = GetStubCartModelFull();
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult Checkout(CartViewModel model)
-        {
-            ModelState.Clear();
-
-            var address = model.Address;
-            var card = model.CreditCard;
-            address.ZipCode += 1;
-            card.Number += 1;
-
-            var returnModel = GetStubCartModel();
-            returnModel.Address = address;
-            returnModel.CreditCard = card;
-
-            return View(returnModel);
-        }
-
-        [HttpPost]
-        public ActionResult Address([Bind(Prefix="Address")]AddressViewModel model)
-        {
-            ModelState.Clear();
-
-            model.ZipCode += 1;
-            return EditorFor(model, "Address");
-        }
-
-        [HttpPost]
-        public ActionResult CreditCard([Bind(Prefix = "CreditCard")]CreditCardViewModel model)
-        {
-            ModelState.Clear();
-
-            model.Number += 1;
-            return EditorFor(model, "CreditCard");
-        }
-
-        private CartViewModel GetStubCartModelFull()
-        {
-            var model = GetStubCartModel();
-
-            model.CreditCard = new CreditCardViewModel
-            {
-                Number = "123 123 123",
-                Type = "Visa"
-            };
-
-            model.Address = new AddressViewModel
-            {
-                City = "Kharkov",
-                Street = "Bluhera",
-                ZipCode = "11111",
-                
-            };
-
-            return model;
-        }
-
-        private CartViewModel GetStubCartModel()
-        {
-            var model = new CartViewModel();
-            model.Items = new List<CartItemViewModel>() 
-            {
-                new CartItemViewModel{ProductId = "123", ProductName="Pants", Price = 12, Quantity = 1},
-                new CartItemViewModel{ProductId = "234", ProductName="Shirt", Price = 23, Quantity = 2}
-            }.AsPagination(1, 2, 2);
-
-            return model;
-        }
     }
 }

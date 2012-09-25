@@ -61,15 +61,36 @@ namespace ECom.ReadModel
 		}
 
 
+
+		public UserDetails GetUserDetails(UserId userId)
+		{
+			Argument.ExpectNotNull(() => userId);
+
+			string rawUserId = userId.GetId();
+			return _repository.Single<UserDetails>(i => i.ID == rawUserId);
+		}
+
+		public OrderId GetUserActiveOrderId(UserId userId)
+		{
+			Argument.ExpectNotNull(() => userId);
+
+			string rawUserId = userId.GetId();
+			var activeOrder = _repository.Single<ActiveUserOrderDetails>(i => i.ID == rawUserId);
+			if (activeOrder != null)
+			{
+				return new OrderId(activeOrder.OrderId);
+			}
+
+			return null;
+		}
+
 		public IEnumerable<OrderItemDetails> GetOrderItems(OrderId orderId)
 		{
 			Argument.ExpectNotNull(() => orderId);
 
-			string rawOrderId = orderId.GetId();
+			int rawOrderId = orderId.Id;
 			return _repository.Find<OrderItemDetails>(i => i.OrderId == rawOrderId);
 		}
-
-
 
 
 

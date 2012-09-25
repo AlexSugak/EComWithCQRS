@@ -6,6 +6,7 @@ using ECom.Utility;
 using System.IO;
 using ECom.Infrastructure;
 using System.Configuration;
+using ECom.Domain;
 
 namespace ECom.Console
 {
@@ -40,6 +41,7 @@ namespace ECom.Console
 			{
 				System.Console.WriteLine("Possible commands:");
                 System.Console.WriteLine("rebuild_read_model");
+				System.Console.WriteLine("new_id");
 				System.Console.WriteLine("exit");
 			}
 			else if (command == "rebuild_read_model")
@@ -49,6 +51,11 @@ namespace ECom.Console
 							ConfigurationManager.ConnectionStrings["ReadModel"].ConnectionString,
 							ConfigurationManager.ConnectionStrings["EventStore"].ConnectionString);
 				System.Console.WriteLine("Finished rebuilding read model.");
+			}
+			else if (command == "new_id")
+			{
+				var generator = new SqlTableDomainIdentityGenerator(ConfigurationManager.ConnectionStrings["EventStore"].ConnectionString);
+				System.Console.WriteLine(generator.GenerateNewId());
 			}
 			else if (command == "exit")
 			{

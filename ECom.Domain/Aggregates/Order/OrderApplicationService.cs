@@ -10,6 +10,7 @@ using ECom.Domain.Aggregates.Order;
 namespace ECom.CommandHandlers
 {
     public class OrderApplicationService : 
+		IHandle<CreateNewOrder>,
 		IHandle<AddProductToOrder>,
 		IHandle<RemoveItemFromOrder>
     {
@@ -27,11 +28,19 @@ namespace ECom.CommandHandlers
             _repository = repository;
         }
 
+		public void Handle(CreateNewOrder cmd)
+		{
+			var order = new OrderAggregate();
+			order.Create(cmd.Id, cmd.UserId);
+
+			_repository.Save(order);
+		}
+
 		public void Handle(AddProductToOrder cmd)
 		{
 			OrderAggregate order = _repository.Get(cmd.Id);
 
-			order.AddProduct(cmd.ProductUri, cmd.Name, cmd.Description, cmd.Price, cmd.Quantity, cmd.Size, cmd.Color, cmd.ImageUri);
+			order.AddProduct(cmd.OrderItemId, cmd.ProductUri, cmd.Name, cmd.Description, cmd.Price, cmd.Quantity, cmd.Size, cmd.Color, cmd.ImageUri);
 
 			_repository.Save(order);
 		}

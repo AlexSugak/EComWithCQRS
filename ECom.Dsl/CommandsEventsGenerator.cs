@@ -69,8 +69,7 @@ namespace ECom.Dsl
 				{
 					this.WriteMembers(contract, writer);
 
-					//add private default constructor
-					writer.Write("private {0} () ", contract.Name);
+					writer.Write("public {0} () ", contract.Name);
 					writer.Write("{");
 					writer.WriteLine("}");
 

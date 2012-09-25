@@ -179,6 +179,7 @@
     <Build Include="Schema Objects\Schemas\dbo\Tables\Keys\Events.FK_Events_Aggregates.fkey.sql">
       <SubType>Code</SubType>
     </Build>
+    <Build Include="Schema Objects\Schemas\dbo\Tables\Identities.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Debug.publish.xml" />

@@ -20,7 +20,7 @@ namespace ECom.Site.Areas.Admin.Models
 
 		public IEnumerable<CategoriesTreeNodeViewModel> Roots { get; private set; }
 
-		public CreateCategory CreateCategory { get { return new CreateCategory(); } }
+		public CreateCategory CreateCategory { get { return new CreateCategory(String.Empty); } }
 
 		private IEnumerable<CategoriesTreeNodeViewModel> LoadTree(IEnumerable<CategoryNode> categories)
 		{

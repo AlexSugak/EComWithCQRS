@@ -14,6 +14,19 @@ namespace ECom.Site.Helpers
 {
 	public static class CommandHelpers
 	{
+		public static string CommandUiId(this HtmlHelper helper, ICommand cmd)
+		{
+			var result = new StringBuilder();
+
+			var idProps = cmd.GetType().GetProperties().Where(p => typeof(IIdentity).IsAssignableFrom(p.PropertyType));
+			foreach(var prop in idProps)
+			{
+				result.Append(((IIdentity)prop.GetValue(cmd, null)).GetId());
+			}
+
+			return result.ToString();
+		}
+
         public static MvcHtmlString Command(this HtmlHelper helper, object cmd)
         {
             return Command(helper, cmd, null);

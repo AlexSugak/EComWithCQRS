@@ -12,7 +12,7 @@ namespace ECom.ReadModel.Views
 	{
 		public string ID { get; set; }
 
-		public string OrderId { get; set; }
+		public int OrderId { get; set; }
 		public int ItemId { get; set; }
 		public string ProductUrl { get; set; }
 		public string Name { get; set; }
@@ -21,34 +21,44 @@ namespace ECom.ReadModel.Views
 		public string ImageUrl { get; set; }
 		public string Size { get; set; }
 		public string Color { get; set; }
+		public int Quantity { get; set; }
+		public decimal Total { get; set; }
 
 		public OrderItemDetails()
 		{
 		}
 
 		public OrderItemDetails(
-			string id, 
-			string orderId,
-			int itemId,
-			string productUrl,
+			OrderId orderId,
+			OrderItemId itemId,
+			Uri productUrl,
 			string name,
 			string description,
 			decimal price,
-			string imageUrl,
+			Uri imageUrl,
 			string size,
-			string color
+			string color,
+			int quantity
 			)
 		{
-			ID = id;
-			OrderId = orderId;
-			ItemId = itemId;
-			ProductUrl = productUrl;
-			Name = name;
-			Description = description;
+			ID = GetItemCompositeId(orderId, itemId);
+			OrderId = orderId.Id;
+			ItemId = itemId.Id;
+			ProductUrl = productUrl.ToString();
 			Price = price;
-			ImageUrl = imageUrl;
-			Size = size;
-			Color = color;
+			Quantity = quantity;
+			Total = Price * Quantity;
+
+			Name = name ?? String.Empty;
+			Description = description ?? String.Empty;
+			ImageUrl = imageUrl != null ? imageUrl.ToString() : String.Empty;
+			Size = size ?? String.Empty;
+			Color = color ?? String.Empty;
+		}
+
+		public static string GetItemCompositeId(OrderId orderId, OrderItemId itemId)
+		{
+			return orderId.GetId() + "-" + itemId.GetId();
 		}
 	}
 
@@ -68,26 +78,21 @@ namespace ECom.ReadModel.Views
 		public void Handle(ProductAddedToOrder e)
 		{
 			_manager.Add<OrderItemDetails>(new OrderItemDetails(
-				GetItemCompositeId(e.Id, e.OrderItemId), 
-				e.Id.GetId(), 
-				e.OrderItemId.Id,
-				e.ProductUri.ToString(), 
+				e.Id, 
+				e.OrderItemId,
+				e.ProductUri, 
 				e.Name, 
 				e.Description, 
 				e.Price, 
-				e.ImageUri.ToString(), 
+				e.ImageUri, 
 				e.Size, 
-				e.Color));
+				e.Color,
+				e.Quantity));
 		}
 
 		public void Handle(ItemRemovedFromOrder e)
 		{
-			_manager.Delete<OrderItemDetails>(GetItemCompositeId(e.Id, e.OrderItemId));
-		}
-
-		private static string GetItemCompositeId(OrderId orderId, OrderItemId itemId)
-		{
-			return orderId.GetId() + "-" + itemId.GetId();
+			_manager.Delete<OrderItemDetails>(OrderItemDetails.GetItemCompositeId(e.Id, e.OrderItemId));
 		}
 	}
 }

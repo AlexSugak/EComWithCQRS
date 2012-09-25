@@ -14,10 +14,12 @@ namespace ECom.Messages
 	{
 		public UserId Id { get; set; }
 		public int Version { get; set; }
-		private UserCreated () {}
-		public UserCreated (UserId userId)
+		public string UserName { get; set; }
+		public UserCreated () {}
+		public UserCreated (UserId userId, string userName)
 		{
 			Id = userId;
+			UserName = userName;
 		}
 		public override bool Equals(object obj)
 		{
@@ -30,11 +32,11 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id);
+			return Id.Equals(target.Id) && UserName.Equals(target.UserName);
 		}
 		public override int GetHashCode()
 		{
-			return Id.GetHashCode();
+			return Id.GetHashCode() ^ UserName.GetHashCode();
 		}
 		public static bool operator ==(UserCreated a, UserCreated b)
 		{
@@ -60,10 +62,12 @@ namespace ECom.Messages
 	{
 		public UserId Id { get; set; }
 		public int Version { get; set; }
-		private ReportUserLoggedIn () {}
-		public ReportUserLoggedIn (UserId userId)
+		public string UserName { get; set; }
+		public ReportUserLoggedIn () {}
+		public ReportUserLoggedIn (UserId userId, string userName)
 		{
 			Id = userId;
+			UserName = userName;
 		}
 		public override bool Equals(object obj)
 		{
@@ -76,11 +80,11 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id);
+			return Id.Equals(target.Id) && UserName.Equals(target.UserName);
 		}
 		public override int GetHashCode()
 		{
-			return Id.GetHashCode();
+			return Id.GetHashCode() ^ UserName.GetHashCode();
 		}
 		public static bool operator ==(ReportUserLoggedIn a, ReportUserLoggedIn b)
 		{
@@ -106,10 +110,12 @@ namespace ECom.Messages
 	{
 		public UserId Id { get; set; }
 		public int Version { get; set; }
-		private UserLoggedInReported () {}
-		public UserLoggedInReported (UserId userId)
+		public string UserName { get; set; }
+		public UserLoggedInReported () {}
+		public UserLoggedInReported (UserId userId, string userName)
 		{
 			Id = userId;
+			UserName = userName;
 		}
 		public override bool Equals(object obj)
 		{
@@ -122,11 +128,11 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id);
+			return Id.Equals(target.Id) && UserName.Equals(target.UserName);
 		}
 		public override int GetHashCode()
 		{
-			return Id.GetHashCode();
+			return Id.GetHashCode() ^ UserName.GetHashCode();
 		}
 		public static bool operator ==(UserLoggedInReported a, UserLoggedInReported b)
 		{
@@ -148,14 +154,64 @@ namespace ECom.Messages
 	
 	[Serializable]
 	[GeneratedCodeAttribute("MessagesGenerator", "1.0.0.0")]
+	public sealed class CreateNewOrder : ICommand<OrderId>
+	{
+		public OrderId Id { get; set; }
+		public int Version { get; set; }
+		public UserId UserId { get; set; }
+		public CreateNewOrder () {}
+		public CreateNewOrder (OrderId orderId, UserId userId)
+		{
+			Id = orderId;
+			UserId = userId;
+		}
+		public override bool Equals(object obj)
+		{
+			if (obj == null)
+			{
+				return false;
+			}
+			var target = obj as CreateNewOrder;
+			if (target == null)
+			{
+				return false;
+			}
+			return Id.Equals(target.Id) && UserId.Equals(target.UserId);
+		}
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode() ^ UserId.GetHashCode();
+		}
+		public static bool operator ==(CreateNewOrder a, CreateNewOrder b)
+		{
+			if (System.Object.ReferenceEquals(a, b))
+			{
+				return true;
+			}
+			if (((object)a == null) || ((object)b == null))
+			{
+				return false;
+			}
+			return a.Equals(b);
+		}
+		public static bool operator !=(CreateNewOrder a, CreateNewOrder b)
+		{
+			return !(a == b);
+		}
+	}
+	
+	[Serializable]
+	[GeneratedCodeAttribute("MessagesGenerator", "1.0.0.0")]
 	public sealed class NewOrderCreated : IEvent<OrderId>
 	{
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
-		private NewOrderCreated () {}
-		public NewOrderCreated (OrderId orderId)
+		public UserId UserId { get; set; }
+		public NewOrderCreated () {}
+		public NewOrderCreated (OrderId orderId, UserId userId)
 		{
 			Id = orderId;
+			UserId = userId;
 		}
 		public override bool Equals(object obj)
 		{
@@ -168,11 +224,11 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id);
+			return Id.Equals(target.Id) && UserId.Equals(target.UserId);
 		}
 		public override int GetHashCode()
 		{
-			return Id.GetHashCode();
+			return Id.GetHashCode() ^ UserId.GetHashCode();
 		}
 		public static bool operator ==(NewOrderCreated a, NewOrderCreated b)
 		{
@@ -198,6 +254,7 @@ namespace ECom.Messages
 	{
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
+		public OrderItemId OrderItemId { get; set; }
 		public Uri ProductUri { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
@@ -206,10 +263,11 @@ namespace ECom.Messages
 		public string Size { get; set; }
 		public string Color { get; set; }
 		public Uri ImageUri { get; set; }
-		private AddProductToOrder () {}
-		public AddProductToOrder (OrderId orderId, Uri productUri, string name, string description, decimal price, int quantity, string size, string color, Uri imageUri)
+		public AddProductToOrder () {}
+		public AddProductToOrder (OrderId orderId, OrderItemId orderItemId, Uri productUri, string name, string description, decimal price, int quantity, string size, string color, Uri imageUri)
 		{
 			Id = orderId;
+			OrderItemId = orderItemId;
 			ProductUri = productUri;
 			Name = name;
 			Description = description;
@@ -230,11 +288,11 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && ProductUri.Equals(target.ProductUri) && Name.Equals(target.Name) && Description.Equals(target.Description) && Price.Equals(target.Price) && Quantity.Equals(target.Quantity) && Size.Equals(target.Size) && Color.Equals(target.Color) && ImageUri.Equals(target.ImageUri);
+			return Id.Equals(target.Id) && OrderItemId.Equals(target.OrderItemId) && ProductUri.Equals(target.ProductUri) && Name.Equals(target.Name) && Description.Equals(target.Description) && Price.Equals(target.Price) && Quantity.Equals(target.Quantity) && Size.Equals(target.Size) && Color.Equals(target.Color) && ImageUri.Equals(target.ImageUri);
 		}
 		public override int GetHashCode()
 		{
-			return Id.GetHashCode() ^ ProductUri.GetHashCode() ^ Name.GetHashCode() ^ Description.GetHashCode() ^ Price.GetHashCode() ^ Quantity.GetHashCode() ^ Size.GetHashCode() ^ Color.GetHashCode() ^ ImageUri.GetHashCode();
+			return Id.GetHashCode() ^ OrderItemId.GetHashCode() ^ ProductUri.GetHashCode() ^ Name.GetHashCode() ^ Description.GetHashCode() ^ Price.GetHashCode() ^ Quantity.GetHashCode() ^ Size.GetHashCode() ^ Color.GetHashCode() ^ ImageUri.GetHashCode();
 		}
 		public static bool operator ==(AddProductToOrder a, AddProductToOrder b)
 		{
@@ -269,7 +327,7 @@ namespace ECom.Messages
 		public string Size { get; set; }
 		public string Color { get; set; }
 		public Uri ImageUri { get; set; }
-		private ProductAddedToOrder () {}
+		public ProductAddedToOrder () {}
 		public ProductAddedToOrder (OrderId orderId, OrderItemId orderItemId, Uri productUri, string name, string description, decimal price, int quantity, string size, string color, Uri imageUri)
 		{
 			Id = orderId;
@@ -325,7 +383,7 @@ namespace ECom.Messages
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
 		public OrderItemId OrderItemId { get; set; }
-		private RemoveItemFromOrder () {}
+		public RemoveItemFromOrder () {}
 		public RemoveItemFromOrder (OrderId orderId, OrderItemId orderItemId)
 		{
 			Id = orderId;
@@ -373,7 +431,7 @@ namespace ECom.Messages
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
 		public OrderItemId OrderItemId { get; set; }
-		private ItemRemovedFromOrder () {}
+		public ItemRemovedFromOrder () {}
 		public ItemRemovedFromOrder (OrderId orderId, OrderItemId orderItemId)
 		{
 			Id = orderId;
@@ -420,7 +478,7 @@ namespace ECom.Messages
 	{
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
-		private SubmitOrder () {}
+		public SubmitOrder () {}
 		public SubmitOrder (OrderId orderId)
 		{
 			Id = orderId;
@@ -466,7 +524,7 @@ namespace ECom.Messages
 	{
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
-		private OrderSubmited () {}
+		public OrderSubmited () {}
 		public OrderSubmited (OrderId orderId)
 		{
 			Id = orderId;
@@ -514,7 +572,7 @@ namespace ECom.Messages
 		public int Version { get; set; }
 		public string Name { get; set; }
 		public decimal Price { get; set; }
-		private AddProduct () {}
+		public AddProduct () {}
 		public AddProduct (ProductId productId, string name, decimal price)
 		{
 			Id = productId;
@@ -564,7 +622,7 @@ namespace ECom.Messages
 		public int Version { get; set; }
 		public string Name { get; set; }
 		public decimal Price { get; set; }
-		private ProductAdded () {}
+		public ProductAdded () {}
 		public ProductAdded (ProductId productId, string name, decimal price)
 		{
 			Id = productId;
@@ -612,7 +670,7 @@ namespace ECom.Messages
 	{
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
-		private RemoveProduct () {}
+		public RemoveProduct () {}
 		public RemoveProduct (ProductId productId)
 		{
 			Id = productId;
@@ -658,7 +716,7 @@ namespace ECom.Messages
 	{
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
-		private ProductRemoved () {}
+		public ProductRemoved () {}
 		public ProductRemoved (ProductId productId)
 		{
 			Id = productId;
@@ -705,7 +763,7 @@ namespace ECom.Messages
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
 		public decimal NewPrice { get; set; }
-		private ChangeProductPrice () {}
+		public ChangeProductPrice () {}
 		public ChangeProductPrice (ProductId productId, decimal newPrice)
 		{
 			Id = productId;
@@ -753,7 +811,7 @@ namespace ECom.Messages
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
 		public decimal NewPrice { get; set; }
-		private ProductPriceChanged () {}
+		public ProductPriceChanged () {}
 		public ProductPriceChanged (ProductId productId, decimal newPrice)
 		{
 			Id = productId;
@@ -801,7 +859,7 @@ namespace ECom.Messages
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
 		public ProductId TargetProductId { get; set; }
-		private AddRelatedProduct () {}
+		public AddRelatedProduct () {}
 		public AddRelatedProduct (ProductId productId, ProductId targetProductId)
 		{
 			Id = productId;
@@ -849,7 +907,7 @@ namespace ECom.Messages
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
 		public ProductId TargetProductId { get; set; }
-		private RelatedProductAdded () {}
+		public RelatedProductAdded () {}
 		public RelatedProductAdded (ProductId productId, ProductId targetProductId)
 		{
 			Id = productId;
@@ -896,7 +954,7 @@ namespace ECom.Messages
 	{
 		public int Version { get; set; }
 		public string Name { get; set; }
-		private CreateCategory () {}
+		public CreateCategory () {}
 		public CreateCategory (string name)
 		{
 			Name = name;
@@ -943,7 +1001,7 @@ namespace ECom.Messages
 		public CatalogId Id { get; set; }
 		public int Version { get; set; }
 		public string Name { get; set; }
-		private CategoryCreated () {}
+		public CategoryCreated () {}
 		public CategoryCreated (CatalogId catalogId, string name)
 		{
 			Id = catalogId;
@@ -991,7 +1049,7 @@ namespace ECom.Messages
 		public int Version { get; set; }
 		public string Name { get; set; }
 		public string TargetCategory { get; set; }
-		private MoveCategory () {}
+		public MoveCategory () {}
 		public MoveCategory (string name, string targetCategory)
 		{
 			Name = name;
@@ -1040,7 +1098,7 @@ namespace ECom.Messages
 		public int Version { get; set; }
 		public string Name { get; set; }
 		public string TargetCategory { get; set; }
-		private CategoryMoved () {}
+		public CategoryMoved () {}
 		public CategoryMoved (CatalogId catalogId, string name, string targetCategory)
 		{
 			Id = catalogId;
@@ -1088,7 +1146,7 @@ namespace ECom.Messages
 	{
 		public int Version { get; set; }
 		public string Name { get; set; }
-		private RemoveCategory () {}
+		public RemoveCategory () {}
 		public RemoveCategory (string name)
 		{
 			Name = name;
@@ -1135,7 +1193,7 @@ namespace ECom.Messages
 		public CatalogId Id { get; set; }
 		public int Version { get; set; }
 		public string Name { get; set; }
-		private CategoryRemoved () {}
+		public CategoryRemoved () {}
 		public CategoryRemoved (CatalogId catalogId, string name)
 		{
 			Id = catalogId;
@@ -1183,7 +1241,7 @@ namespace ECom.Messages
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
 		public string CategoryName { get; set; }
-		private AddProductToCategory () {}
+		public AddProductToCategory () {}
 		public AddProductToCategory (ProductId productId, string categoryName)
 		{
 			Id = productId;
@@ -1231,7 +1289,7 @@ namespace ECom.Messages
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
 		public string CategoryName { get; set; }
-		private ProductAddedToCategory () {}
+		public ProductAddedToCategory () {}
 		public ProductAddedToCategory (ProductId productId, string categoryName)
 		{
 			Id = productId;
