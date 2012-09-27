@@ -1,4 +1,7 @@
-﻿
+﻿@using ECom.Site.Helpers
+
+<br />
+<br />
 
 <script type="text/javascript">
 	function getQueryParams(qs) {
@@ -17,45 +20,100 @@
 
 	function getReturnUrl() {
 		var query = getQueryParams(document.location.search);
+
+		if (query.ReturnUrl == undefined || query.ReturnUrl == '')
+			return '';
+
 		return query.ReturnUrl;
 	}
 </script>
 
+<div class="row">
+	<div id="divLoginFacebook" class="span3" >
+		<fb:login-button perms="email,user_checkins" onlogin="afterFacebookConnect();" autologoutlink="false" size="large">
+		</fb:login-button>
+		<div id="fb-root" style="display: inline; margin-left: 20px;"></div>
 
-<div id="divLoginFacebook" class="span6">
-	<fb:login-button perms="email,user_checkins" onlogin="afterFacebookConnect();" 
-       autologoutlink="false" ></fb:login-button>
-    <div id="fb-root" style="display:inline; margin-left:20px;"></div>
+		<script type="text/javascript">
+			window.fbAsyncInit = function () {
+				FB.init({
+					appId: '115315185286284',
+					status: true, cookie: false, xfbml: true
+				});
+			};
 
-	<script type="text/javascript">
-		window.fbAsyncInit = function () {
-			FB.init({
-				appId: '115315185286284',
-				status: true, cookie: false, xfbml: true
-			});
-		};
-
-		var isRedirecting = false;
-		function afterFacebookConnect() {
-			FB.getLoginStatus(function (response) {
-				if (response.status === 'connected' && !isRedirecting) {
-					//not sure why this function is called twice
-					isRedirecting = true;
-					window.location = '@Url.Action("FacebookLogin", "Account", new { Area = String.Empty})' + '?token=' +
-						   response.authResponse.accessToken + '&ReturnUrl=' + getReturnUrl();
-				} else {
-					// user clicked Cancel
+			var isRedirecting = false;
+			function afterFacebookConnect() {
+				FB.getLoginStatus(function (response) {
+					if (response.status === 'connected' && !isRedirecting) {
+						//not sure why this function is called twice
+						isRedirecting = true;
+						window.location = '@Url.Action("FacebookLogin", "Account", new { Area = String.Empty})' + '?token=' +
+							   response.authResponse.accessToken + '&ReturnUrl=' + getReturnUrl();
+					} else {
+						// user clicked Cancel
+					}
+				});
+			};
+			$(document).ready(function () {
+				if (document.getElementById('fb-root') != undefined) {
+					var e = document.createElement('script');
+					e.type = 'text/javascript';
+					e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+					e.async = true;
+					document.getElementById('fb-root').appendChild(e);
 				}
 			});
-		};
-		$(document).ready(function () {
-			if (document.getElementById('fb-root') != undefined) {
-				var e = document.createElement('script');
-				e.type = 'text/javascript';
-				e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
-				e.async = true;
-				document.getElementById('fb-root').appendChild(e);
+		</script>
+	</div>
+</div>
+
+<br />
+<br />
+<div class="row">
+	<script type="text/javascript">
+		function onGoogleLoginClick() {
+			var loginSrc = 'https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile'
+					+ '&redirect_uri=' + encodeURI('@Url.Action("GoogleLogin", "Account", new { Area = String.Empty}, "http")')
+					+ '&response_type=code'
+					//+ '&state=' + getReturnUrl()
+					+ '&state=' + encodeURI('@Url.Action("GoogleLogin", "Account", new { Area = String.Empty}, "http")')
+					+ '&client_id=485526445533.apps.googleusercontent.com';
+
+			window.location = loginSrc;
+		}
+	</script>
+
+	<div id="divLoginGoogle" class="span3">
+		<a href="#" onclick="onGoogleLoginClick();">
+			<img src="@Url.Content("~/Content/images/goog-login-button.png")" />
+		</a>
+	</div>
+</div>
+
+<br />
+<br />
+<div class="row">
+	<div id="divLoginVkontakte" class="span3">
+		<script type="text/javascript" src="http://userapi.com/js/api/openapi.js?52"></script>
+
+		<script type="text/javascript">
+			VK.init({ apiId: 3145706 });
+		</script>
+		<div id="vk_auth"></div>
+
+	</div>
+	<script type="text/javascript">
+		VK.Widgets.Auth("vk_auth", {
+			width: "200px", onAuth: function (data) {
+				window.location = '@Url.Action("VkontakteLogin", "Account", new { Area = String.Empty})' + 
+					'?uid=' + data['uid'] 
+					+ '&firstname=' + data['first_name'] 
+					+ '&lastName=' + data['last_name'] 
+					+ '&photo=' + data['photo_rec'];
 			}
 		});
 </script>
 </div>
+
+

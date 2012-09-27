@@ -6,11 +6,7 @@
    <h2>Welcome to Crowd Shop!</h2>
 
 	@if(!Request.IsAuthenticated) {
-		<br />
-		<br />
-		<div class="row">
-			@Html.Partial("LoginWith")
-		</div>
+		@Html.Partial("LoginWith")
 	}
 </div>
 

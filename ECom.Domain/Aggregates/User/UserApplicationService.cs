@@ -30,10 +30,10 @@ namespace ECom.Domain.Aggregates.User
 			catch (AggregateRootNotFoundException)
 			{
 				user = new UserAggregate();
-				user.Create(cmd.Id, cmd.UserName);
+				user.Create(cmd.Id);
 			}
 
-			user.ReportLoggedIn();
+			user.ReportLoggedIn(cmd.UserName, cmd.PhotoUrl);
 
 			_repository.Save(user);
 		}

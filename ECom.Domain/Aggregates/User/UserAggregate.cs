@@ -17,28 +17,28 @@ namespace ECom.Domain.Aggregates.User
 			get { return _id; }
 		}
 
-		public void Create(UserId userId, string userName)
+		public void Create(UserId userId)
 		{
 			Argument.ExpectNotNull(() => userId);
-			Argument.ExpectNotNullOrWhiteSpace(() => userName);
-
+			
 			if (Version != 0)
 			{
 				throw new InvalidOperationException("User already has non zero version and cannot be created!");
 			}
 
-			ApplyChange(new UserCreated(userId, userName));
+			ApplyChange(new UserCreated(userId));
 		}
 
 		public void Apply(UserCreated e)
 		{
 			_id = e.Id;
-			_name = e.UserName;
 		}
 
-		public void ReportLoggedIn()
+		public void ReportLoggedIn(string userName, string photoUrl)
 		{
-			ApplyChange(new UserLoggedInReported(_id, _name));
+			Argument.ExpectNotNullOrWhiteSpace(() => userName);
+
+			ApplyChange(new UserLoggedInReported(_id, userName, photoUrl));
 		}
 
 		public void Apply(UserLoggedInReported e)

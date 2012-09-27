@@ -14,12 +14,10 @@ namespace ECom.Messages
 	{
 		public UserId Id { get; set; }
 		public int Version { get; set; }
-		public string UserName { get; set; }
 		public UserCreated () {}
-		public UserCreated (UserId userId, string userName)
+		public UserCreated (UserId userId)
 		{
 			Id = userId;
-			UserName = userName;
 		}
 		public override bool Equals(object obj)
 		{
@@ -32,11 +30,11 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && UserName.Equals(target.UserName);
+			return Id.Equals(target.Id);
 		}
 		public override int GetHashCode()
 		{
-			return Id.GetHashCode() ^ UserName.GetHashCode();
+			return Id.GetHashCode();
 		}
 		public static bool operator ==(UserCreated a, UserCreated b)
 		{
@@ -63,11 +61,13 @@ namespace ECom.Messages
 		public UserId Id { get; set; }
 		public int Version { get; set; }
 		public string UserName { get; set; }
+		public string PhotoUrl { get; set; }
 		public ReportUserLoggedIn () {}
-		public ReportUserLoggedIn (UserId userId, string userName)
+		public ReportUserLoggedIn (UserId userId, string userName, string photoUrl)
 		{
 			Id = userId;
 			UserName = userName;
+			PhotoUrl = photoUrl;
 		}
 		public override bool Equals(object obj)
 		{
@@ -80,11 +80,11 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && UserName.Equals(target.UserName);
+			return Id.Equals(target.Id) && UserName.Equals(target.UserName) && PhotoUrl.Equals(target.PhotoUrl);
 		}
 		public override int GetHashCode()
 		{
-			return Id.GetHashCode() ^ UserName.GetHashCode();
+			return Id.GetHashCode() ^ UserName.GetHashCode() ^ PhotoUrl.GetHashCode();
 		}
 		public static bool operator ==(ReportUserLoggedIn a, ReportUserLoggedIn b)
 		{
@@ -111,11 +111,13 @@ namespace ECom.Messages
 		public UserId Id { get; set; }
 		public int Version { get; set; }
 		public string UserName { get; set; }
+		public string PhotoUrl { get; set; }
 		public UserLoggedInReported () {}
-		public UserLoggedInReported (UserId userId, string userName)
+		public UserLoggedInReported (UserId userId, string userName, string photoUrl)
 		{
 			Id = userId;
 			UserName = userName;
+			PhotoUrl = photoUrl;
 		}
 		public override bool Equals(object obj)
 		{
@@ -128,11 +130,11 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && UserName.Equals(target.UserName);
+			return Id.Equals(target.Id) && UserName.Equals(target.UserName) && PhotoUrl.Equals(target.PhotoUrl);
 		}
 		public override int GetHashCode()
 		{
-			return Id.GetHashCode() ^ UserName.GetHashCode();
+			return Id.GetHashCode() ^ UserName.GetHashCode() ^ PhotoUrl.GetHashCode();
 		}
 		public static bool operator ==(UserLoggedInReported a, UserLoggedInReported b)
 		{

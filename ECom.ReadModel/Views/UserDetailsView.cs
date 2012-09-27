@@ -12,20 +12,22 @@ namespace ECom.ReadModel.Views
 	{
 		public string ID { get; set; }
 		public string Name { get; set; }
+		public string PhotoUrl { get; set; }
 
 		public UserDetails()
 		{
 		}
 
-		public UserDetails(string email, string name)
+		public UserDetails(string email, string name, string photoUrl)
 		{
 			ID = email;
 			Name = name;
+			PhotoUrl = photoUrl ?? String.Empty;
 		}
 	}
 
 	public class UserDetailsView :
-		IHandle<UserCreated>
+		IHandle<UserLoggedInReported>
 	{
 		private IDtoManager _manager;
 
@@ -36,9 +38,10 @@ namespace ECom.ReadModel.Views
 			_manager = manager;
 		}
 
-		public void Handle(UserCreated e)
+		public void Handle(UserLoggedInReported e)
 		{
-			_manager.Add<UserDetails>(new UserDetails(e.Id.Id, e.UserName));
+			_manager.Delete<UserDetails>(e.Id);
+			_manager.Add<UserDetails>(new UserDetails(e.Id.Id, e.UserName, e.PhotoUrl));
 		}
 	}
 }

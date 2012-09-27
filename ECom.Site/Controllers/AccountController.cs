@@ -9,6 +9,10 @@ using System.Web.Security;
 using ECom.Messages;
 using ECom.Site.Models;
 using Newtonsoft.Json.Linq;
+using ECom.Site.Helpers;
+using System.Threading;
+using System.Text;
+using System.IO;
 
 namespace ECom.Site.Controllers
 {
@@ -23,25 +27,90 @@ namespace ECom.Site.Controllers
 		public ActionResult FacebookLogin(string token, string returnUrl)
 		{
 			WebClient client = new WebClient();
-			string JsonResult = client.DownloadString(string.Concat(
-				   "https://graph.facebook.com/me?access_token=", token));
-			// Json.Net is really helpful if you have to deal
-			// with Json from .Net http://json.codeplex.com/
-			JObject jsonUserInfo = JObject.Parse(JsonResult);
+			string jsonResult = client.DownloadString(String.Concat("https://graph.facebook.com/me?access_token=", token, "&fields=email,name,picture"));
+			JObject jsonUserInfo = JObject.Parse(jsonResult);
 			// you can get more user's info here. Please refer to:
 			//     http://developers.facebook.com/docs/reference/api/user/
-			string username = jsonUserInfo.Value<string>("username");
 			string name = jsonUserInfo.Value<string>("name");
 			string email = jsonUserInfo.Value<string>("email");
-			string locale = jsonUserInfo.Value<string>("locale");
-			string facebook_userID = jsonUserInfo.Value<string>("id");
+			string picture = jsonUserInfo["picture"]["data"].Value<string>("url");
 
-			// store user's information here...
 			FormsAuthentication.SetAuthCookie(email, true);
 
-			_bus.Send(new ReportUserLoggedIn(new UserId(email), name));
+			_bus.Send(new ReportUserLoggedIn(new UserId(email), name, picture));
+			Thread.Sleep(200);
 
 			return SuccessfullLoginRedirect(returnUrl);
+		}
+
+		[HttpGet]
+		public ActionResult VkontakteLogin(string uid, string firstName, string lastName, string photo, string returnUrl)
+		{
+			FormsAuthentication.SetAuthCookie(uid, true);
+
+			_bus.Send(new ReportUserLoggedIn(new UserId(uid), firstName + " " + lastName, photo));
+			Thread.Sleep(200);
+
+			return SuccessfullLoginRedirect(returnUrl);
+		}
+
+		[HttpGet]
+		public ActionResult GoogleLogin(string code, string state)
+		{
+			JObject jsonAccessToken;
+
+			string url = "https://accounts.google.com/o/oauth2/token";
+
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url.ToString());
+			request.Method = "POST";
+			request.ContentType = "application/x-www-form-urlencoded";
+
+			// You mus do the POST request before getting any response
+			UTF8Encoding utfenc = new UTF8Encoding();
+			var parameters = String.Concat("code=", code, "&"
+											, "client_id=485526445533.apps.googleusercontent.com&"
+											, "client_secret=bZ6WkBjseRTVT5UFo5pcWhJj&"
+											, "redirect_uri=", state, "&"
+											, "grant_type=authorization_code");
+			byte[] bytes = utfenc.GetBytes(parameters);
+			Stream os = null;
+			request.ContentLength = bytes.Length; 
+			os = request.GetRequestStream();
+			os.Write(bytes, 0, bytes.Length);        
+			using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+			{
+				string responseBody = null;
+
+				using (StreamReader sr = new StreamReader(response.GetResponseStream()))
+				{
+					responseBody = sr.ReadToEnd();
+				}
+
+				jsonAccessToken = JObject.Parse(responseBody);
+			}
+			
+			var accessToken = jsonAccessToken.Value<string>("access_token");
+
+			WebClient client = new WebClient();
+			string jsonResult = client.DownloadString(String.Concat("https://www.googleapis.com/oauth2/v1/userinfo?access_token=", accessToken));
+			JObject jsonUserInfo = JObject.Parse(jsonResult);
+			string name = jsonUserInfo.Value<string>("name");
+			string email = jsonUserInfo.Value<string>("email");
+			string picture = jsonUserInfo.Value<string>("picture");
+
+			FormsAuthentication.SetAuthCookie(email, true);
+
+			_bus.Send(new ReportUserLoggedIn(new UserId(email), name, picture));
+			Thread.Sleep(200);
+
+			return SuccessfullLoginRedirect(null);
+		}
+
+		public ActionResult LogOff()
+		{
+			FormsAuthentication.SignOut();
+
+			return RedirectToAction("Index", "Home");
 		}
 
 		private ActionResult SuccessfullLoginRedirect(string returnUrl)
@@ -56,164 +125,5 @@ namespace ECom.Site.Controllers
 				return RedirectToAction("Index", "Home");
 			}
 		}
-
-        [HttpPost]
-        public ActionResult LogOn(LogOnModel model, string returnUrl)
-        {
-            if (ModelState.IsValid)
-            {
-                if (Membership.ValidateUser(model.UserName, model.Password))
-                {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-					return SuccessfullLoginRedirect(returnUrl);
-                }
-                else
-                {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        //
-        // GET: /Account/LogOff
-
-        public ActionResult LogOff()
-        {
-            FormsAuthentication.SignOut();
-
-            return RedirectToAction("Index", "Home");
-        }
-
-        //
-        // GET: /Account/Register
-
-        public ActionResult Register()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Account/Register
-
-        [HttpPost]
-        public ActionResult Register(RegisterModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                // Attempt to register the user
-                MembershipCreateStatus createStatus;
-                Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
-
-                if (createStatus == MembershipCreateStatus.Success)
-                {
-                    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", ErrorCodeToString(createStatus));
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        //
-        // GET: /Account/ChangePassword
-
-        [Authorize]
-        public ActionResult ChangePassword()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Account/ChangePassword
-
-        [Authorize]
-        [HttpPost]
-        public ActionResult ChangePassword(ChangePasswordModel model)
-        {
-            if (ModelState.IsValid)
-            {
-
-                // ChangePassword will throw an exception rather
-                // than return false in certain failure scenarios.
-                bool changePasswordSucceeded;
-                try
-                {
-                    MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
-                    changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
-                }
-                catch (Exception)
-                {
-                    changePasswordSucceeded = false;
-                }
-
-                if (changePasswordSucceeded)
-                {
-                    return RedirectToAction("ChangePasswordSuccess");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        //
-        // GET: /Account/ChangePasswordSuccess
-
-        public ActionResult ChangePasswordSuccess()
-        {
-            return View();
-        }
-
-        #region Status Codes
-        private static string ErrorCodeToString(MembershipCreateStatus createStatus)
-        {
-            // See http://go.microsoft.com/fwlink/?LinkID=177550 for
-            // a full list of status codes.
-            switch (createStatus)
-            {
-                case MembershipCreateStatus.DuplicateUserName:
-                    return "User name already exists. Please enter a different user name.";
-
-                case MembershipCreateStatus.DuplicateEmail:
-                    return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
-
-                case MembershipCreateStatus.InvalidPassword:
-                    return "The password provided is invalid. Please enter a valid password value.";
-
-                case MembershipCreateStatus.InvalidEmail:
-                    return "The e-mail address provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidAnswer:
-                    return "The password retrieval answer provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidQuestion:
-                    return "The password retrieval question provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidUserName:
-                    return "The user name provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.ProviderError:
-                    return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-
-                case MembershipCreateStatus.UserRejected:
-                    return "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-
-                default:
-                    return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-            }
-        }
-        #endregion
     }
 }

@@ -31,10 +31,10 @@ let quantity = int Quantity;
 
 // USER
 
-UserCreated!(userId, string UserName)
+UserCreated!(userId)
 
-ReportUserLoggedIn?(userId, string UserName)
-UserLoggedInReported!(userId, string UserName)
+ReportUserLoggedIn?(userId, string UserName, string PhotoUrl)
+UserLoggedInReported!(userId, string UserName, string PhotoUrl)
 
 
 // ORDER

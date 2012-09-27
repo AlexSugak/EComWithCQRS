@@ -1,5 +1,12 @@
 ﻿@if(Request.IsAuthenticated) {
-    <text>Welcome <strong>@ECom.Site.ServiceLocator.ReadModel.GetUserDetails(new ECom.Messages.UserId(User.Identity.Name)).Name</strong>!
+
+	var userDetails = ECom.Site.ServiceLocator.ReadModel.GetUserDetails(new ECom.Messages.UserId(User.Identity.Name));
+	if (!String.IsNullOrWhiteSpace(userDetails.PhotoUrl))
+	{
+		<img style="height:30px;" src="@userDetails.PhotoUrl" /> 
+	}
+	
+    <text><strong>@userDetails.Name</strong>
     [ @Html.ActionLink("Log Off", "LogOff", "Account", new { Area = String.Empty }, null ) ]</text>
 }
 else {
