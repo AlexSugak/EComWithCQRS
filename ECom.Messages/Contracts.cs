@@ -156,6 +156,102 @@ namespace ECom.Messages
 	
 	[Serializable]
 	[GeneratedCodeAttribute("MessagesGenerator", "1.0.0.0")]
+	public sealed class SetUserEmail : ICommand<UserId>
+	{
+		public UserId Id { get; set; }
+		public int Version { get; set; }
+		public EmailAddress Email { get; set; }
+		public SetUserEmail () {}
+		public SetUserEmail (UserId userId, EmailAddress email)
+		{
+			Id = userId;
+			Email = email;
+		}
+		public override bool Equals(object obj)
+		{
+			if (obj == null)
+			{
+				return false;
+			}
+			var target = obj as SetUserEmail;
+			if (target == null)
+			{
+				return false;
+			}
+			return Id == target.Id && Email == target.Email;
+		}
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode() ^ Email.GetHashCode();
+		}
+		public static bool operator ==(SetUserEmail a, SetUserEmail b)
+		{
+			if (System.Object.ReferenceEquals(a, b))
+			{
+				return true;
+			}
+			if (((object)a == null) || ((object)b == null))
+			{
+				return false;
+			}
+			return a.Equals(b);
+		}
+		public static bool operator !=(SetUserEmail a, SetUserEmail b)
+		{
+			return !(a == b);
+		}
+	}
+	
+	[Serializable]
+	[GeneratedCodeAttribute("MessagesGenerator", "1.0.0.0")]
+	public sealed class UserEmailSet : IEvent<UserId>
+	{
+		public UserId Id { get; set; }
+		public int Version { get; set; }
+		public EmailAddress Email { get; set; }
+		public UserEmailSet () {}
+		public UserEmailSet (UserId userId, EmailAddress email)
+		{
+			Id = userId;
+			Email = email;
+		}
+		public override bool Equals(object obj)
+		{
+			if (obj == null)
+			{
+				return false;
+			}
+			var target = obj as UserEmailSet;
+			if (target == null)
+			{
+				return false;
+			}
+			return Id == target.Id && Email == target.Email;
+		}
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode() ^ Email.GetHashCode();
+		}
+		public static bool operator ==(UserEmailSet a, UserEmailSet b)
+		{
+			if (System.Object.ReferenceEquals(a, b))
+			{
+				return true;
+			}
+			if (((object)a == null) || ((object)b == null))
+			{
+				return false;
+			}
+			return a.Equals(b);
+		}
+		public static bool operator !=(UserEmailSet a, UserEmailSet b)
+		{
+			return !(a == b);
+		}
+	}
+	
+	[Serializable]
+	[GeneratedCodeAttribute("MessagesGenerator", "1.0.0.0")]
 	public sealed class CreateNewOrder : ICommand<OrderId>
 	{
 		public OrderId Id { get; set; }

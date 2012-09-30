@@ -18,6 +18,7 @@ using ECom.Infrastructure;
 using ECom.Site.Models;
 using FluentValidation.Mvc;
 using FluentValidation.Attributes;
+using Email;
 
 namespace ECom.Site
 {
@@ -49,7 +50,9 @@ namespace ECom.Site
 			ModelMetadataProviders.Current = new CommandMetadataProvider();
 
 			ModelValidatorProviders.Providers.Clear();
-			ModelValidatorProviders.Providers.Add(new FluentValidationModelValidatorProvider(new AttributedValidatorFactory()));
+			//ModelValidatorProviders.Providers.Add(new FluentValidationModelValidatorProvider(new AttributedValidatorFactory()));
+
+			ModelBinders.Binders.DefaultBinder = new DynamicValidationModelBinder(new AttributedValidatorFactory());
 
             ModelBinders.Binders.Add(typeof(ProductId), new IdentityBinder());
 			ModelBinders.Binders.Add(typeof(OrderId), new IdentityBinder());
@@ -75,14 +78,26 @@ namespace ECom.Site
 				Assembly.Load(new AssemblyName("ECom.Domain"))
 			};
 
-			var eventHandlersAssemblies = new [] { Assembly.Load(new AssemblyName("ECom.ReadModel")) };
-
 			MessageHandlersRegister.RegisterCommandHandlers(commandHandlersAssemblies, bus, eventStore);
-			MessageHandlersRegister.RegisterEventHandlers(eventHandlersAssemblies, bus, dtoManager, readModel);
+			RegisterEventHandlers(bus, readModel, dtoManager);
 
             ServiceLocator.Bus = bus;
             ServiceLocator.ReadModel = readModel;
 			ServiceLocator.IdentityGenerator = new SqlTableDomainIdentityGenerator(eventStoreConnString);
         }
+
+		private static void RegisterEventHandlers(Bus.Bus bus, IReadModelFacade readModel, IDtoManager dtoManager)
+		{
+			var eventHandlersAssemblies = new[] { Assembly.Load(new AssemblyName("ECom.ReadModel")) };
+
+			MessageHandlersRegister.RegisterEventHandlers(eventHandlersAssemblies, bus, dtoManager, readModel);
+
+
+			var mailSender = new MailGunEmailSender(ConfigurationManager.AppSettings["MailGunApiKey"], ConfigurationManager.AppSettings["MailGunAppDomain"]);
+			var mailBodyGenerator = new RazorMessageBodyGenerator();
+			var emailService = new EmailService(mailSender, readModel, mailBodyGenerator);
+
+			bus.RegisterHandler<OrderSubmited>(emailService.Handle);
+		}
     }
 }

@@ -49,12 +49,23 @@ namespace ECom.Site.Areas.Shop.Controllers
 		}
 
 		[HttpPost]
+		[ActionSpecificValidator(typeof(AddNewOrderViewModelBeforeSubmitValidator))]
 		public ActionResult Submit(AddNewOrderViewModel model)
 		{
-			var cmd = new SubmitOrder(model.OrderId);
-			_bus.Send(cmd);
+			if (ModelState.IsValid)
+			{
+				if (model.IsEmailChanged)
+				{
+					_bus.Send(new SetUserEmail(UserId, new EmailAddress(model.Email)));
+					Thread.Sleep(200);
+				}
 
-			return RedirectToAction("Submitted", new { id = model.OrderId.Id });
+				_bus.Send(new SubmitOrder(model.OrderId));
+
+				return RedirectToAction("Submitted", new { id = model.OrderId.Id });
+			}
+
+			return View("Add", model);
 		}
 
 		[HttpGet]
@@ -68,6 +79,7 @@ namespace ECom.Site.Areas.Shop.Controllers
 		public ActionResult Add()
 		{
 			OrderId activeOrderId = _readModel.GetUserActiveOrderId(UserId);
+			UserDetails userDetails = _readModel.GetUserDetails(UserId);
 
 			if (activeOrderId == null)
 			{
@@ -75,7 +87,7 @@ namespace ECom.Site.Areas.Shop.Controllers
 				_bus.Send(new CreateNewOrder(activeOrderId, UserId));
 			}
 
-			var model = new AddNewOrderViewModel(activeOrderId);
+			var model = new AddNewOrderViewModel(activeOrderId, userDetails.Email);
 
 			return View(model);
 		}

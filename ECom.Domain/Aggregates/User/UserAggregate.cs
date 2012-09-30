@@ -42,7 +42,16 @@ namespace ECom.Domain.Aggregates.User
 		}
 
 		public void Apply(UserLoggedInReported e)
+		{ }
+
+		public void SetEmailAddress(EmailAddress emailAddress)
 		{
+			Argument.ExpectNotNull(() => emailAddress);
+
+			ApplyChange(new UserEmailSet(_id, emailAddress));
 		}
+
+		public void Apply(UserEmailSet e)
+		{ }
 	}
 }

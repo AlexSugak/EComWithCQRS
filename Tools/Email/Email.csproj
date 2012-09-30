@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1A2F56CD-4A1C-4435-8D11-3736D18ABAE6}</ProjectGuid>
+    <ProjectGuid>{1A007DB4-B72A-42FA-9683-7F5B62C8BBDE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ECom.Messages</RootNamespace>
-    <AssemblyName>ECom.Messages</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>Email</RootNamespace>
+    <AssemblyName>Email</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -31,10 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RazorEngine">
+      <HintPath>..\..\Libraries\RazorEngine\RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\..\Libraries\RestSharp\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\RazorEngine\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,33 +49,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractIdentity.cs" />
-    <Compile Include="Command.cs" />
-    <Compile Include="ConcreteIdentity.cs" />
-    <Compile Include="Contracts.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Contracts.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EmailAddress.cs" />
-    <Compile Include="Event.cs" />
-    <Compile Include="IEventStore.cs" />
-    <Compile Include="IHandle.cs" />
-    <Compile Include="IMessage.cs" />
+    <Compile Include="EmailMessage.cs" />
+    <Compile Include="IEmailSender.cs" />
+    <Compile Include="IMessageBodyGenerator.cs" />
+    <Compile Include="MailGunEmailSender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Contracts.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Contracts.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ECom.Utility\ECom.Utility.csproj">
-      <Project>{7236D0AE-E702-4E06-9165-14D28E2678A0}</Project>
+    <ProjectReference Include="..\..\ECom.Messages\ECom.Messages.csproj">
+      <Project>{1a2f56cd-4a1c-4435-8d11-3736d18abae6}</Project>
+      <Name>ECom.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ECom.Utility\ECom.Utility.csproj">
+      <Project>{7236d0ae-e702-4e06-9165-14d28e2678a0}</Project>
       <Name>ECom.Utility</Name>
     </ProjectReference>
   </ItemGroup>

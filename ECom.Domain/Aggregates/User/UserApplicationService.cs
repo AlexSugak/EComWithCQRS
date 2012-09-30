@@ -8,8 +8,9 @@ using ECom.Utility;
 
 namespace ECom.Domain.Aggregates.User
 {
-	public class UserApplicationService 
-		: IHandle<ReportUserLoggedIn>
+	public class UserApplicationService : 
+		IHandle<ReportUserLoggedIn>,
+		IHandle<SetUserEmail>
 	{
 		private readonly IRepository<UserAggregate, UserId> _repository;
 
@@ -34,6 +35,15 @@ namespace ECom.Domain.Aggregates.User
 			}
 
 			user.ReportLoggedIn(cmd.UserName, cmd.PhotoUrl);
+
+			_repository.Save(user);
+		}
+
+		public void Handle(SetUserEmail cmd)
+		{
+			UserAggregate user = _repository.Get(cmd.Id);
+
+			user.SetEmailAddress(cmd.Email);
 
 			_repository.Save(user);
 		}

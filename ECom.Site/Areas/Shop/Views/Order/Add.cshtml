@@ -41,6 +41,7 @@
 			@Html.FormEditorFor(m => m.Quantity, "Quantity")
 
 			@Html.Hidden("OrderId", Model.OrderId.Id)
+			@Html.HiddenFor(m => m.Email)
 
 			<input type="submit" class="btn btn-primary" value="Add"/>
 		</div>
@@ -83,6 +84,13 @@
 				<br />
 				<br />
 				<div class="span3 offset9">
+					@if(String.IsNullOrWhiteSpace(Model.Email)) {
+						@Html.FormEditorFor(m => m.Email, "Email")
+					}
+					else {
+						@Html.HiddenFor(m => m.Email)
+					}
+
 					<input type="submit" class="btn btn-success" value="Submit"/>
 				</div>
 			</div>

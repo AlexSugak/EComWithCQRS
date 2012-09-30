@@ -13,6 +13,7 @@ namespace ECom.ReadModel.Views
 		public string ID { get; set; }
 		public string Name { get; set; }
 		public string PhotoUrl { get; set; }
+		public string Email { get; set; }
 
 		public UserDetails()
 		{
@@ -23,11 +24,13 @@ namespace ECom.ReadModel.Views
 			ID = email;
 			Name = name;
 			PhotoUrl = photoUrl ?? String.Empty;
+			Email = String.Empty;
 		}
 	}
 
 	public class UserDetailsView : ReadModelView,
-		IHandle<UserLoggedInReported>
+		IHandle<UserLoggedInReported>,
+		IHandle<UserEmailSet>
 	{
 		public UserDetailsView(IDtoManager manager, IReadModelFacade readModel)
 			: base(manager, readModel)
@@ -38,6 +41,11 @@ namespace ECom.ReadModel.Views
 		{
 			_manager.Delete<UserDetails>(e.Id);
 			_manager.Add<UserDetails>(new UserDetails(e.Id.Id, e.UserName, e.PhotoUrl));
+		}
+
+		public void Handle(UserEmailSet e)
+		{
+			_manager.Update<UserDetails>(e.Id, ud => ud.Email = e.Email.RawAddress);
 		}
 	}
 }

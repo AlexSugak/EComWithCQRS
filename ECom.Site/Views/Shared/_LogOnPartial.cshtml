@@ -1,6 +1,7 @@
 ﻿@if(Request.IsAuthenticated) {
 
 	var userDetails = ECom.Site.ServiceLocator.ReadModel.GetUserDetails(new ECom.Messages.UserId(User.Identity.Name));
+
 	if (!String.IsNullOrWhiteSpace(userDetails.PhotoUrl))
 	{
 		<img style="height:30px;" src="@userDetails.PhotoUrl" /> 

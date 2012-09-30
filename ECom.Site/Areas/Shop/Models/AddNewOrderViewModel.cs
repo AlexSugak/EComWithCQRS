@@ -16,11 +16,13 @@ namespace ECom.Site.Areas.Shop.Models
 		{
 		}
 
-		public AddNewOrderViewModel(OrderId orderId)
+		public AddNewOrderViewModel(OrderId orderId, string userEmail)
 		{
 			Argument.ExpectNotNull(() => orderId);
 
 			OrderId = orderId;
+			Email = userEmail;
+			OriginalEmail = userEmail;
 		}
 
 		public OrderId OrderId { get; set; }
@@ -35,6 +37,11 @@ namespace ECom.Site.Areas.Shop.Models
 		public string Size { get; set; }
 		public string Color { get; set; }
 		public int? Quantity { get; set; }
+
+		public string OriginalEmail { get; set; }
+		public string Email { get; set; }
+
+		public bool IsEmailChanged { get { return OriginalEmail != Email; } }
 
 		public List<OrderItemDetails> Items 
 		{ 

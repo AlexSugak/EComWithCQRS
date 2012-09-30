@@ -1,11 +1,5 @@
-﻿/* 
-* Copyright (c) 2012 Leonardo Cardoso (http://leocardz.com)
-* Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
-* and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
-*
-* Version: 0.4.47
-* 
-*/
+﻿
+
 (function ($) {
 	$.fn.linkToProductPreview = function (options) {
 
@@ -50,11 +44,21 @@
 							if (result.parsed) {
 								$('#Name').val(result.name);
 								$('#Description').val(result.description);
-								$('#Price').val(result.price);
+
+								if (result.price != undefined && result.price > 0) {
+									$('#Price').val(result.price);
+								}
+								else {
+									$('#Price').val('');
+								}
 
 								if (result.image != '' && result.image != null) {
 									$('#' + settings.productImageHidden).val(result.image);
 									$('#' + settings.productImageContainer).html('<img src="' + result.image + '"/>');
+								}
+								else {
+									$('#' + settings.productImageHidden).val('');
+									$('#' + settings.productImageContainer).html('');
 								}
 							}
 							else {

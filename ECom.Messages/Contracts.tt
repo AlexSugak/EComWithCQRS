@@ -25,6 +25,7 @@ let categoryName = string CategoryName;
 let discountId = DiscountId DiscountId;
 let name = string Name;
 let quantity = int Quantity;
+let email = EmailAddress Email;
 
 
 
@@ -35,6 +36,10 @@ UserCreated!(userId)
 
 ReportUserLoggedIn?(userId, string UserName, string PhotoUrl)
 UserLoggedInReported!(userId, string UserName, string PhotoUrl)
+
+SetUserEmail?(userId, email)
+UserEmailSet!(userId, email)
+
 
 
 // ORDER

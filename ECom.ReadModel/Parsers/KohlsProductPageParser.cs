@@ -20,7 +20,15 @@ namespace ECom.ReadModel.Parsers
 			string name = metaTags.First(m => m.GetAttributeValue("name") == "title").GetAttributeValue("content");
 			string description = metaTags.First(m => m.GetAttributeValue("name") == "description").GetAttributeValue("content");
 			string imageUrl = metaTags.First(m => m.GetAttributeValue("property") == "og:image").GetAttributeValue("content");
-			string priceText = document.FindHiddenField("ADD_CART_ITEM<>salePriceAmt").GetAttributeValue("value");
+
+			var priceHidden = document.FindHiddenField("ADD_CART_ITEM<>salePriceAmt");
+
+			if (priceHidden == null)
+			{
+				priceHidden = document.FindHiddenField("ADD_CART_ITEM_ARRAY<>salePriceAmt");
+			}
+
+			string priceText = priceHidden.GetAttributeValue("value");
 
 			return new ProductPageInfo(name, description, Decimal.Parse(priceText, NumberStyles.Currency), imageUrl);
 		}
