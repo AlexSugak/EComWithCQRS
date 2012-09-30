@@ -67,10 +67,6 @@
       <Project>{8a1f1bce-dd2c-49c7-84d3-0444ec1d676f}</Project>
       <Name>ECom.Site</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Tools\Email\Email.csproj">
-      <Project>{1a007db4-b72a-42fa-9683-7f5b62c8bbde}</Project>
-      <Name>Email</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

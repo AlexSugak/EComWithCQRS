@@ -64,9 +64,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECom.Console", "ECom.Consol
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{943B257B-AD7A-45FB-B22F-DE125E2E193A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Email", "Tools\Email\Email.csproj", "{1A007DB4-B72A-42FA-9683-7F5B62C8BBDE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Email.Tests", "Email.Tests\Email.Tests.csproj", "{558607D2-1066-4C02-AA52-8E8BFB9210C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Email", "Tools\Email\Email.csproj", "{1A007DB4-B72A-42FA-9683-7F5B62C8BBDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
