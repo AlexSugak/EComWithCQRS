@@ -73,7 +73,7 @@
 <div class="row">
 	<script type="text/javascript">
 		function onGoogleLoginClick() {
-			var loginSrc = '@Url.GoogleLoginUrl()';
+			var loginSrc = '@Html.Raw(Url.GoogleLoginUrl())';
 			window.location = loginSrc;
 		}
 	</script>
