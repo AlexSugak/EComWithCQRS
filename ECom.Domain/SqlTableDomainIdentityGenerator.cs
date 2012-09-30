@@ -40,7 +40,7 @@ namespace ECom.Domain
 					cmd.CommandText =
 @"
 BEGIN
-	INSERT INTO [ECom.EventStore].[dbo].[Identities] DEFAULT VALUES
+	INSERT INTO [dbo].[Identities] DEFAULT VALUES
 	SELECT @@IDENTITY
 END";
 
