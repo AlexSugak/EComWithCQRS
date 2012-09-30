@@ -62,17 +62,13 @@ namespace ECom.ReadModel.Views
 		}
 	}
 
-	public class OrderItemsView : 
+	public class OrderItemsView : ReadModelView,
 		IHandle<ProductAddedToOrder>,
 		IHandle<ItemRemovedFromOrder>
 	{
-		private IDtoManager _manager;
-
-		public OrderItemsView(IDtoManager manager)
+		public OrderItemsView(IDtoManager manager, IReadModelFacade readModel)
+			: base(manager, readModel)
 		{
-			Argument.ExpectNotNull(() => manager);
-
-			_manager = manager;
 		}
 
 		public void Handle(ProductAddedToOrder e)

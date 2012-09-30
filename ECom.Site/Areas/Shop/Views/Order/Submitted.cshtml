@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Submitted";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="content">
+
+	<h2>Thank you for your order.</h2>
+
+	<br />
+	<br />
+	<h3>You can see all your orders @Html.ActionLink("here", "MyOrders", "Order", new { Area = "Shop"}, null)</h3> 
+
+</div>

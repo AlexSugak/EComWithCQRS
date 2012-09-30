@@ -11,7 +11,19 @@ namespace ECom.Site.Helpers
 {
 	public static class InputHelpers
 	{
-		public static MvcHtmlString FormInputFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, string title, string @class = "")
+		public static MvcHtmlString FormDisplayFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, string title)
+		{
+			var result = new StringBuilder();
+
+			var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
+
+			result.AppendFormat("<dt>{0}:</dt>", title);
+			result.AppendFormat("<dd>{0}</dd>", html.DisplayFor(expression));
+
+			return new MvcHtmlString(result.ToString());
+		}
+
+		public static MvcHtmlString FormEditorFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, string title, string @class = "")
 		{
 			var result = new StringBuilder();
 

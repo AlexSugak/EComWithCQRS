@@ -67,7 +67,7 @@ deallocate cmds
 			var readModelRepo = new SimpleRepository(readModelDbProvider, SimpleRepositoryOptions.None);
 			var dtoManager = new SubSonicDtoManager(readModelRepo);
 
-			MessageHandlersRegister.RegisterEventHandlers(new [] { readModelAssembly }, bus, dtoManager);
+			MessageHandlersRegister.RegisterEventHandlers(new [] { readModelAssembly }, bus, dtoManager, new SubSonicReadModelFacade(readModelRepo));
 
 			//republish all events to read model views
 			IDataProvider eventStoreDbProvider = ProviderFactory.GetProvider(eventStoreConnectionString, DbClientTypeName.MsSql);

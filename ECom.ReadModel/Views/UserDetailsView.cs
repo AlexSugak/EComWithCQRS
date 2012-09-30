@@ -26,16 +26,12 @@ namespace ECom.ReadModel.Views
 		}
 	}
 
-	public class UserDetailsView :
+	public class UserDetailsView : ReadModelView,
 		IHandle<UserLoggedInReported>
 	{
-		private IDtoManager _manager;
-
-		public UserDetailsView(IDtoManager manager)
+		public UserDetailsView(IDtoManager manager, IReadModelFacade readModel)
+			: base(manager, readModel)
 		{
-			Argument.ExpectNotNull(() => manager);
-
-			_manager = manager;
 		}
 
 		public void Handle(UserLoggedInReported e)

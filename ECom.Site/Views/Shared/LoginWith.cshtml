@@ -73,13 +73,7 @@
 <div class="row">
 	<script type="text/javascript">
 		function onGoogleLoginClick() {
-			var loginSrc = 'https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile'
-					+ '&redirect_uri=' + encodeURI('@Url.Action("GoogleLogin", "Account", new { Area = String.Empty}, "http")')
-					+ '&response_type=code'
-					//+ '&state=' + getReturnUrl()
-					+ '&state=' + encodeURI('@Url.Action("GoogleLogin", "Account", new { Area = String.Empty}, "http")')
-					+ '&client_id=485526445533.apps.googleusercontent.com';
-
+			var loginSrc = '@Url.GoogleLoginUrl()';
 			window.location = loginSrc;
 		}
 	</script>

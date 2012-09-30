@@ -1,0 +1,29 @@
+﻿@using ECom.Site.Helpers
+@using MvcContrib.UI.Grid;
+@using MvcContrib.UI.Pager;
+@using MvcContrib.Pagination;
+@using ECom.Site.Areas.Shop.Models;
+
+@model UserOrdersViewModel
+
+@{
+    ViewBag.Title = "MyOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="content">
+	<h2>My Orders</h2>
+	<br />
+	<br />
+	<div class="row">
+		<div class="span12">
+			@Html.Grid(Model.Orders).Columns(column =>
+			{
+				column.For(x => Html.ActionLink(x.OrderId.ToString(), "Details", new { id = x.OrderId })).Header(@<div>Order Id</div>);
+				column.For(x => x.NumberOfItems);
+				column.For(x => x.Total);
+				column.For(x => x.Status);
+			}).Attributes(@class => "table table-striped").Empty("You have no orders currently.")
+		</div>
+	</div>
+</div>

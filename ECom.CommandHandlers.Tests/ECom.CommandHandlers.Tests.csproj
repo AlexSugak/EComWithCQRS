@@ -47,7 +47,9 @@
     <Compile Include="FailingCommandSpecification.cs" />
     <Compile Include="FakeEventStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Specifications\OrderCommandSpecifications.cs" />
     <Compile Include="Specifications\ProductCommandsSpecifications.cs" />
+    <Compile Include="Specifications\UserCommandSpecifications.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECom.Bus\ECom.Bus.csproj">

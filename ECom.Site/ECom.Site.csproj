@@ -118,8 +118,12 @@
     <Compile Include="Areas\Shop\Controllers\OrderController.cs" />
     <Compile Include="Areas\Shop\Models\AddNewOrderViewModel.cs" />
     <Compile Include="Areas\Shop\Models\AddNewOrderViewModelValidator.cs" />
+    <Compile Include="Areas\Shop\Models\OrderDetailsViewModel.cs" />
     <Compile Include="Areas\Shop\Models\OrderItemViewModel.cs" />
+    <Compile Include="Areas\Shop\Models\UserOrdersViewModel.cs" />
     <Compile Include="Areas\Shop\ShopAreaRegistration.cs" />
+    <Compile Include="Helpers\FacebookAuth.cs" />
+    <Compile Include="Helpers\GoogleAuth.cs" />
     <Compile Include="Helpers\InputHelpers.cs" />
     <Compile Include="Models\CommandEnvelopeViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductsListViewModel.cs" />
@@ -245,6 +249,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Areas\Shop\Views\Shared\EditorTemplates\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
   </ItemGroup>
   <ItemGroup>
@@ -305,12 +310,6 @@
     <Content Include="Areas\Shop\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Shop\Views\Shared\EditorTemplates\AddressViewModel.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Shop\Views\Shared\EditorTemplates\CreditCardViewModel.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Areas\Admin\Views\Category\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -318,6 +317,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\LoginWith.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shop\Views\Order\MyOrders.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shop\Views\Order\Submitted.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Shop\Views\Order\Details.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

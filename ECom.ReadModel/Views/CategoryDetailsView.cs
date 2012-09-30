@@ -22,17 +22,13 @@ namespace ECom.ReadModel.Views
 		}
 	}
 
-	public class CategoryDetailsView :
+	public class CategoryDetailsView : ReadModelView,
 		IHandle<CategoryRemoved>,
 		IHandle<CategoryCreated>
 	{
-		private IDtoManager _manager;
-
-		public CategoryDetailsView(IDtoManager manager)
+		public CategoryDetailsView(IDtoManager manager, IReadModelFacade readModel)
+			: base(manager, readModel)
         {
-			Argument.ExpectNotNull(() => manager);
-
-			_manager = manager;
         }
 
 		public void Handle(CategoryCreated message)

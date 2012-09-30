@@ -28,19 +28,15 @@ namespace ECom.ReadModel.Views
 		}
 	}
 
-	public class ProductListView : 
+	public class ProductListView : ReadModelView,
 		IHandle<ProductAdded>, 
 		IHandle<ProductPriceChanged>,
 		IHandle<ProductRemoved>,
         IHandle<ProductAddedToCategory>
     {
-		private IDtoManager _manager;
-
-        public ProductListView(IDtoManager manager)
+        public ProductListView(IDtoManager manager, IReadModelFacade readModel)
+			: base(manager, readModel)
         {
-			Argument.ExpectNotNull(() => manager);
-
-			_manager = manager;
         }
 
         public void Handle(ProductAdded message)

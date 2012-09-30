@@ -12,7 +12,8 @@ namespace ECom.CommandHandlers
     public class OrderApplicationService : 
 		IHandle<CreateNewOrder>,
 		IHandle<AddProductToOrder>,
-		IHandle<RemoveItemFromOrder>
+		IHandle<RemoveItemFromOrder>,
+		IHandle<SubmitOrder>
     {
         private readonly IRepository<OrderAggregate, OrderId> _repository;
 
@@ -50,6 +51,15 @@ namespace ECom.CommandHandlers
 			OrderAggregate order = _repository.Get(cmd.Id);
 
 			order.RemoveItem(cmd.OrderItemId);
+
+			_repository.Save(order);
+		}
+
+		public void Handle(SubmitOrder cmd)
+		{
+			OrderAggregate order = _repository.Get(cmd.Id);
+
+			order.Submit();
 
 			_repository.Save(order);
 		}

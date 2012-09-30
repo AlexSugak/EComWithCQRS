@@ -14,6 +14,7 @@ namespace ECom.Domain.Aggregates.Order
 		private UserId _userId;
 
 		private readonly List<OrderItem> _items = new List<OrderItem>();
+		private bool _isSubmitted;
 
         public OrderAggregate()
         {
@@ -65,5 +66,25 @@ namespace ECom.Domain.Aggregates.Order
 		{
 			_items.Remove(_items.Find(i => i.Id == e.OrderItemId)); 
 		}
-    }
+
+		public void Submit()
+		{
+			if (_isSubmitted)
+			{
+				throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Cannot submit order {0}. Order already submitted.", _id.Id));
+			}
+
+			if (!_items.Any())
+			{
+				throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Cannot submit order {0}. Order does not have any items added.", _id.Id));
+			}
+
+			ApplyChange(new OrderSubmited(_id, _userId));
+		}
+
+		private void Apply(OrderSubmited e)
+		{
+			_isSubmitted = true;
+		}
+	}
 }

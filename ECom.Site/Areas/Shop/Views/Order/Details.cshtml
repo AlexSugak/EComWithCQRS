@@ -1,0 +1,44 @@
+﻿@using ECom.Site.Helpers
+@using ECom.Site.Models
+@using MvcContrib.UI.Grid;
+@using MvcContrib.UI.Pager;
+@using MvcContrib.Pagination;
+@using ECom.Site.Areas.Shop.Models;
+
+@model OrderDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="content">
+<h2>Order Details</h2>
+	<br />
+	<br />
+	<div class="row">
+		<dl class="dl-horizontal">
+			@Html.FormDisplayFor(m => m.Details.Status, "Order Status")
+			@Html.FormDisplayFor(m => m.Details.Total, "Order Total")
+		</dl>
+	</div>
+
+	<div class="row">
+		<div class="span12">
+			@Html.Grid(Model.Items).Columns(column =>
+			{
+				column.For(x => !String.IsNullOrWhiteSpace(x.ImageUrl) 
+									? MvcHtmlString.Create("<a href='"  + x.ProductUrl + "' target='_blank'><img style='height:40px;' src='" + x.ImageUrl + "' /></a>") 
+									: MvcHtmlString.Empty);
+				column.For(x => MvcHtmlString.Create("<a href='"  + x.ProductUrl + "' target='_blank'>" + x.Name + "</a>"));
+				column.For(x => x.Size);
+				column.For(x => x.Color);
+				column.For(x => x.Price);
+				column.For(x => x.Quantity);
+				column.For(x => x.Total);
+			}).Attributes(@class => "table table-striped")
+		</div>
+	</div>
+</div>
+
+

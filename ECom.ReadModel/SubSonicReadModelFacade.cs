@@ -84,6 +84,14 @@ namespace ECom.ReadModel
 			return null;
 		}
 
+		public UserOrderDetails GetOrderDetails(OrderId orderId)
+		{
+			Argument.ExpectNotNull(() => orderId);
+
+			int rawOrderId = orderId.Id;
+			return _repository.Single<UserOrderDetails>(i => i.OrderId == rawOrderId);
+		}
+
 		public IEnumerable<OrderItemDetails> GetOrderItems(OrderId orderId)
 		{
 			Argument.ExpectNotNull(() => orderId);
@@ -92,7 +100,13 @@ namespace ECom.ReadModel
 			return _repository.Find<OrderItemDetails>(i => i.OrderId == rawOrderId);
 		}
 
+		public IEnumerable<UserOrderDetails> GetUserOders(UserId userId)
+		{
+			Argument.ExpectNotNull(() => userId);
 
+			string rawUserId = userId.Id;
+			return _repository.Find<UserOrderDetails>(i => i.UserId == rawUserId);
+		}
 
 
 

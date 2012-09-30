@@ -19,22 +19,60 @@ namespace ECom.Site.Areas.Shop.Controllers
 	[Authorize]
     public class OrderController : CqrsController
     {
+		private UserId UserId
+		{
+			get { return new UserId(User.Identity.Name); }
+		}
+
         protected override string GetAreaPath()
         {
             return "~/Areas/Shop/";
         }
 
 		[HttpGet]
+		public ActionResult Details(OrderId id)
+		{
+			Argument.ExpectNotNull(() => id);
+
+			UserOrderDetails userOrder = _readModel.GetOrderDetails(id);
+			IEnumerable<OrderItemDetails> orderItems = _readModel.GetOrderItems(id);
+
+			return View(new OrderDetailsViewModel(userOrder, orderItems));
+		}
+
+		[HttpGet]
+		public ActionResult MyOrders()
+		{
+			IEnumerable<UserOrderDetails> userOrders = _readModel.GetUserOders(UserId);
+
+			return View(new UserOrdersViewModel(userOrders));
+		}
+
+		[HttpPost]
+		public ActionResult Submit(AddNewOrderViewModel model)
+		{
+			var cmd = new SubmitOrder(model.OrderId);
+			_bus.Send(cmd);
+
+			return RedirectToAction("Submitted", new { id = model.OrderId.Id });
+		}
+
+		[HttpGet]
+		public ActionResult Submitted(OrderId id)
+		{
+			return View();
+		}
+
+		[HttpGet]
 		[OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
 		public ActionResult Add()
 		{
-			var userId = new UserId(User.Identity.Name);
-			OrderId activeOrderId = _readModel.GetUserActiveOrderId(userId);
+			OrderId activeOrderId = _readModel.GetUserActiveOrderId(UserId);
 
 			if (activeOrderId == null)
 			{
 				activeOrderId = new OrderId(ServiceLocator.IdentityGenerator.GenerateNewId());
-				_bus.Send(new CreateNewOrder(activeOrderId, userId));
+				_bus.Send(new CreateNewOrder(activeOrderId, UserId));
 			}
 
 			var model = new AddNewOrderViewModel(activeOrderId);

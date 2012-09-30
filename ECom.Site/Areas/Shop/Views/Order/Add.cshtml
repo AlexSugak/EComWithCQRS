@@ -32,13 +32,13 @@
 	@using (Html.BeginForm()) {
 	<div class="row">
 		<div class="span6">
-			@Html.FormInputFor(m => m.ProductUrl, "Product Url", "input-xxlarge")
-			@Html.FormInputFor(m => m.Name, "Product Name", "input-xxlarge")
-			@Html.FormInputFor(m => m.Description, "Description", "input-xxlarge" )
-			@Html.FormInputFor(m => m.Price, "Price", "input-xxlarge" )
-			@Html.FormInputFor(m => m.Size, "Size")
-			@Html.FormInputFor(m => m.Color, "Color")
-			@Html.FormInputFor(m => m.Quantity, "Quantity")
+			@Html.FormEditorFor(m => m.ProductUrl, "Product Url", "input-xxlarge")
+			@Html.FormEditorFor(m => m.Name, "Product Name", "input-xxlarge")
+			@Html.FormEditorFor(m => m.Description, "Description", "input-xxlarge" )
+			@Html.FormEditorFor(m => m.Price, "Price", "input-xxlarge" )
+			@Html.FormEditorFor(m => m.Size, "Size")
+			@Html.FormEditorFor(m => m.Color, "Color")
+			@Html.FormEditorFor(m => m.Quantity, "Quantity")
 
 			@Html.Hidden("OrderId", Model.OrderId.Id)
 
@@ -73,15 +73,19 @@
 
 	@if(Model.Items.Any())
 	{
-	<div class="row">
-		<div class="span3 offset9">
-			<strong>Total:</strong> @Model.Total 
-		</div>
-		<br />
-		<br />
-		<div class="span3 offset9">
-			<input type="submit" class="btn btn-success" value="Submit"/>
-		</div>
-	</div>
+		using (Html.BeginForm("Submit", "Order", FormMethod.Post)) {
+			<div class="row">
+				@Html.Hidden("OrderId", Model.OrderId.Id)
+
+				<div class="span3 offset9">
+					<strong>Total:</strong> @Model.Total 
+				</div>
+				<br />
+				<br />
+				<div class="span3 offset9">
+					<input type="submit" class="btn btn-success" value="Submit"/>
+				</div>
+			</div>
+		}
 	}
 </div>

@@ -25,17 +25,13 @@ namespace ECom.ReadModel.Views
 		}
 	}
 
-	public class CategoriesTreeView : 
+	public class CategoriesTreeView : ReadModelView,
 		IHandle<CategoryCreated>,
 		IHandle<CategoryMoved>
 	{
-		private IDtoManager _manager;
-
-		public CategoriesTreeView(IDtoManager manager)
+		public CategoriesTreeView(IDtoManager manager, IReadModelFacade readModel)
+			: base(manager, readModel)
         {
-			Argument.ExpectNotNull(() => manager);
-
-			_manager = manager;
         }
 
 		public void Handle(CategoryCreated message)

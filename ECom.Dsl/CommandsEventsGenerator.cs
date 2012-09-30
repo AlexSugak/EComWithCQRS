@@ -233,7 +233,7 @@ namespace ECom.Dsl
 					writer.Write(" && ");
 				}
 
-				writer.Write("{0}.Equals(target.{0})", name);
+				writer.Write("{0} == target.{0}", name);
 
 				first = false;
 			}

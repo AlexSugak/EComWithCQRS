@@ -78,7 +78,7 @@ namespace ECom.Site
 			var eventHandlersAssemblies = new [] { Assembly.Load(new AssemblyName("ECom.ReadModel")) };
 
 			MessageHandlersRegister.RegisterCommandHandlers(commandHandlersAssemblies, bus, eventStore);
-			MessageHandlersRegister.RegisterEventHandlers(eventHandlersAssemblies, bus, dtoManager);
+			MessageHandlersRegister.RegisterEventHandlers(eventHandlersAssemblies, bus, dtoManager, readModel);
 
             ServiceLocator.Bus = bus;
             ServiceLocator.ReadModel = readModel;

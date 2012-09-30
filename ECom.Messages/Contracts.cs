@@ -30,7 +30,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id);
+			return Id == target.Id;
 		}
 		public override int GetHashCode()
 		{
@@ -80,7 +80,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && UserName.Equals(target.UserName) && PhotoUrl.Equals(target.PhotoUrl);
+			return Id == target.Id && UserName == target.UserName && PhotoUrl == target.PhotoUrl;
 		}
 		public override int GetHashCode()
 		{
@@ -130,7 +130,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && UserName.Equals(target.UserName) && PhotoUrl.Equals(target.PhotoUrl);
+			return Id == target.Id && UserName == target.UserName && PhotoUrl == target.PhotoUrl;
 		}
 		public override int GetHashCode()
 		{
@@ -178,7 +178,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && UserId.Equals(target.UserId);
+			return Id == target.Id && UserId == target.UserId;
 		}
 		public override int GetHashCode()
 		{
@@ -226,7 +226,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && UserId.Equals(target.UserId);
+			return Id == target.Id && UserId == target.UserId;
 		}
 		public override int GetHashCode()
 		{
@@ -290,7 +290,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && OrderItemId.Equals(target.OrderItemId) && ProductUri.Equals(target.ProductUri) && Name.Equals(target.Name) && Description.Equals(target.Description) && Price.Equals(target.Price) && Quantity.Equals(target.Quantity) && Size.Equals(target.Size) && Color.Equals(target.Color) && ImageUri.Equals(target.ImageUri);
+			return Id == target.Id && OrderItemId == target.OrderItemId && ProductUri == target.ProductUri && Name == target.Name && Description == target.Description && Price == target.Price && Quantity == target.Quantity && Size == target.Size && Color == target.Color && ImageUri == target.ImageUri;
 		}
 		public override int GetHashCode()
 		{
@@ -354,7 +354,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && OrderItemId.Equals(target.OrderItemId) && ProductUri.Equals(target.ProductUri) && Name.Equals(target.Name) && Description.Equals(target.Description) && Price.Equals(target.Price) && Quantity.Equals(target.Quantity) && Size.Equals(target.Size) && Color.Equals(target.Color) && ImageUri.Equals(target.ImageUri);
+			return Id == target.Id && OrderItemId == target.OrderItemId && ProductUri == target.ProductUri && Name == target.Name && Description == target.Description && Price == target.Price && Quantity == target.Quantity && Size == target.Size && Color == target.Color && ImageUri == target.ImageUri;
 		}
 		public override int GetHashCode()
 		{
@@ -402,7 +402,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && OrderItemId.Equals(target.OrderItemId);
+			return Id == target.Id && OrderItemId == target.OrderItemId;
 		}
 		public override int GetHashCode()
 		{
@@ -450,7 +450,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && OrderItemId.Equals(target.OrderItemId);
+			return Id == target.Id && OrderItemId == target.OrderItemId;
 		}
 		public override int GetHashCode()
 		{
@@ -496,7 +496,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id);
+			return Id == target.Id;
 		}
 		public override int GetHashCode()
 		{
@@ -526,10 +526,12 @@ namespace ECom.Messages
 	{
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
+		public UserId UserId { get; set; }
 		public OrderSubmited () {}
-		public OrderSubmited (OrderId orderId)
+		public OrderSubmited (OrderId orderId, UserId userId)
 		{
 			Id = orderId;
+			UserId = userId;
 		}
 		public override bool Equals(object obj)
 		{
@@ -542,11 +544,11 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id);
+			return Id == target.Id && UserId == target.UserId;
 		}
 		public override int GetHashCode()
 		{
-			return Id.GetHashCode();
+			return Id.GetHashCode() ^ UserId.GetHashCode();
 		}
 		public static bool operator ==(OrderSubmited a, OrderSubmited b)
 		{
@@ -592,7 +594,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && Name.Equals(target.Name) && Price.Equals(target.Price);
+			return Id == target.Id && Name == target.Name && Price == target.Price;
 		}
 		public override int GetHashCode()
 		{
@@ -642,7 +644,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && Name.Equals(target.Name) && Price.Equals(target.Price);
+			return Id == target.Id && Name == target.Name && Price == target.Price;
 		}
 		public override int GetHashCode()
 		{
@@ -688,7 +690,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id);
+			return Id == target.Id;
 		}
 		public override int GetHashCode()
 		{
@@ -734,7 +736,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id);
+			return Id == target.Id;
 		}
 		public override int GetHashCode()
 		{
@@ -782,7 +784,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && NewPrice.Equals(target.NewPrice);
+			return Id == target.Id && NewPrice == target.NewPrice;
 		}
 		public override int GetHashCode()
 		{
@@ -830,7 +832,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && NewPrice.Equals(target.NewPrice);
+			return Id == target.Id && NewPrice == target.NewPrice;
 		}
 		public override int GetHashCode()
 		{
@@ -878,7 +880,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && TargetProductId.Equals(target.TargetProductId);
+			return Id == target.Id && TargetProductId == target.TargetProductId;
 		}
 		public override int GetHashCode()
 		{
@@ -926,7 +928,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && TargetProductId.Equals(target.TargetProductId);
+			return Id == target.Id && TargetProductId == target.TargetProductId;
 		}
 		public override int GetHashCode()
 		{
@@ -972,7 +974,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Name.Equals(target.Name);
+			return Name == target.Name;
 		}
 		public override int GetHashCode()
 		{
@@ -1020,7 +1022,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && Name.Equals(target.Name);
+			return Id == target.Id && Name == target.Name;
 		}
 		public override int GetHashCode()
 		{
@@ -1068,7 +1070,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Name.Equals(target.Name) && TargetCategory.Equals(target.TargetCategory);
+			return Name == target.Name && TargetCategory == target.TargetCategory;
 		}
 		public override int GetHashCode()
 		{
@@ -1118,7 +1120,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && Name.Equals(target.Name) && TargetCategory.Equals(target.TargetCategory);
+			return Id == target.Id && Name == target.Name && TargetCategory == target.TargetCategory;
 		}
 		public override int GetHashCode()
 		{
@@ -1164,7 +1166,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Name.Equals(target.Name);
+			return Name == target.Name;
 		}
 		public override int GetHashCode()
 		{
@@ -1212,7 +1214,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && Name.Equals(target.Name);
+			return Id == target.Id && Name == target.Name;
 		}
 		public override int GetHashCode()
 		{
@@ -1260,7 +1262,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && CategoryName.Equals(target.CategoryName);
+			return Id == target.Id && CategoryName == target.CategoryName;
 		}
 		public override int GetHashCode()
 		{
@@ -1308,7 +1310,7 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id.Equals(target.Id) && CategoryName.Equals(target.CategoryName);
+			return Id == target.Id && CategoryName == target.CategoryName;
 		}
 		public override int GetHashCode()
 		{

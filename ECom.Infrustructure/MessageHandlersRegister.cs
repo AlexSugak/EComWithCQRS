@@ -31,15 +31,15 @@ namespace ECom.Infrastructure
 
 		public static void RegisterCommandHandlers(IEnumerable<Assembly> cmdHndlrsAssemblies, Bus.Bus bus, IEventStore eventsStore)
 		{
-			RegisterHandlersInAssembly(cmdHndlrsAssemblies, typeof(ICommand), bus, typeof(IEventStore), eventsStore);
+			RegisterHandlersInAssembly(cmdHndlrsAssemblies, typeof(ICommand), bus, new[] { typeof(IEventStore) }, new[] { eventsStore });
 		}
 
-		public static void RegisterEventHandlers(IEnumerable<Assembly> eventHndlrsAssemblies, Bus.Bus bus, IDtoManager manager)
+		public static void RegisterEventHandlers(IEnumerable<Assembly> eventHndlrsAssemblies, Bus.Bus bus, IDtoManager manager, IReadModelFacade readModel)
 		{
-			RegisterHandlersInAssembly(eventHndlrsAssemblies, typeof(IEvent), bus, typeof(IDtoManager), manager);
+			RegisterHandlersInAssembly(eventHndlrsAssemblies, typeof(IEvent), bus, new[] { typeof(IDtoManager), typeof(IReadModelFacade) }, new object[] { manager, readModel });
 		}
 
-		private static void RegisterHandlersInAssembly(IEnumerable<Assembly> assemblies, Type messageType, Bus.Bus bus, Type ctorArgType, object ctorArg)
+		private static void RegisterHandlersInAssembly(IEnumerable<Assembly> assemblies, Type messageType, Bus.Bus bus, Type[] ctorArgTypes, object[] ctorArgs)
 		{
 			//among classes in handlers assemblies select any which handle specified message type
 			var handlerTypesWithMessages = assemblies
@@ -56,8 +56,8 @@ namespace ECom.Infrastructure
 
 			foreach (var handler in handlerTypesWithMessages)
 			{
-				var ctor = handler.Type.GetConstructor(new[] { ctorArgType });
-				var handlerInstance = ctor.Invoke(new[] { ctorArg });
+				var ctor = handler.Type.GetConstructor(ctorArgTypes);
+				var handlerInstance = ctor.Invoke(ctorArgs);
 
 				foreach (Type msgType in handler.MessageTypes)
 				{
@@ -73,28 +73,6 @@ namespace ECom.Infrastructure
 					genericRegister.Invoke(bus, new[] { handlerDelegate });
 				}
 			}
-
-			//var busType = bus.GetType();
-
-			//var eventHandlerTypes = assemblies.GetTypes().Where(t => t.Name.EndsWith(handlerNameEndsWith));
-			//foreach (var eventHandlerType in eventHandlerTypes)
-			//{
-			//	var ctor = eventHandlerType.GetConstructor(new[] { ctorArgType });
-			//	var hndlerInstance = ctor.Invoke(new[] { ctorArg });
-
-			//	var handlerMethods = eventHandlerType.GetMethods().Where(m => m.Name.Equals("Handle", StringComparison.OrdinalIgnoreCase));
-
-			//	foreach (var hndlMethod in handlerMethods)
-			//	{
-			//		var eventType = hndlMethod.GetParameters().First().ParameterType;
-			//		var actionType = typeof(Action<>).MakeGenericType(eventType);
-
-			//		var handler = Delegate.CreateDelegate(actionType, hndlerInstance, hndlMethod);
-
-			//		var genericRegister = busType.GetMethod("RegisterHandler").MakeGenericMethod(new[] { eventType });
-			//		genericRegister.Invoke(bus, new[] { handler });
-			//	}
-			//}
 		}
 	}
 }

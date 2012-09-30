@@ -28,16 +28,12 @@ namespace ECom.ReadModel.Views
 		}
 	}
 
-	public class ProductRelationshipsView
-			: IHandle<RelatedProductAdded>
+	public class ProductRelationshipsView : ReadModelView,
+			IHandle<RelatedProductAdded>
 	{
-		private IDtoManager _manager;
-
-		public ProductRelationshipsView(IDtoManager manager)
+		public ProductRelationshipsView(IDtoManager manager, IReadModelFacade readModel)
+			: base(manager, readModel)
 		{
-			Argument.ExpectNotNull(() => manager);
-
-			_manager = manager;
 		}
 
 		public void Handle(RelatedProductAdded message)
