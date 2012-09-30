@@ -26,7 +26,7 @@ namespace ECom.Site.Helpers
 		{
 			var result = new StringBuilder();
 
-			string redirectUrl = url.Encode(url.Action(redirectAction, redirectController, new { Area = String.Empty }, "http"));
+			string redirectUrl = url.Encode(url.AbsoluteAction(redirectAction, redirectController));
 
 			result.Append("https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile");
 			result.AppendFormat("&redirect_uri={0}", redirectUrl);

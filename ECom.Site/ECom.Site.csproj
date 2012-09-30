@@ -125,6 +125,7 @@
     <Compile Include="Helpers\FacebookAuth.cs" />
     <Compile Include="Helpers\GoogleAuth.cs" />
     <Compile Include="Helpers\InputHelpers.cs" />
+    <Compile Include="Helpers\UrlHelpers.cs" />
     <Compile Include="Models\CommandEnvelopeViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductsListViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
