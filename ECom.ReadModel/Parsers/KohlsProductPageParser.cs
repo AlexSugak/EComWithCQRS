@@ -16,7 +16,7 @@ namespace ECom.ReadModel.Parsers
 		{
 			var metaTags = document.QuerySelectorAll("meta");
 
-			//let if fire a NRE if some element is not found
+			//let if fire NRE if some element is not found
 			string name = metaTags.First(m => m.GetAttributeValue("name") == "title").GetAttributeValue("content");
 			string description = metaTags.First(m => m.GetAttributeValue("name") == "description").GetAttributeValue("content");
 			string imageUrl = metaTags.First(m => m.GetAttributeValue("property") == "og:image").GetAttributeValue("content");

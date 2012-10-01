@@ -8,6 +8,9 @@ namespace ECom.Site.Helpers
 {
 	public static class UrlHelpers
 	{
+		/// <summary>
+		/// Generates absolute url address for giben action and controller names
+		/// </summary>
 		public static string AbsoluteAction(this UrlHelper url, string action, string controller)
 		{
 			Uri requestUrl = url.RequestContext.HttpContext.Request.Url;

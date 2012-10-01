@@ -10,7 +10,7 @@ using ECom.Site.Controllers;
 namespace ECom.Site.Core
 {
 	/// <summary>
-	/// Uses command POST action name convention to fallback to generic command action if no specific action is defined
+	/// Uses command action name convention to fallback to generic command action if no specific command action is defined
 	/// </summary>
 	public class CqrsControllerActionInvoker : ControllerActionInvoker
 	{

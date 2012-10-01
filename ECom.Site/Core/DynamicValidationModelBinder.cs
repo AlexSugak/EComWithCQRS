@@ -10,6 +10,9 @@ using FluentValidation.Mvc;
 
 namespace ECom.Site.Core
 {
+	/// <summary>
+	/// Uses action attributes to dynamically select view model validator
+	/// </summary>
 	public class DynamicValidationModelBinder : DefaultModelBinder
 	{
 		private readonly IValidatorFactory _validatorFactory;

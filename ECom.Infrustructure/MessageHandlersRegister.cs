@@ -11,24 +11,6 @@ namespace ECom.Infrastructure
 {
 	public static class MessageHandlersRegister
 	{
-		//var prodComdsHndl = new ProductCommandHandler(eventsStore);
-		//bus.RegisterHandler<AddProduct>(prodComdsHndl.Handle);
-		//bus.RegisterHandler<ChangeProductPrice>(prodComdsHndl.Handle);
-
-		//var orderComdsHndl = new OrderCommandHandler(eventsStore);
-		//bus.RegisterHandler<AddProductToOrder>(orderComdsHndl.Handle);
-
-		//var productDetails = new ProductDetailsView(readModelRepository);
-
-		//bus.RegisterHandler<ProductAdded>(productDetails.Handle);
-		//bus.RegisterHandler<ProductPriceChanged>(productDetails.Handle);
-
-		//var productList = new ProductListView(readModelRepository);
-
-		//bus.RegisterHandler<ProductAdded>(productList.Handle);
-		//bus.RegisterHandler<ProductPriceChanged>(productList.Handle);
-
-
 		public static void RegisterCommandHandlers(IEnumerable<Assembly> cmdHndlrsAssemblies, Bus.Bus bus, IEventStore eventsStore)
 		{
 			RegisterHandlersInAssembly(cmdHndlrsAssemblies, typeof(ICommand), bus, new[] { typeof(IEventStore) }, new[] { eventsStore });

@@ -14,12 +14,12 @@ namespace ECom.ReadModel.Parsers
 	{
 		protected override ProductPageInfo ParsePage(HtmlNode document)
 		{
-			IEnumerable<HtmlNode> metaTags = document.QuerySelectorAll("meta"); 
+			IEnumerable<HtmlNode> metaTags = document.QuerySelectorAll("meta");
 
-			string name = GetValueSomewhereInThePage(document, "name", "title", metaTags);
-			string description = GetValueSomewhereInThePage(document, "description", "description", metaTags);
-			string priceText = GetValueSomewhereInThePage(document, "price", "price", metaTags);
-			string imageUrl = GetValueSomewhereInThePage(document, "image", "image", metaTags);
+			string name = GetValueSomewhereInThePage(document, new[] { "name", "title" }, metaTags);
+			string description = GetValueSomewhereInThePage(document, new[] { "description" }, metaTags);
+			string priceText = GetValueSomewhereInThePage(document, new[] { "price" }, metaTags);
+			string imageUrl = GetValueSomewhereInThePage(document, new[] { "image" }, metaTags);
 
 			if (!String.IsNullOrWhiteSpace(name) 
 				|| !String.IsNullOrWhiteSpace(description) 
@@ -33,31 +33,37 @@ namespace ECom.ReadModel.Parsers
 			return null;
 		}
 
-		private string GetValueSomewhereInThePage(HtmlNode document, string propertyName, string metaName, IEnumerable<HtmlNode> metaTags)
+		private string GetValueSomewhereInThePage(HtmlNode document, string[] names, IEnumerable<HtmlNode> metaTags)
 		{
 			string result = null;
 
-			var hiddenField = document.FindHiddenField(propertyName);
-			if (hiddenField != null)
+			var possibleNames = names.SelectMany(n => new[] { n, "og:" + n });
+
+			var metaField = metaTags.FirstOrDefault(m => m.HasAttribute("property") && possibleNames.Contains(m.GetAttributeValue("property")));
+			if (metaField == null)
 			{
-				result = hiddenField.GetAttributeValue("value");
+				metaField = metaTags.FirstOrDefault(m => m.HasAttribute("name") && possibleNames.Contains(m.GetAttributeValue("name")));
+			}
+
+			if (metaField != null)
+			{
+				result = metaField.GetAttributeValue("content");
 			}
 
 			if (String.IsNullOrWhiteSpace(result))
 			{
-				var ogMetaField = metaTags.FirstOrDefault(m => m.HasAttribute("property") && m.GetAttributeValue("property") == "og:" + propertyName);
-				if (ogMetaField != null)
+				foreach (var name in possibleNames)
 				{
-					result = ogMetaField.GetAttributeValue("content");
-				}
-			}
+					if (!String.IsNullOrWhiteSpace(result))
+					{
+						break;
+					}
 
-			if (String.IsNullOrWhiteSpace(result))
-			{
-				var customMetaField = metaTags.FirstOrDefault(m => m.HasAttribute("name") && m.GetAttributeValue("name") == metaName);
-				if (customMetaField != null)
-				{
-					result = customMetaField.GetAttributeValue("content");
+					var hiddenField = document.FindHiddenField(name);
+					if (hiddenField != null)
+					{
+						result = hiddenField.GetAttributeValue("value");
+					}
 				}
 			}
 

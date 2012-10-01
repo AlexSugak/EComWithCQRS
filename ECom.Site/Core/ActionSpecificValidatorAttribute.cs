@@ -5,6 +5,9 @@ using System.Web;
 
 namespace ECom.Site.Core
 {
+	/// <summary>
+	/// Assigns specific validator type to be used when validating view model
+	/// </summary>
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
 	public class ActionSpecificValidatorAttribute : Attribute
 	{
