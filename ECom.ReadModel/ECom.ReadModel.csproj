@@ -83,6 +83,10 @@
     <Compile Include="Views\UserOrdersView.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ECom.Domain\ECom.Domain.csproj">
+      <Project>{b23e0f3c-00f1-4947-9a54-0541558e1e67}</Project>
+      <Name>ECom.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECom.Messages\ECom.Messages.csproj">
       <Project>{1A2F56CD-4A1C-4435-8D11-3736D18ABAE6}</Project>
       <Name>ECom.Messages</Name>

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using ECom.Domain.Exceptions;
 using ECom.Messages;
 using ECom.ReadModel.Parsers;
 using ECom.ReadModel.Views;
@@ -34,7 +35,7 @@ namespace ECom.Site.Areas.Shop.Controllers
 		{
 			Argument.ExpectNotNull(() => id);
 
-			UserOrderDetails userOrder = _readModel.GetOrderDetails(id);
+			UserOrderDetails userOrder = _readModel.GetOrderDetails(UserId, id);
 			IEnumerable<OrderItemDetails> orderItems = _readModel.GetOrderItems(id);
 
 			return View(new OrderDetailsViewModel(userOrder, orderItems));

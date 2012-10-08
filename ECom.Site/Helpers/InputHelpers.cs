@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using System.Web.WebPages;
 
 namespace ECom.Site.Helpers
 {
@@ -25,6 +26,16 @@ namespace ECom.Site.Helpers
 
 		public static MvcHtmlString FormEditorFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, string title, string @class = "")
 		{
+			return html.FormEditorFor(expression, title, html.TextBoxFor(expression, new { @class = @class }));
+		}
+
+		public static MvcHtmlString FormEditorFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, string title, HelperResult ediror)
+		{
+			return html.FormEditorFor(expression, title, MvcHtmlString.Create(ediror.ToHtmlString()));
+		}
+		
+		public static MvcHtmlString FormEditorFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, string title, MvcHtmlString editor)
+		{
 			var result = new StringBuilder();
 
 			var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
@@ -32,8 +43,7 @@ namespace ECom.Site.Helpers
 			result.AppendFormat("<div class='control-group {0}'>", HasErrors(html.ViewData, metadata.PropertyName) ? "error" : String.Empty);
 			result.AppendFormat("<label class='control-label'>{0}</label>", title);
 			result.Append("<div class='controls'>");
-			//result.AppendFormat("{0} {1}", html.TextBoxFor(expression, new { @class = @class }), html.ValidationMessageFor(expression));
-			result.Append(html.TextBoxFor(expression, new { @class = @class }));
+			result.Append(editor.ToHtmlString());
 			result.Append("</div>");
 			result.Append("</div>");
 

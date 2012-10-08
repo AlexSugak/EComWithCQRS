@@ -25,7 +25,7 @@ namespace ECom.ReadModel
 
 		OrderId GetUserActiveOrderId(UserId userId);
 
-		UserOrderDetails GetOrderDetails(OrderId orderId);
+		UserOrderDetails GetOrderDetails(UserId userId, OrderId orderId);
 
 		IEnumerable<OrderItemDetails> GetOrderItems(OrderId orderId);
 

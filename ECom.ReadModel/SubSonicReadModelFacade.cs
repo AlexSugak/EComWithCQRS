@@ -6,6 +6,7 @@ using SubSonic.Repository;
 using ECom.Utility;
 using ECom.ReadModel.Views;
 using ECom.Messages;
+using ECom.Domain.Exceptions;
 
 namespace ECom.ReadModel
 {
@@ -84,12 +85,19 @@ namespace ECom.ReadModel
 			return null;
 		}
 
-		public UserOrderDetails GetOrderDetails(OrderId orderId)
+		public UserOrderDetails GetOrderDetails(UserId userId, OrderId orderId)
 		{
+			Argument.ExpectNotNull(() => userId);
 			Argument.ExpectNotNull(() => orderId);
 
-			int rawOrderId = orderId.Id;
-			return _repository.Single<UserOrderDetails>(i => i.OrderId == rawOrderId);
+			var result = _repository.Single<UserOrderDetails>(UserOrderDetails.CompositeId(userId, orderId));
+
+			if (result == null)
+			{
+				throw new EntityNotFoundException("Order {0} not found for user {1}", orderId, userId);
+			}
+
+			return result;
 		}
 
 		public IEnumerable<OrderItemDetails> GetOrderItems(OrderId orderId)

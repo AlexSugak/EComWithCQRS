@@ -13,6 +13,13 @@
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
 }
 
+@helper PriceEditor()
+{
+	<div class="input-prepend">
+		<span class="add-on">$</span>@Html.TextBoxFor(m => m.Price, new { @class = "input-medium", size = 16})
+	</div>
+}
+
 <script src="@Url.Content("~/Scripts/linkToProductPreview.js")"></script>
 
 <script type="text/javascript">
@@ -29,13 +36,16 @@
 <div id="content">
 	<h2>Add new order</h2>
 
-	@using (Html.BeginForm()) {
+	@using (Html.BeginForm("Add", "Order", FormMethod.Post, new { @class="form-inline" })) {
 	<div class="row">
+		
 		<div class="span6">
 			@Html.FormEditorFor(m => m.ProductUrl, "Product Url", "input-xxlarge")
 			@Html.FormEditorFor(m => m.Name, "Product Name", "input-xxlarge")
-			@Html.FormEditorFor(m => m.Description, "Description", "input-xxlarge" )
-			@Html.FormEditorFor(m => m.Price, "Price", "input-xxlarge" )
+			@Html.FormEditorFor(m => m.Description, "Description", "input-xxlarge")
+
+			@Html.FormEditorFor(m => m.Price, "Price", PriceEditor())
+			
 			@Html.FormEditorFor(m => m.Size, "Size")
 			@Html.FormEditorFor(m => m.Color, "Color")
 			@Html.FormEditorFor(m => m.Quantity, "Quantity")
@@ -48,14 +58,14 @@
 		<div class="span3">
 			<div id="divProductImageContainer">
 				@if (!String.IsNullOrWhiteSpace(Model.ImageUrl))
-				{
+	{
 					<img src="@Model.ImageUrl" />
-				}
+	}
 			</div>
 			@Html.HiddenFor(m => m.ImageUrl)
 		</div>
 	</div>
-	}
+ }
 	<div class="row">
 		@Html.Grid(Model.Items).Columns(column =>
 		{

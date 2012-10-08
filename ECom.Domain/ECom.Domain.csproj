@@ -55,6 +55,7 @@
     <Compile Include="Aggregates\User\UserAggregate.cs" />
     <Compile Include="Aggregates\User\UserApplicationService.cs" />
     <Compile Include="AggregateRoot.cs" />
+    <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="IDomainIdentityGenerator.cs" />
     <Compile Include="Exceptions\AggregateRootNotFoundException.cs" />
     <Compile Include="Exceptions\EntityAlreadyExistsException.cs" />

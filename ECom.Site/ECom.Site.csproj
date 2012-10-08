@@ -126,6 +126,7 @@
     <Compile Include="Areas\Shop\Models\OrderItemViewModel.cs" />
     <Compile Include="Areas\Shop\Models\UserOrdersViewModel.cs" />
     <Compile Include="Areas\Shop\ShopAreaRegistration.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Core\ActionSpecificValidatorAttribute.cs" />
     <Compile Include="Core\DynamicValidationModelBinder.cs" />
     <Compile Include="Core\HtmlTemplateBase.cs" />
@@ -252,7 +253,6 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LogOnPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config">
@@ -274,7 +274,7 @@
       <Name>ECom.Bus</Name>
     </ProjectReference>
     <ProjectReference Include="..\ECom.Domain\ECom.Domain.csproj">
-      <Project>{B23E0F3C-00F1-4947-9A54-0541558E1E67}</Project>
+      <Project>{b23e0f3c-00f1-4947-9a54-0541558e1e67}</Project>
       <Name>ECom.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\ECom.EventStore.SQL\ECom.EventStore.SQL.csproj">
@@ -343,6 +343,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Shop\Views\Order\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Error\EntityNotFound.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Error\PageNotFound.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Error\General.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

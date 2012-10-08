@@ -32,12 +32,17 @@ namespace ECom.ReadModel.Views
 
 		public UserOrderDetails(UserId userId, OrderId orderId, int numberOfItems, decimal total, UserOrderStatus status)
 		{
-			ID = userId.Id + "-" + orderId.Id.ToString();
+			ID = CompositeId(userId, orderId);
 			UserId = userId.Id;
 			OrderId = orderId.Id;
 			NumberOfItems = numberOfItems;
 			Total = total;
 			Status = status;
+		}
+
+		public static string CompositeId(UserId userId, OrderId orderId)
+		{
+			return userId.Id + "-" + orderId.Id.ToString();
 		}
 	}
 

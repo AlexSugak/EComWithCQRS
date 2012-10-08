@@ -54,15 +54,11 @@ namespace ECom.ReadModel.Parsers
 			{
 				foreach (var name in possibleNames)
 				{
-					if (!String.IsNullOrWhiteSpace(result))
-					{
-						break;
-					}
-
 					var hiddenField = document.FindHiddenField(name);
 					if (hiddenField != null)
 					{
 						result = hiddenField.GetAttributeValue("value");
+						break;
 					}
 				}
 			}
