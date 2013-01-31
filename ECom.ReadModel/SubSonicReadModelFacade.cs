@@ -20,48 +20,6 @@ namespace ECom.ReadModel
             _repository = repository;
         }
 
-		public IEnumerable<CategoryNode> GetCategories()
-		{
-			return _repository.All<CategoryNode>();
-		}
-
-		public CategoryDetails GetCategoryDetails(string name)
-		{
-			Argument.ExpectNotNullOrWhiteSpace(() => name);
-
-			return _repository.Single<CategoryDetails>(p => p.ID == name);
-		}
-
-		public IEnumerable<ProductList> GetProducts(int pageNum, int pageSize, out int totalCount)
-        {
-			return GetDtosPaged<ProductList>(pageNum, pageSize, out totalCount);
-        }
-
-        public IEnumerable<ProductList> GetCategoryProducts(string categoryName)
-        {
-            Argument.ExpectNotNullOrWhiteSpace(() => categoryName);
-
-            return _repository.Find<ProductList>(p => p.Category == categoryName);
-        }
-
-        public ProductDetails GetProductDetails(ProductId id)
-        {
-			Argument.ExpectNotNull(() => id);
-
-			var productId = id.GetId();
-			return _repository.Single<ProductDetails>(p => p.ID == productId);
-        }
-
-		public IEnumerable<ProductRelationship> GetProductRelationships(ProductId id)
-		{
-			Argument.ExpectNotNull(() => id);
-
-			var productId = id.GetId();
-			return _repository.Find<ProductRelationship>(p => p.ParentProductId == productId);
-		}
-
-
-
 		public UserDetails GetUserDetails(UserId userId)
 		{
 			Argument.ExpectNotNull(() => userId);

@@ -20,11 +20,6 @@ namespace ECom.ReadModel
 			_repository = repository;
 		}
 
-		public T Get<T>(Expression<Func<T, bool>> by) where T : Dto, new()
-		{
-			return _repository.Single<T>(by);
-		}
-
 		public void Add<T>(T dto) where T : Dto, new()
 		{
 			_repository.Add(dto);

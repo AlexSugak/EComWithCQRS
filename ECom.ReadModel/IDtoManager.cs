@@ -9,7 +9,6 @@ namespace ECom.ReadModel
 {
 	public interface IDtoManager
 	{
-		T Get<T>(Expression<Func<T, bool>> by) where T : Dto, new();
 		void Add<T>(T dto) where T : Dto, new();
 		void Delete<T>(IIdentity id) where T : Dto, new();
 		void Delete<T>(string id) where T : Dto, new();

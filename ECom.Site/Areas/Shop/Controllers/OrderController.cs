@@ -150,7 +150,7 @@ namespace ECom.Site.Areas.Shop.Controllers
 					}, JsonRequestBehavior.AllowGet);
 				}
 			}
-			catch (Exception)//if product page parsing failed - ignore and let user enter product details manually
+			catch (Exception)//if product page parsing failed - ignore and let user enter all product details manually
 			{
 			}
 

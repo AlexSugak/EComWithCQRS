@@ -73,12 +73,7 @@
     <Compile Include="SubSonicReadModelFacade.cs" />
     <Compile Include="Views\ReadModelView.cs" />
     <Compile Include="Views\UserActiveOrderView.cs" />
-    <Compile Include="Views\CategoriesTreeView.cs" />
-    <Compile Include="Views\CategoryDetailsView.cs" />
     <Compile Include="Views\OrderItemsView.cs" />
-    <Compile Include="Views\ProductDetailsView.cs" />
-    <Compile Include="Views\ProductListView.cs" />
-    <Compile Include="Views\ProductRelationshipsView.cs" />
     <Compile Include="Views\UserDetailsView.cs" />
     <Compile Include="Views\UserOrdersView.cs" />
   </ItemGroup>

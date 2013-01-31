@@ -114,10 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
-    <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
-    <Compile Include="Areas\Admin\Models\CategoriesTreeViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\ProductDetailsViewModel.cs" />
     <Compile Include="Areas\Shop\Controllers\OrderController.cs" />
     <Compile Include="Areas\Shop\Models\AddNewOrderViewModel.cs" />
     <Compile Include="Areas\Shop\Models\AddNewOrderViewModelBeforeSubmitValidator.cs" />
@@ -138,7 +134,6 @@
     <Compile Include="Helpers\InputHelpers.cs" />
     <Compile Include="Helpers\UrlHelpers.cs" />
     <Compile Include="Models\CommandEnvelopeViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\ProductsListViewModel.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CqrsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -262,6 +257,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Shop\Views\Shared\EditorTemplates\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
@@ -307,28 +304,16 @@
     <Content Include="Areas\Admin\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Shared\CommandControl.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\CommandBody.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Admin\Views\Product\Details.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Admin\Views\Category\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Shared\EditorTemplates\Object.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Shop\Views\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Admin\Views\Category\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Shop\Views\Order\Add.cshtml" />
