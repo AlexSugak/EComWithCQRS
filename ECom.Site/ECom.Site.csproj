@@ -126,6 +126,7 @@
     <Compile Include="Areas\Shop\Models\OrderItemViewModel.cs" />
     <Compile Include="Areas\Shop\Models\UserOrdersViewModel.cs" />
     <Compile Include="Areas\Shop\ShopAreaRegistration.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Core\ActionSpecificValidatorAttribute.cs" />
     <Compile Include="Core\DynamicValidationModelBinder.cs" />

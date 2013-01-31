@@ -35,7 +35,8 @@ namespace ECom.Site.Areas.Shop.Controllers
 		{
 			Argument.ExpectNotNull(() => id);
 
-			UserOrderDetails userOrder = _readModel.GetOrderDetails(UserId, id);
+			UserOrderDetails userOrder = ThrowNotFoundIfNull(_readModel.GetOrderDetails(UserId, id), "Order {0} not found for user {1}", id.Id, UserId.Id);
+
 			IEnumerable<OrderItemDetails> orderItems = _readModel.GetOrderItems(id);
 
 			return View(new OrderDetailsViewModel(userOrder, orderItems));
@@ -130,14 +131,12 @@ namespace ECom.Site.Areas.Shop.Controllers
 		{
 			Argument.ExpectNotNullOrWhiteSpace(() => productUrl);
 
-			ProductPageInfo productInfo = null;
-
 			try
 			{
 				var url = new Uri(productUrl);
-				var parser = ServiceLocator.ProductPageParserFactory.Create(url);
+				IProductPageParser parser = ServiceLocator.ProductPageParserFactory.Create(url);
 
-				productInfo = parser.Parse(url);
+				ProductPageInfo productInfo = parser.Parse(url);
 
 				if (productInfo != null)
 				{
