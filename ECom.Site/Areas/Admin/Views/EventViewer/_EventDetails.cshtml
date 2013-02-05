@@ -1,0 +1,45 @@
+﻿@model ECom.Messages.EventWrapper
+
+<h2>Event Details</h2>
+<br />
+
+<div class="divRow">
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.EventId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EventId)
+    </div>
+</div>
+<div class="divRow">
+    <div class="display-label">
+        Aggregate type
+    </div>
+    <div class="display-field">
+        @ViewBag.EventType
+    </div>
+</div>
+<div class="divRow">
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.EventName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EventName)
+    </div>
+</div>
+<div class="divRow">
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.EventDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EventDate)
+    </div>
+</div>
+<div class="divRow">
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.EventVersion)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EventVersion)
+    </div>
+</div>

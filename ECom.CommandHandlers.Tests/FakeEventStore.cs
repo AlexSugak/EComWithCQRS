@@ -59,6 +59,18 @@ namespace ECom.CommandHandlers.Tests
             return _events[aggregateId.GetId()].Cast<IEvent<T>>();
         }
 
+        // just to avoid the build error
+        public IEnumerable<EventWrapper> GetEventsForAggregateWithDate<T>(T aggregateId)
+            where T : IIdentity
+        {
+            if (!_events.ContainsKey(aggregateId.GetId()))
+            {
+                return Enumerable.Empty<EventWrapper>();
+            }
+
+            return _events[aggregateId.GetId()].Cast<EventWrapper>();
+        }
+
         public IEnumerable<IEvent> NewEvents()
         {
             return _newEvents;

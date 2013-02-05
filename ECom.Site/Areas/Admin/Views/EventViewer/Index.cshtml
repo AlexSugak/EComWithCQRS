@@ -1,0 +1,87 @@
+﻿@using ECom.Site.Helpers
+@using ECom.Site.Models
+@using MvcContrib.UI.Grid;
+@using ECom.Site.Core;
+
+@model ECom.Site.Areas.Admin.Models.EventViewerViewModel
+@{
+    ViewBag.Title = "Event Viewer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@helper ArrowIcon(string field, string sort_field, string sort_order)
+{
+    if (field == sort_field)
+    {
+        if (sort_order == "ASC")
+        {
+            <img src="~/Content/images/sort_asc.png" alt="ASC" />
+        }
+        else
+        {
+            <img src="~/Content/images/sort_desc.png" alt="DESC" />
+        }
+    }
+}
+
+<div id="content">
+    <h2>Event Viewer</h2>
+    <br />
+
+    @using (Html.BeginForm("Index", "EventViewer", FormMethod.Get, new { @style = "margin-bottom: 0px;" }))
+    {
+        <div class="top">
+            @Html.Label("aggregateType", "Type", new { @style = "display: inline;" })
+            @Html.DropDownList("aggregateType", Model.AvailableEventTypes, new { @style = "margin-top: 10px;" })
+
+            @Html.Label("AggregateId", "Aggregate ID", new { @style = "display: inline; margin-left: 20px;" })
+            @Html.TextBoxFor(model => model.AggregateId, new { @maxlength="36", @size="36", @style = "margin-top: 10px;" })
+
+            <input type="submit" value="Search" class="btn btn-small" style="margin-left: 40px;" />
+            <br />
+            @Html.ValidationMessageFor(model => model.AggregateId)
+        </div>
+    }
+        
+    <div class="bottom">   
+        <div class="left">   
+            @Html.Grid(Model.Events).Columns(column =>
+            {
+                column.For(x => x.EventId)
+                    .Header(@<div>@Html.ActionLink("Event Id", "Index", new { aggregateType = Model.SelectedEventType, AggregateId = Model.AggregateId, sortField = "ID" })
+                                @ArrowIcon("ID", ((SortFieldEnum)Session["SortField"]).ToString(), ((SortOrderEnum)Session["SortOrder"]).ToString())
+                            </div>);
+                column.For(x => x.EventName)
+                    .Header(@<div>@Html.ActionLink("Event Name", "Index", new { aggregateType = Model.SelectedEventType, AggregateId = Model.AggregateId, sortField = "NAME" })
+                                @ArrowIcon("NAME", ((SortFieldEnum)Session["SortField"]).ToString(), ((SortOrderEnum)Session["SortOrder"]).ToString())
+                             </div>);
+                column.For(x => x.EventDate)
+                    .Header(@<div>@Html.ActionLink("Event Date", "Index", new { aggregateType = Model.SelectedEventType, AggregateId = Model.AggregateId, sortField = "DATE" })
+                                @ArrowIcon("DATE", ((SortFieldEnum)Session["SortField"]).ToString(), ((SortOrderEnum)Session["SortOrder"]).ToString())
+                             </div>);
+            }).Attributes(new Dictionary<string, object>() { {"class", "table table-striped"}, {"id", "EventTable"} }).RowAttributes(data => new Dictionary<string, object>() { {"id", data.Item.EventVersion} })
+     	
+        </div>
+        <div id="detailsDiv" class="right">   
+        </div>
+    </div>
+    
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#EventTable tbody tr").click(function () {
+            var version = $(this).attr('id');
+            var id = $("#AggregateId").val();
+            var type = $("#aggregateType option:selected").val();
+
+            $.ajax({
+                url: '@Url.Action("Details","EventViewer")',
+                type: 'GET',
+                data: { aggregateType: type, aggregateId: id, version: version },
+                success: function (data) { $("#detailsDiv").empty().append(data); },
+                error: function() { alert("error"); }
+            });
+        })
+    })
+</script>
