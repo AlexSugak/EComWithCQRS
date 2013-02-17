@@ -13,7 +13,9 @@ namespace ECom.Messages
         IEnumerable<IEvent<T>> GetEventsForAggregate<T>(T aggregateId)
                                     where T : IIdentity;
 
-        IEnumerable<EventWrapper> GetEventsForAggregateWithDate<T>(T aggregateId)
-                            where T : IIdentity;
+        IEnumerable<IEvent<T>> GetEventsForAggregate<T>(T aggregateId, bool showAllEvents)
+                                    where T : IIdentity;
+
+        string GetAggregateType(string aggregateId);
     }
 }

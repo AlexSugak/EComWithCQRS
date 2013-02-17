@@ -52,7 +52,6 @@
     </Compile>
     <Compile Include="EmailAddress.cs" />
     <Compile Include="Event.cs" />
-    <Compile Include="EventWrapper.cs" />
     <Compile Include="IEventStore.cs" />
     <Compile Include="IHandle.cs" />
     <Compile Include="IMessage.cs" />

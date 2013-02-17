@@ -1,36 +1,29 @@
-﻿using System;
+﻿using ECom.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Web;
 using ECom.Utility;
 using System.ComponentModel;
 
-namespace ECom.Messages
+namespace ECom.Site.Areas.Admin.Models
 {
-    public class EventWrapper
+    public class EventViewModel
     {
-        public EventWrapper() { }
+        public EventViewModel() { }
 
-        public EventWrapper(IEvent eventObj, string date)
+        public EventViewModel(IEvent eventObj)
         {
             string classNameReversed = eventObj.ToString().Reverse();
 
-            EventId         = ((IEvent<IIdentity>)eventObj).Id.GetId();
+            AggregateId     = ((IEvent<IIdentity>)eventObj).Id.GetId();
             EventName       = classNameReversed.Substring(0, classNameReversed.IndexOf('.')).Reverse().Wordify();
             EventVersion    = ((IEvent<IIdentity>)eventObj).Version;
-
-            try
-            {
-                EventDate = Convert.ToDateTime(date);
-            }
-            catch (FormatException)
-            {
-                EventDate = DateTime.MinValue;
-            }
+            EventDate       = ((IEvent<IIdentity>)eventObj).Date;
         }
 
         [DisplayName("Aggregate ID")]
-        public string EventId { get; set; }
+        public string AggregateId { get; set; }
 
         [DisplayName("Event name")]
         public string EventName { get; set; }

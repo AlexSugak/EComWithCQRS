@@ -32,5 +32,13 @@
     width: 300px;
 }
 .divRow {
-    height: 30px;
+    height: 40px;
+}
+.selectedRow {
+    font-weight: bold;
+}
+.display-details {
+    color: #654100;
+    float: left;
+    font-size: medium;
 }

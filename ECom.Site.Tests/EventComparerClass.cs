@@ -4,21 +4,22 @@ using ECom.Site;
 using System.Collections.Generic;
 using ECom.Messages;
 using ECom.Site.Core;
+using ECom.Site.Areas.Admin.Models;
 
 namespace ECom.Site.Tests
 {
     [TestClass]
     public class EventComparerClass
     {
-        private readonly static List<EventWrapper> testList;
+        private readonly static List<EventViewModel> testList;
 
         static EventComparerClass()
         {
-            testList = new List<EventWrapper>() 
+            testList = new List<EventViewModel>() 
                 {
-                    new EventWrapper() {EventName = "ccc", EventDate = new DateTime(2013, 1, 23)},
-                    new EventWrapper() {EventName = "aaa", EventDate = new DateTime(2013, 1, 21)},
-                    new EventWrapper() {EventName = "bbb", EventDate = new DateTime(2013, 1, 22)}
+                    new EventViewModel() {EventName = "ccc", EventDate = new DateTime(2013, 1, 23)},
+                    new EventViewModel() {EventName = "aaa", EventDate = new DateTime(2013, 1, 21)},
+                    new EventViewModel() {EventName = "bbb", EventDate = new DateTime(2013, 1, 22)}
                 };
         }
         

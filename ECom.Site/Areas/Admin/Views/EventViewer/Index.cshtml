@@ -31,15 +31,11 @@
     @using (Html.BeginForm("Index", "EventViewer", FormMethod.Get, new { @style = "margin-bottom: 0px;" }))
     {
         <div class="top">
-            @Html.Label("aggregateType", "Type", new { @style = "display: inline;" })
-            @Html.DropDownList("aggregateType", Model.AvailableEventTypes, new { @style = "margin-top: 10px;" })
-
             @Html.Label("AggregateId", "Aggregate ID", new { @style = "display: inline; margin-left: 20px;" })
             @Html.TextBoxFor(model => model.AggregateId, new { @maxlength="36", @size="36", @style = "margin-top: 10px;" })
 
             <input type="submit" value="Search" class="btn btn-small" style="margin-left: 40px;" />
             <br />
-            @Html.ValidationMessageFor(model => model.AggregateId)
         </div>
     }
         
@@ -47,20 +43,21 @@
         <div class="left">   
             @Html.Grid(Model.Events).Columns(column =>
             {
-                column.For(x => x.EventId)
-                    .Header(@<div>@Html.ActionLink("Event Id", "Index", new { aggregateType = Model.SelectedEventType, AggregateId = Model.AggregateId, sortField = "ID" })
+                column.For(x => x.AggregateId)
+                    .Header(@<div>@Html.ActionLink("Aggregate Id", "Index", new { AggregateId = Model.AggregateId, sortField = "ID" })
                                 @ArrowIcon("ID", ((SortFieldEnum)Session["SortField"]).ToString(), ((SortOrderEnum)Session["SortOrder"]).ToString())
                             </div>);
                 column.For(x => x.EventName)
-                    .Header(@<div>@Html.ActionLink("Event Name", "Index", new { aggregateType = Model.SelectedEventType, AggregateId = Model.AggregateId, sortField = "NAME" })
+                    .Header(@<div>@Html.ActionLink("Event Name", "Index", new { AggregateId = Model.AggregateId, sortField = "NAME" })
                                 @ArrowIcon("NAME", ((SortFieldEnum)Session["SortField"]).ToString(), ((SortOrderEnum)Session["SortOrder"]).ToString())
                              </div>);
                 column.For(x => x.EventDate)
-                    .Header(@<div>@Html.ActionLink("Event Date", "Index", new { aggregateType = Model.SelectedEventType, AggregateId = Model.AggregateId, sortField = "DATE" })
+                    .Header(@<div>@Html.ActionLink("Event Date", "Index", new { AggregateId = Model.AggregateId, sortField = "DATE" })
                                 @ArrowIcon("DATE", ((SortFieldEnum)Session["SortField"]).ToString(), ((SortOrderEnum)Session["SortOrder"]).ToString())
                              </div>);
             }).Attributes(new Dictionary<string, object>() { {"class", "table table-striped"}, {"id", "EventTable"} }).RowAttributes(data => new Dictionary<string, object>() { {"id", data.Item.EventVersion} })
      	
+            @Html.BootPager(Model.Events)
         </div>
         <div id="detailsDiv" class="right">   
         </div>
@@ -72,8 +69,11 @@
     $(document).ready(function () {
         $("#EventTable tbody tr").click(function () {
             var version = $(this).attr('id');
-            var id = $("#AggregateId").val();
+            var id = $(this).find("td:first").html();
             var type = $("#aggregateType option:selected").val();
+
+            $("#EventTable tbody tr").removeClass('selectedRow');
+            $(this).addClass('selectedRow');
 
             $.ajax({
                 url: '@Url.Action("Details","EventViewer")',

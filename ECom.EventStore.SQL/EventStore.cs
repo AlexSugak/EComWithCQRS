@@ -142,12 +142,13 @@ namespace ECom.EventStore.SQL
             return events;
         }
 
-        public IEnumerable<EventWrapper> GetEventsForAggregateWithDate<T>(T aggregateId)
+        public IEnumerable<IEvent<T>> GetEventsForAggregate<T>(T aggregateId, bool showAllEvents)
             where T : IIdentity
         {
-            var events = new List<EventWrapper>();
+            var events = new List<IEvent<T>>();
 
-            var commandText = @"SELECT Event, Date FROM [Events] WHERE [AggregateId] = @aggregateId ORDER BY [Version] ASC";
+            var whereClause = @"WHERE [AggregateId] = @aggregateId";
+            var commandText = @"SELECT Event FROM [Events] " + (showAllEvents ? string.Empty : whereClause) + @" ORDER BY [Version] ASC";
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -155,19 +156,42 @@ namespace ECom.EventStore.SQL
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
-                    command.Parameters.Add(new SqlParameter("@aggregateId", aggregateId.GetId()));
+                    if (!showAllEvents)
+                    {
+                        command.Parameters.Add(new SqlParameter("@aggregateId", aggregateId.GetId()));
+                    }
 
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            events.Add(new EventWrapper(Deserialize<IEvent<T>>((byte[])reader["Event"]), reader["Date"].ToString()));
+                            events.Add(Deserialize<IEvent<T>>((byte[])reader["Event"]));
                         }
                     }
                 }
             }
 
             return events;
+        }
+
+        public string GetAggregateType(string aggregateId)
+        {
+            var commandText = @"SELECT [Type] FROM [Aggregates] WHERE [AggregateId] = @aggregateId";
+            string type = string.Empty;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    command.Parameters.Add(new SqlParameter("@aggregateId", aggregateId));
+
+                    type = (string)command.ExecuteScalar();
+                }
+            }
+
+            return type;
         }
 
         private byte[] Serialize(object theObject)

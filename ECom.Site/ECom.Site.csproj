@@ -64,6 +64,9 @@
     <Reference Include="RazorEngine">
       <HintPath>..\Libraries\RazorEngine\RazorEngine.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\packages\ServiceStack.Text.3.9.35\lib\net35\ServiceStack.Text.dll</HintPath>
+    </Reference>
     <Reference Include="SubSonic.Core">
       <HintPath>..\Libraries\SubSonic.Core.dll</HintPath>
     </Reference>
@@ -119,6 +122,7 @@
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Models\CategoriesTreeViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EventViewerViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\EventViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductDetailsViewModel.cs" />
     <Compile Include="Areas\Shop\Controllers\OrderController.cs" />
     <Compile Include="Areas\Shop\Models\AddNewOrderViewModel.cs" />

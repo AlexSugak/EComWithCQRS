@@ -12,6 +12,8 @@ using ECom.Site.Areas.Admin.Models;
 using ECom.Site.Core;
 using MvcContrib.Pagination;
 using System.ComponentModel.DataAnnotations;
+using ServiceStack.Text;
+using System.ComponentModel;
 
 namespace ECom.Site.Areas.Admin.Controllers
 {
@@ -22,46 +24,67 @@ namespace ECom.Site.Areas.Admin.Controllers
         public EventViewerController()
 			: base()
 		{
-            _storage = new EventStore.SQL.EventStore(ConfigurationManager.ConnectionStrings["EventStore"].ConnectionString, _bus);
+            _storage = ServiceLocator.EventStore;
 		}
-        
-        [HttpGet]
-        public ActionResult Index(string aggregateType, string AggregateId, string sortField)
+
+        public EventViewerController(IEventStore storage)
+            : base()
         {
-            IIdentity id = new OrderId(0);
-            
-            if (ModelState.IsValidField("AggregateId") && !string.IsNullOrEmpty(AggregateId))
+            _storage = storage;
+        }
+
+        [HttpGet]
+        public ActionResult Index(string AggregateId, string sortField, int? page)
+        {
+            IIdentity id = new NullId();
+            bool showAllEvents = true;
+            string aggregateType = string.Empty;
+
+            if (!string.IsNullOrEmpty(AggregateId))
             {
-                id = ConvertAggregateId(aggregateType, AggregateId, id);
+                aggregateType = _storage.GetAggregateType(AggregateId);
+                id = GetTypedAggregateId(AggregateId, aggregateType);
+                showAllEvents = false;
             }
-            
-            var eventsList = _storage.GetEventsForAggregateWithDate(id).ToList();
-            
-            EventComparer comparer = GetComparer(sortField);
+
+            List<EventViewModel> eventsList = GetEvents(_storage.GetEventsForAggregate(id, showAllEvents).ToList());
+
+            EventComparer comparer = GetComparer(sortField, page);
             eventsList.Sort(comparer);
 
-            return View(new EventViewerViewModel(eventsList, aggregateType, AggregateId));
+            var pagedEvents = eventsList.AsPagination(page.GetValueOrDefault(1), 15);
+
+            return View(new EventViewerViewModel(pagedEvents, AggregateId));
         }
 
         [HttpGet]
-        public ActionResult Details(string aggregateType, string aggregateId, int? version)
+        public ActionResult Details(string aggregateId, int? version)
         {
-            IIdentity id = new OrderId(0);
+            IIdentity id = new NullId();
+            string aggregateType = string.Empty;
 
-            if (ModelState.IsValidField("AggregateId") && !string.IsNullOrEmpty(aggregateId))
+            if (!string.IsNullOrEmpty(aggregateId))
             {
-                id = ConvertAggregateId(aggregateType, aggregateId, id);
+                aggregateType = _storage.GetAggregateType(aggregateId);
+                id = GetTypedAggregateId(aggregateId, aggregateType);
             }
 
-            var eventsList = _storage.GetEventsForAggregateWithDate(id).ToList();
+            string reversedType = aggregateType.Reverse();
+            ViewBag.AggregateType = reversedType.Substring(0, reversedType.IndexOf('.')).Reverse().Wordify();
 
-            var foundEvent = eventsList.Where(p => p.EventVersion == version).First();
-            ViewBag.EventType = aggregateType.Wordify();
+            IEnumerable<IEvent<IIdentity>> eventList = _storage.GetEventsForAggregate(id, false);
+            IEvent<IIdentity> foundEvent = eventList.Where(p => p.Version == version).First();
 
-            return PartialView("_EventDetails", foundEvent);
+            JsConfig.DateHandler = JsonDateHandler.ISO8601;
+            JsConfig.ExcludeTypeInfo = true;
+            ViewBag.EventDetails = HtmlEncode(JsvFormatter.Format(JsonSerializer.SerializeToString(foundEvent)));
+
+            return PartialView("_EventDetails");
         }
 
-        private EventComparer GetComparer(string sortField)
+        #region Helpers
+
+        private EventComparer GetComparer(string sortField, int? page)
         {
             EventComparer comparer;
 
@@ -75,11 +98,11 @@ namespace ECom.Site.Areas.Admin.Controllers
             {
                 SortFieldEnum savedValue = (SortFieldEnum)Session["SortField"];
 
-                if (sortField == savedValue.ToString())
+                if (sortField == savedValue.ToString() && page == null)
                 {
                     Session["SortOrder"] = (SortOrderEnum)((int)Session["SortOrder"] * (-1));
                 }
-                else
+                else if (sortField != savedValue.ToString())
                 {
                     Session["SortOrder"] = SortOrderEnum.ASC;
                     Session["SortField"] = (SortFieldEnum)Enum.Parse(typeof(SortFieldEnum), sortField);
@@ -91,31 +114,90 @@ namespace ECom.Site.Areas.Admin.Controllers
             return comparer;
         }
 
-        private static IIdentity ConvertAggregateId(string aggregateType, string AggregateId, IIdentity id)
+        private List<EventViewModel> GetEvents(List<IEvent<IIdentity>> list)
         {
-            switch (aggregateType)
+            List<EventViewModel> eventsList = new List<EventViewModel>();
+
+            foreach (IEvent item in list)
             {
-                case "CatalogAggregate":
-                    Guid catalogId;
-                    Guid.TryParse(AggregateId, out catalogId);
-
-                    id = new CatalogId(catalogId);
-                    break;
-                case "OrderAggregate":
-                    int orderId;
-                    int.TryParse(AggregateId, out orderId);
-
-                    id = new OrderId(orderId);
-                    break;
-                case "UserAggregate":
-                    id = new UserId(AggregateId);
-                    break;
-                case "ProductAggregate":
-                    id = new ProductId(AggregateId);
-                    break;
+                eventsList.Add(new EventViewModel(item));
             }
-            return id;
+
+            return eventsList;
         }
+
+        private static string HtmlEncode(string jsonFormattedStr)
+        {
+            return jsonFormattedStr.Replace("\r\n", "<br />").Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+        }
+
+        #endregion
+
+        #region ReflectionMethods
+
+        private IIdentity GetTypedAggregateId(string agrId, string agrType)
+        {
+            if (!string.IsNullOrEmpty(agrType))
+            {
+                // obtain existing aggregate roots
+                var type = typeof(AggregateRoot<>);
+                var types = AppDomain.CurrentDomain.GetAssemblies().ToList()
+                    .SelectMany(s => s.GetTypes())
+                    .Where(p => IsSubclassOfRawGeneric(type, p) && p != type).ToList();
+
+                // compare with value from DB
+                var agrRoot = types.Find(p => p.FullName == agrType);
+
+                if (agrRoot != null)
+                {
+                    // get type which implements IIdentity (OrderId, UserId and so on)
+                    var myType = agrRoot.BaseType.GetGenericArguments()[0];
+                    
+                    // get argument type (Type of aggregate id: int, guid, string)
+                    var argumentType = myType.BaseType.BaseType.GetGenericArguments()[0];
+
+                    object arg;
+
+                    // create instance of a argument type class 
+                    if (argumentType.IsClass && argumentType.FullName == "System.String")
+                    {
+                        arg = agrId;
+                    }
+                    else if (argumentType.IsClass)
+                    {
+                        arg = Activator.CreateInstance(argumentType, agrId);
+                    }
+                    else
+                    {
+                        TypeConverter tc = TypeDescriptor.GetConverter(argumentType);
+                        arg = tc.ConvertFromString(agrId);
+                    }
+
+                    // create instance of a class which implements IIdentity
+                    IIdentity obj = (IIdentity)Activator.CreateInstance(myType, arg);
+
+                    return obj;
+                }
+            }
+
+            return new NullId();
+        }
+
+        private static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
+        {
+            while (toCheck != null && toCheck != typeof(object))
+            {
+                var cur = toCheck.IsGenericType ? toCheck.GetGenericTypeDefinition() : toCheck;
+                if (generic == cur)
+                {
+                    return true;
+                }
+                toCheck = toCheck.BaseType;
+            }
+            return false;
+        }
+
+        #endregion
 
     }
 }

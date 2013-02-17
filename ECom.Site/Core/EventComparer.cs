@@ -1,4 +1,4 @@
-﻿using ECom.Messages;
+﻿using ECom.Site.Areas.Admin.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace ECom.Site.Core
     /// <summary>
     /// Comparer class.
     /// </summary>
-    public class EventComparer : IComparer<EventWrapper>
+    public class EventComparer : IComparer<EventViewModel>
     {
         public EventComparer()
             :this(SortFieldEnum.DATE, SortOrderEnum.ASC)
@@ -25,11 +25,11 @@ namespace ECom.Site.Core
         public SortFieldEnum SortField { get; set; }
         public SortOrderEnum SortOrder { get; set; }
 
-        public int Compare(EventWrapper x, EventWrapper y)
+        public int Compare(EventViewModel x, EventViewModel y)
         {
             if (SortField == SortFieldEnum.ID)
             {
-                return SortOrder == SortOrderEnum.ASC ? string.Compare(x.EventId, y.EventId) : string.Compare(y.EventId, x.EventId);
+                return SortOrder == SortOrderEnum.ASC ? string.Compare(x.AggregateId, y.AggregateId) : string.Compare(y.AggregateId, x.AggregateId);
             }
             else if (SortField == SortFieldEnum.NAME)
             {

@@ -5,6 +5,7 @@ using System.Web;
 using ECom.Domain;
 using ECom.ReadModel;
 using ECom.ReadModel.Parsers;
+using ECom.Messages;
 
 namespace ECom.Site
 {
@@ -14,5 +15,6 @@ namespace ECom.Site
         public static IReadModelFacade ReadModel { get; set; }
 		public static ProductPageParserFactory ProductPageParserFactory = new ProductPageParserFactory();
 		public static IDomainIdentityGenerator IdentityGenerator { get; set; }
+        public static IEventStore EventStore { get; set; }
     }
 }
