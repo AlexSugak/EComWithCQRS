@@ -59,6 +59,17 @@ namespace ECom.CommandHandlers.Tests
             return _events[aggregateId.GetId()].Cast<IEvent<T>>();
         }
 
+        public IEnumerable<IEvent<T>> GetEventsForAggregate<T>(T aggregateId, bool showAllEvents)
+            where T : IIdentity
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetAggregateType(string aggregateId)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<IEvent> NewEvents()
         {
             return _newEvents;
