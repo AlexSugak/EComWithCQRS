@@ -19,18 +19,24 @@ namespace ECom.Site.Areas.Admin.Controllers
 {
     public class EventViewerController : CqrsController
     {
+        public int PageSize { get; set; }
+        
         private readonly IEventStore _storage;
+        private bool saveSessionVars;
 
         public EventViewerController()
 			: base()
 		{
             _storage = ServiceLocator.EventStore;
+            PageSize = 15;
+            saveSessionVars = true;
 		}
 
         public EventViewerController(IEventStore storage)
             : base()
         {
             _storage = storage;
+            saveSessionVars = false;
         }
 
         [HttpGet]
@@ -52,7 +58,7 @@ namespace ECom.Site.Areas.Admin.Controllers
             EventComparer comparer = GetComparer(sortField, page);
             eventsList.Sort(comparer);
 
-            var pagedEvents = eventsList.AsPagination(page.GetValueOrDefault(1), 15);
+            var pagedEvents = eventsList.AsPagination(page.GetValueOrDefault(1), PageSize);
 
             return View(new EventViewerViewModel(pagedEvents, AggregateId));
         }
@@ -69,8 +75,12 @@ namespace ECom.Site.Areas.Admin.Controllers
                 id = GetTypedAggregateId(aggregateId, aggregateType);
             }
 
-            string reversedType = aggregateType.Reverse();
-            ViewBag.AggregateType = reversedType.Substring(0, reversedType.IndexOf('.')).Reverse().Wordify();
+
+            if (aggregateType != null)
+            {
+                string reversedType = aggregateType.Reverse();
+                ViewBag.AggregateType = reversedType.Substring(0, reversedType.IndexOf('.')).Reverse().Wordify();
+            }
 
             IEnumerable<IEvent<IIdentity>> eventList = _storage.GetEventsForAggregate(id, false);
             IEvent<IIdentity> foundEvent = eventList.Where(p => p.Version == version).First();
@@ -90,8 +100,12 @@ namespace ECom.Site.Areas.Admin.Controllers
 
             if (string.IsNullOrEmpty(sortField))
             {
-                Session["SortOrder"] = SortOrderEnum.ASC;
-                Session["SortField"] = SortFieldEnum.DATE;
+                if (saveSessionVars)
+                {
+                    Session["SortOrder"] = SortOrderEnum.ASC;
+                    Session["SortField"] = SortFieldEnum.DATE;
+                }
+
                 comparer = new EventComparer();
             }
             else
