@@ -29,5 +29,25 @@ namespace ECom.Utility.Tests
 				Assert.AreEqual("WTF", testString.Wordify());
 			}
 		}
+
+        [TestClass]
+        public class ReverseMethod
+        {
+            [TestMethod]
+            public void reverse_not_empty_string()
+            {
+                var testString = "test";
+
+                Assert.AreEqual("tset", testString.Reverse());
+            }
+
+            [TestMethod]
+            public void reverse_empty_string()
+            {
+                var testString = string.Empty;
+
+                Assert.AreEqual(string.Empty, testString.Reverse());
+            }
+        }
 	}
 }

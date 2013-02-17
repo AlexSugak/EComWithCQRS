@@ -15,7 +15,7 @@
     <AssemblyName>ECom.Site</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -63,6 +63,9 @@
     </Reference>
     <Reference Include="RazorEngine">
       <HintPath>..\Libraries\RazorEngine\RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\packages\ServiceStack.Text.3.9.35\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="SubSonic.Core">
       <HintPath>..\Libraries\SubSonic.Core.dll</HintPath>
@@ -115,8 +118,11 @@
   <ItemGroup>
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\EventViewerController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Models\CategoriesTreeViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\EventViewerViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\EventViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductDetailsViewModel.cs" />
     <Compile Include="Areas\Shop\Controllers\OrderController.cs" />
     <Compile Include="Areas\Shop\Models\AddNewOrderViewModel.cs" />
@@ -129,6 +135,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Core\ActionSpecificValidatorAttribute.cs" />
     <Compile Include="Core\DynamicValidationModelBinder.cs" />
+    <Compile Include="Core\EventComparer.cs" />
     <Compile Include="Core\HtmlTemplateBase.cs" />
     <Compile Include="Core\RazorMessageBodyGenerator.cs" />
     <Compile Include="EmailService.cs" />
@@ -217,6 +224,9 @@
     <Content Include="Scripts\bootstrap\bootstrap-transition.js" />
     <Content Include="Scripts\bootstrap\bootstrap-typeahead.js" />
     <Content Include="Scripts\jqModal.js" />
+    <None Include="Scripts\jquery-1.5.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.5.1.js" />
+    <Content Include="Scripts\jquery-1.5.1.min.js" />
     <Content Include="Scripts\jquery.form.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
@@ -353,6 +363,12 @@
   <ItemGroup>
     <Content Include="Views\Error\General.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Views\EventViewer\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Views\EventViewer\_EventDetails.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -373,15 +389,16 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>20117</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://crowdshop.com/</IISUrl>
+          <IISUrl>http://localhost:20717</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://crowdshop.com</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://crowdshop.com</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

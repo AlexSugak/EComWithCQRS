@@ -64,6 +64,7 @@ namespace ECom.Dsl
 				}
 
 				writer.WriteLine("public int Version { get; set; }");
+                writer.WriteLine("public DateTime Date { get; set; }");
 
 				if (contract.Members.Count > 0)
 				{

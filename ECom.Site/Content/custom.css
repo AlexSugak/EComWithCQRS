@@ -1,1 +1,44 @@
-﻿
+﻿.left {
+    width: 60%;
+    height: 600px;
+    border-right: solid 2px black;
+    padding-top: 10px;
+    display: block;
+    float: left;
+}
+.right {
+    width: 35%;
+    height: 520px;
+    padding-top: 80px;
+    padding-left: 50px;
+    display: block;
+    float: right;
+}
+.top {
+    border-bottom: solid 2px black;
+    padding-bottom: 20px;
+}
+.bottom {
+    height: 600px;
+}
+.display-label {
+    float: left;
+    width: 100px;
+}
+.display-field {
+    color: #654100;
+    float: left;
+    font-size: medium;
+    width: 300px;
+}
+.divRow {
+    height: 40px;
+}
+.selectedRow {
+    font-weight: bold;
+}
+.display-details {
+    color: #654100;
+    float: left;
+    font-size: medium;
+}
