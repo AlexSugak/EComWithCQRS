@@ -30,7 +30,7 @@ namespace ECom.Site.Tests
                     new UserCreated(new UserId("test4@eee.com")) {Version = 5, Date = DateTime.Now}
                 };
             
-            mock.Setup(m => m.GetEventsForAggregate<IIdentity>(It.IsAny<IIdentity>(), It.IsAny<bool>())).Returns(allEvents.AsQueryable());
+            mock.Setup(m => m.GetEventsForAggregate<IIdentity>(It.IsAny<IIdentity>())).Returns(allEvents.AsQueryable());
 
             // create  instance of a controller; set the page size
             EventViewerController controller = new EventViewerController(mock.Object);
@@ -60,7 +60,7 @@ namespace ECom.Site.Tests
                     new ProductAddedToOrder() {Id = new OrderId(777), Date = DateTime.Now, Version = 5}
                 };
 
-            mock.Setup(m => m.GetEventsForAggregate<IIdentity>(It.IsAny<IIdentity>(), It.IsAny<bool>())).Returns(allEvents.AsQueryable());
+            mock.Setup(m => m.GetEventsForAggregate<IIdentity>(It.IsAny<IIdentity>())).Returns(allEvents.AsQueryable());
 
             // create  instance of a controller
             EventViewerController controller = new EventViewerController(mock.Object);

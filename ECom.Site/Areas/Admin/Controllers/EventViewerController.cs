@@ -42,19 +42,19 @@ namespace ECom.Site.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Index(string AggregateId, string sortField, int? page)
         {
-            IIdentity id = new NullId();
-            bool showAllEvents = true;
-            string aggregateType = string.Empty;
+            List<EventViewModel> eventsList = new List<EventViewModel>();
 
             if (!string.IsNullOrEmpty(AggregateId))
             {
-                aggregateType = _storage.GetAggregateType(AggregateId);
-                id = GetTypedAggregateId(AggregateId, aggregateType);
-                showAllEvents = false;
+                string aggregateType = _storage.GetAggregateType(AggregateId);
+                IIdentity id = GetTypedAggregateId(AggregateId, aggregateType);
+                eventsList = GetEvents(_storage.GetEventsForAggregate(id).ToList());
             }
-
-            List<EventViewModel> eventsList = GetEvents(_storage.GetEventsForAggregate(id, showAllEvents).ToList());
-
+            else
+            {
+                eventsList = GetEvents(_storage.GetAllEvents<IIdentity>().ToList());
+            }
+            
             EventComparer comparer = GetComparer(sortField, page);
             eventsList.Sort(comparer);
 
@@ -82,7 +82,7 @@ namespace ECom.Site.Areas.Admin.Controllers
                 ViewBag.AggregateType = reversedType.Substring(0, reversedType.IndexOf('.')).Reverse().Wordify();
             }
 
-            IEnumerable<IEvent<IIdentity>> eventList = _storage.GetEventsForAggregate(id, false);
+            IEnumerable<IEvent<IIdentity>> eventList = _storage.GetEventsForAggregate(id);
             IEvent<IIdentity> foundEvent = eventList.Where(p => p.Version == version).First();
 
             JsConfig.DateHandler = JsonDateHandler.ISO8601;

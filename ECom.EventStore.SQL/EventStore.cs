@@ -142,13 +142,12 @@ namespace ECom.EventStore.SQL
             return events;
         }
 
-        public IEnumerable<IEvent<T>> GetEventsForAggregate<T>(T aggregateId, bool showAllEvents)
+        public IEnumerable<IEvent<T>> GetAllEvents<T>()
             where T : IIdentity
         {
             var events = new List<IEvent<T>>();
 
-            var whereClause = @"WHERE [AggregateId] = @aggregateId";
-            var commandText = @"SELECT Event FROM [Events] " + (showAllEvents ? string.Empty : whereClause) + @" ORDER BY [Version] ASC";
+            var commandText = @"SELECT Event FROM [Events] ORDER BY [Version] ASC";
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -156,11 +155,6 @@ namespace ECom.EventStore.SQL
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
-                    if (!showAllEvents)
-                    {
-                        command.Parameters.Add(new SqlParameter("@aggregateId", aggregateId.GetId()));
-                    }
-
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
