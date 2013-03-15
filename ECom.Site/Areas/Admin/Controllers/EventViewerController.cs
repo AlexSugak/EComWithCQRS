@@ -22,21 +22,21 @@ namespace ECom.Site.Areas.Admin.Controllers
         public int PageSize { get; set; }
         
         private readonly IEventStore _storage;
-        private bool saveSessionVars;
+        private bool _saveSessionVars;
 
         public EventViewerController()
 			: base()
 		{
             _storage = ServiceLocator.EventStore;
             PageSize = 15;
-            saveSessionVars = true;
+            _saveSessionVars = true;
 		}
 
         public EventViewerController(IEventStore storage)
             : base()
         {
             _storage = storage;
-            saveSessionVars = false;
+            _saveSessionVars = false;
         }
 
         [HttpGet]
@@ -100,7 +100,7 @@ namespace ECom.Site.Areas.Admin.Controllers
 
             if (string.IsNullOrEmpty(sortField))
             {
-                if (saveSessionVars)
+                if (_saveSessionVars)
                 {
                     Session["SortOrder"] = SortOrderEnum.ASC;
                     Session["SortField"] = SortFieldEnum.DATE;
