@@ -224,9 +224,6 @@
     <Content Include="Scripts\bootstrap\bootstrap-transition.js" />
     <Content Include="Scripts\bootstrap\bootstrap-typeahead.js" />
     <Content Include="Scripts\jqModal.js" />
-    <None Include="Scripts\jquery-1.5.1-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.5.1.js" />
-    <Content Include="Scripts\jquery-1.5.1.min.js" />
     <Content Include="Scripts\jquery.form.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
