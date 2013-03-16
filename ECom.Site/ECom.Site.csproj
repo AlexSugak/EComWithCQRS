@@ -121,6 +121,7 @@
     <Compile Include="Areas\Admin\Controllers\EventViewerController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Models\CategoriesTreeViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\EventDetailsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EventViewerViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EventViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductDetailsViewModel.cs" />

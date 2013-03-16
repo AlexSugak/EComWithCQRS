@@ -12,7 +12,6 @@ using ECom.Site.Areas.Admin.Models;
 using ECom.Site.Core;
 using MvcContrib.Pagination;
 using System.ComponentModel.DataAnnotations;
-using ServiceStack.Text;
 using System.ComponentModel;
 
 namespace ECom.Site.Areas.Admin.Controllers
@@ -75,21 +74,10 @@ namespace ECom.Site.Areas.Admin.Controllers
                 id = GetTypedAggregateId(aggregateId, aggregateType);
             }
 
-
-            if (aggregateType != null)
-            {
-                string reversedType = aggregateType.Reverse();
-                ViewBag.AggregateType = reversedType.Substring(0, reversedType.IndexOf('.')).Reverse().Wordify();
-            }
-
             IEnumerable<IEvent<IIdentity>> eventList = _storage.GetEventsForAggregate(id);
             IEvent<IIdentity> foundEvent = eventList.Where(p => p.Version == version).First();
 
-            JsConfig.DateHandler = JsonDateHandler.ISO8601;
-            JsConfig.ExcludeTypeInfo = true;
-            ViewBag.EventDetails = HtmlEncode(JsvFormatter.Format(JsonSerializer.SerializeToString(foundEvent)));
-
-            return PartialView("_EventDetails");
+            return PartialView("_EventDetails", new EventDetailsViewModel(aggregateType, foundEvent));
         }
 
         #region Helpers
@@ -138,11 +126,6 @@ namespace ECom.Site.Areas.Admin.Controllers
             }
 
             return eventsList;
-        }
-
-        private static string HtmlEncode(string jsonFormattedStr)
-        {
-            return jsonFormattedStr.Replace("\r\n", "<br />").Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
         }
 
         #endregion

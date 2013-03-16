@@ -1,4 +1,8 @@
-﻿<h2>Event Details</h2>
+﻿@using ECom.Site.Models
+
+@model ECom.Site.Areas.Admin.Models.EventDetailsViewModel
+
+<h2>Event Details</h2>
 <br />
 
 <div class="divRow">
@@ -6,11 +10,11 @@
         Aggregate type
     </div>
     <div class="display-field">
-        @ViewBag.AggregateType
+        @Model.AggregateType
     </div>
 </div>
 <div>
     <div class="display-details">
-        @MvcHtmlString.Create(ViewBag.EventDetails)
+        @MvcHtmlString.Create(Model.EventDetails)
     </div>
 </div>
