@@ -2,19 +2,13 @@
 
 @model ECom.Site.Areas.Admin.Models.EventDetailsViewModel
 
-<h2>Event Details</h2>
-<br />
+<h2 style="padding: 20px 0px;">Event Details</h2>
 
-<div class="divRow">
-    <div class="display-label">
-        Aggregate type
-    </div>
-    <div class="display-field">
-        @Model.AggregateType
-    </div>
-</div>
 <div>
-    <div class="display-details">
-        @MvcHtmlString.Create(Model.EventDetails)
-    </div>
+    <span><strong>Aggregate type</strong></span>
+    <span style="color: #654100;"><strong>@Model.AggregateType</strong></span>
+</div>
+<br />
+<div style="color: #654100; font-size: medium;">
+    @MvcHtmlString.Create(Model.EventDetails)
 </div>
