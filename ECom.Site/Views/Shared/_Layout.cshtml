@@ -11,16 +11,16 @@
         }
     </style>
     <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap-responsive.css")" />
-	<link rel="stylesheet" href="@Url.Content("~/Content/custom.css")" />
 
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="@Url.Content("~/Content/images/bootstrap/apple-touch-icon-114-precomposed.png")" />
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="@Url.Content("~/Content/images/bootstrap/apple-touch-icon-72-precomposed.png")" />
     <link rel="apple-touch-icon-precomposed" href="@Url.Content("~/Content/images/bootstrap/apple-touch-icon-57-precomposed.png")" />
 
-
     <script src="@Url.Content("~/Scripts/jquery.js")"></script>
     <script src="@Url.Content("~/Scripts/jquery.form.js")"></script>
-
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"></script>
 </head>
 
 @helper MenuItem(string text, string action, string controller, string area = null)

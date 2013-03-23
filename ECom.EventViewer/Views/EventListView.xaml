@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="ECom.EventViewer.Views.EventListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:v="clr-namespace:ECom.EventViewer.Views" 
+             Height="Auto" Width="Auto">
+    <StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Column="0" Grid.Row="0" >
+                <Label Content="Event Viewer" Margin="5" Grid.Column="0" Grid.Row="0" FontSize="18" FontWeight="Bold" />
+            </StackPanel>
+            
+            <StackPanel Grid.Column="0" Grid.Row="1" Margin="10" Orientation="Horizontal">
+                <Label x:Name="lblAggregateID" Content="Aggregate ID" Margin="10" />
+                <TextBox x:Name="txtAggregateID" Text="{Binding AggregateId}" Margin="10" Width="250"  />
+                <Button x:Name="btnSearch" Command="{Binding SearchCommand}" Width="100" Margin="10" Content="Search" />
+            </StackPanel>
+            
+            <StackPanel Grid.Column="0" Grid.Row="2">
+                <ListView x:Name="lsvEventList" ItemsSource="{Binding EventList}" SelectedItem="{Binding SelectedEvent}" MaxHeight="600">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Aggregate Id"   DisplayMemberBinding="{Binding AggregateId}" Width="235"/>
+                            <GridViewColumn Header="Event Name"     DisplayMemberBinding="{Binding EventName}" Width="225"/>
+                            <GridViewColumn Header="Event Date"     DisplayMemberBinding="{Binding EventDate}" Width="130"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

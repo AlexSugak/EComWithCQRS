@@ -62,6 +62,7 @@ namespace ECom.Domain
 			if (isNew)
 			{
 				@event.Version = Version;
+                @event.Date = DateTime.Now;
 				_changes.Add(@event);
 			}
         }
