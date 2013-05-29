@@ -52,8 +52,6 @@ namespace ECom.Site
 			ModelMetadataProviders.Current = new CommandMetadataProvider();
 
 			ModelValidatorProviders.Providers.Clear();
-			//ModelValidatorProviders.Providers.Add(new FluentValidationModelValidatorProvider(new AttributedValidatorFactory()));
-
 			ModelBinders.Binders.DefaultBinder = new DynamicValidationModelBinder(new AttributedValidatorFactory());
 
             ModelBinders.Binders.Add(typeof(ProductId), new IdentityBinder());
@@ -91,7 +89,6 @@ namespace ECom.Site
 		private static void RegisterEventHandlers(Bus.Bus bus, IReadModelFacade readModel, IDtoManager dtoManager)
 		{
 			var eventHandlersAssemblies = new[] { Assembly.Load(new AssemblyName("ECom.ReadModel")) };
-
 			MessageHandlersRegister.RegisterEventHandlers(eventHandlersAssemblies, bus, dtoManager, readModel);
 
 

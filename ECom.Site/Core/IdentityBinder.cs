@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ECom.Messages;
+using ECom.Domain;
 
 namespace ECom.Site.Core
 {
