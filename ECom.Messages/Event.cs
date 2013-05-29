@@ -14,5 +14,6 @@ namespace ECom.Messages
     {
         T Id { get; }
         int Version { get; set; }
+        DateTime Date { get; set; }
     }
 }

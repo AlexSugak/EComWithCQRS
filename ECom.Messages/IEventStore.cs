@@ -12,5 +12,10 @@ namespace ECom.Messages
 
         IEnumerable<IEvent<T>> GetEventsForAggregate<T>(T aggregateId)
                                     where T : IIdentity;
+
+        IEnumerable<IEvent<T>> GetAllEvents<T>()
+                                    where T : IIdentity;
+
+        string GetAggregateType(string aggregateId);
     }
 }

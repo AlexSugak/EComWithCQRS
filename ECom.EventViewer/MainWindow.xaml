@@ -1,0 +1,31 @@
+﻿<Window x:Class="ECom.EventViewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:v="clr-namespace:ECom.EventViewer.Views" 
+        xmlns:vm="clr-namespace:ECom.EventViewer.ViewModels"
+        Title="Event Viewer" Height="800" Width="1000">
+
+    <Window.Resources>
+        <DataTemplate x:Key="EventListTemplate" >
+            <v:EventListView/>
+        </DataTemplate>
+        <DataTemplate x:Key="EventDetailsTemplate" >
+            <v:EventDetailsView/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="600" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource EventListTemplate}" Grid.Column="0" Grid.Row="0" />
+
+        <ContentControl Content="{Binding SelectedEvent}" ContentTemplate="{StaticResource EventDetailsTemplate}" Grid.Column="1" Grid.Row="0" />
+    </Grid>
+    
+</Window>

@@ -1,0 +1,14 @@
+﻿@using ECom.Site.Models
+
+@model ECom.Site.Areas.Admin.Models.EventDetailsViewModel
+
+<h2 style="padding: 20px 0px;">Event Details</h2>
+
+<div>
+    <span><strong>Aggregate type</strong></span>
+    <span style="color: #654100;"><strong>@Model.AggregateType</strong></span>
+</div>
+<br />
+<div style="color: #654100; font-size: medium;">
+    @MvcHtmlString.Create(Model.EventDetails)
+</div>

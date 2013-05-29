@@ -14,6 +14,7 @@ namespace ECom.Messages
 	{
 		public UserId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public UserCreated () {}
 		public UserCreated (UserId userId)
 		{
@@ -60,6 +61,7 @@ namespace ECom.Messages
 	{
 		public UserId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public string UserName { get; set; }
 		public string PhotoUrl { get; set; }
 		public ReportUserLoggedIn () {}
@@ -110,6 +112,7 @@ namespace ECom.Messages
 	{
 		public UserId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public string UserName { get; set; }
 		public string PhotoUrl { get; set; }
 		public UserLoggedInReported () {}
@@ -160,6 +163,7 @@ namespace ECom.Messages
 	{
 		public UserId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public EmailAddress Email { get; set; }
 		public SetUserEmail () {}
 		public SetUserEmail (UserId userId, EmailAddress email)
@@ -208,6 +212,7 @@ namespace ECom.Messages
 	{
 		public UserId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public EmailAddress Email { get; set; }
 		public UserEmailSet () {}
 		public UserEmailSet (UserId userId, EmailAddress email)
@@ -256,6 +261,7 @@ namespace ECom.Messages
 	{
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public UserId UserId { get; set; }
 		public CreateNewOrder () {}
 		public CreateNewOrder (OrderId orderId, UserId userId)
@@ -304,6 +310,7 @@ namespace ECom.Messages
 	{
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public UserId UserId { get; set; }
 		public NewOrderCreated () {}
 		public NewOrderCreated (OrderId orderId, UserId userId)
@@ -352,6 +359,7 @@ namespace ECom.Messages
 	{
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public OrderItemId OrderItemId { get; set; }
 		public Uri ProductUri { get; set; }
 		public string Name { get; set; }
@@ -416,6 +424,7 @@ namespace ECom.Messages
 	{
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public OrderItemId OrderItemId { get; set; }
 		public Uri ProductUri { get; set; }
 		public string Name { get; set; }
@@ -480,6 +489,7 @@ namespace ECom.Messages
 	{
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public OrderItemId OrderItemId { get; set; }
 		public RemoveItemFromOrder () {}
 		public RemoveItemFromOrder (OrderId orderId, OrderItemId orderItemId)
@@ -528,6 +538,7 @@ namespace ECom.Messages
 	{
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public OrderItemId OrderItemId { get; set; }
 		public ItemRemovedFromOrder () {}
 		public ItemRemovedFromOrder (OrderId orderId, OrderItemId orderItemId)
@@ -576,6 +587,7 @@ namespace ECom.Messages
 	{
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public SubmitOrder () {}
 		public SubmitOrder (OrderId orderId)
 		{
@@ -622,6 +634,7 @@ namespace ECom.Messages
 	{
 		public OrderId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public UserId UserId { get; set; }
 		public OrderSubmited () {}
 		public OrderSubmited (OrderId orderId, UserId userId)
@@ -670,6 +683,7 @@ namespace ECom.Messages
 	{
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public string Name { get; set; }
 		public decimal Price { get; set; }
 		public AddProduct () {}
@@ -720,6 +734,7 @@ namespace ECom.Messages
 	{
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public string Name { get; set; }
 		public decimal Price { get; set; }
 		public ProductAdded () {}
@@ -770,6 +785,7 @@ namespace ECom.Messages
 	{
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public RemoveProduct () {}
 		public RemoveProduct (ProductId productId)
 		{
@@ -816,6 +832,7 @@ namespace ECom.Messages
 	{
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public ProductRemoved () {}
 		public ProductRemoved (ProductId productId)
 		{
@@ -862,6 +879,7 @@ namespace ECom.Messages
 	{
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public decimal NewPrice { get; set; }
 		public ChangeProductPrice () {}
 		public ChangeProductPrice (ProductId productId, decimal newPrice)
@@ -910,6 +928,7 @@ namespace ECom.Messages
 	{
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public decimal NewPrice { get; set; }
 		public ProductPriceChanged () {}
 		public ProductPriceChanged (ProductId productId, decimal newPrice)
@@ -958,6 +977,7 @@ namespace ECom.Messages
 	{
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public ProductId TargetProductId { get; set; }
 		public AddRelatedProduct () {}
 		public AddRelatedProduct (ProductId productId, ProductId targetProductId)
@@ -1006,6 +1026,7 @@ namespace ECom.Messages
 	{
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public ProductId TargetProductId { get; set; }
 		public RelatedProductAdded () {}
 		public RelatedProductAdded (ProductId productId, ProductId targetProductId)
@@ -1053,6 +1074,7 @@ namespace ECom.Messages
 	public sealed class CreateCategory : IFunctionalCommand
 	{
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public string Name { get; set; }
 		public CreateCategory () {}
 		public CreateCategory (string name)
@@ -1100,6 +1122,7 @@ namespace ECom.Messages
 	{
 		public CatalogId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public string Name { get; set; }
 		public CategoryCreated () {}
 		public CategoryCreated (CatalogId catalogId, string name)
@@ -1147,6 +1170,7 @@ namespace ECom.Messages
 	public sealed class MoveCategory : IFunctionalCommand
 	{
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public string Name { get; set; }
 		public string TargetCategory { get; set; }
 		public MoveCategory () {}
@@ -1196,6 +1220,7 @@ namespace ECom.Messages
 	{
 		public CatalogId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public string Name { get; set; }
 		public string TargetCategory { get; set; }
 		public CategoryMoved () {}
@@ -1245,6 +1270,7 @@ namespace ECom.Messages
 	public sealed class RemoveCategory : IFunctionalCommand
 	{
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public string Name { get; set; }
 		public RemoveCategory () {}
 		public RemoveCategory (string name)
@@ -1292,6 +1318,7 @@ namespace ECom.Messages
 	{
 		public CatalogId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public string Name { get; set; }
 		public CategoryRemoved () {}
 		public CategoryRemoved (CatalogId catalogId, string name)
@@ -1340,6 +1367,7 @@ namespace ECom.Messages
 	{
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public string CategoryName { get; set; }
 		public AddProductToCategory () {}
 		public AddProductToCategory (ProductId productId, string categoryName)
@@ -1388,6 +1416,7 @@ namespace ECom.Messages
 	{
 		public ProductId Id { get; set; }
 		public int Version { get; set; }
+		public DateTime Date { get; set; }
 		public string CategoryName { get; set; }
 		public ProductAddedToCategory () {}
 		public ProductAddedToCategory (ProductId productId, string categoryName)

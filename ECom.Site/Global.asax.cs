@@ -84,6 +84,7 @@ namespace ECom.Site
             ServiceLocator.Bus = bus;
             ServiceLocator.ReadModel = readModel;
 			ServiceLocator.IdentityGenerator = new SqlTableDomainIdentityGenerator(eventStoreConnString);
+            ServiceLocator.EventStore = eventStore;
         }
 
 		private static void RegisterEventHandlers(Bus.Bus bus, IReadModelFacade readModel, IDtoManager dtoManager)
