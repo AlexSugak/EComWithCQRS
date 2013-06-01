@@ -48,24 +48,23 @@ namespace ECom.CommandHandlers.Tests
             _newEvents.AddRange(events);
         }
 
-        public IEnumerable<IEvent<T>> GetEventsForAggregate<T>(T aggregateId)
-            where T : IIdentity
+        public IEnumerable<IEvent<T>> GetEventsForAggregate<T>(T aggregateId) where T : IIdentity
         {
-            if (!_events.ContainsKey(aggregateId.GetId()))
+            string id = aggregateId.GetId();
+            return GetEventsForAggregate(id).OfType<IEvent<T>>();
+        }
+
+        public IEnumerable<IEvent> GetEventsForAggregate(string aggregateId)
+        {
+            if (!_events.ContainsKey(aggregateId))
             {
-                return Enumerable.Empty<IEvent<T>>();
+                return Enumerable.Empty<IEvent>();
             }
 
-            return _events[aggregateId.GetId()].Cast<IEvent<T>>();
+            return _events[aggregateId];
         }
 
-        public IEnumerable<IEvent<T>> GetAllEvents<T>()
-            where T : IIdentity
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetAggregateType(string aggregateId)
+        public IEnumerable<IEvent> GetAllEvents()
         {
             throw new NotImplementedException();
         }

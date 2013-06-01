@@ -45,13 +45,11 @@ namespace ECom.Site.Areas.Admin.Controllers
 
             if (!string.IsNullOrEmpty(AggregateId))
             {
-                string aggregateType = _storage.GetAggregateType(AggregateId);
-                IIdentity id = GetTypedAggregateId(AggregateId, aggregateType);
-                eventsList = GetEvents(_storage.GetEventsForAggregate(id).ToList());
+                eventsList = GetEvents(_storage.GetEventsForAggregate(AggregateId).ToList());
             }
             else
             {
-                eventsList = GetEvents(_storage.GetAllEvents<IIdentity>().ToList());
+                eventsList = GetEvents(_storage.GetAllEvents().ToList());
             }
             
             EventComparer comparer = GetComparer(sortField, page);
@@ -65,19 +63,12 @@ namespace ECom.Site.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Details(string aggregateId, int? version)
         {
-            IIdentity id = new NullId();
-            string aggregateType = string.Empty;
+            string aggregateType = String.Empty;
 
-            if (!string.IsNullOrEmpty(aggregateId))
-            {
-                aggregateType = _storage.GetAggregateType(aggregateId);
-                id = GetTypedAggregateId(aggregateId, aggregateType);
-            }
+            IEnumerable<IEvent<IIdentity>> eventList = _storage.GetEventsForAggregate(aggregateId).OfType<IEvent<IIdentity>>();
+            IEvent<IIdentity> foundEvent = eventList.First(p => p.Version == version);
 
-            IEnumerable<IEvent<IIdentity>> eventList = _storage.GetEventsForAggregate(id);
-            IEvent<IIdentity> foundEvent = eventList.Where(p => p.Version == version).First();
-
-            return PartialView("_EventDetails", new EventDetailsViewModel(aggregateType, foundEvent));
+            return PartialView("_EventDetails", new EventDetailsViewModel(foundEvent));
         }
 
         #region Helpers
@@ -116,7 +107,7 @@ namespace ECom.Site.Areas.Admin.Controllers
             return comparer;
         }
 
-        private List<EventViewModel> GetEvents(List<IEvent<IIdentity>> list)
+        private List<EventViewModel> GetEvents(List<IEvent> list)
         {
             List<EventViewModel> eventsList = new List<EventViewModel>();
 

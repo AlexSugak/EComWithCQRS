@@ -24,12 +24,11 @@ namespace ECom.EventViewer.ViewModels
             EventVersion = ((IEvent<IIdentity>)eventObj).Version;
             EventDate = ((IEvent<IIdentity>)eventObj).Date;
 
-            string rawAggregateType = _storage.GetAggregateType(AggregateId);
+            string rawAggregateType = ((IEvent<IIdentity>)eventObj).Id.GetType().Name.Replace("Id", String.Empty);
 
             if (rawAggregateType != null)
             {
-                string reversedType = rawAggregateType.Reverse();
-                AggregateType = reversedType.Substring(0, reversedType.IndexOf('.')).Reverse().Wordify();
+                AggregateType = rawAggregateType.Wordify();
             }
 
             JsConfig.DateHandler = JsonDateHandler.ISO8601;

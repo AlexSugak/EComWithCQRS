@@ -80,7 +80,7 @@ namespace ECom.EventViewer.ViewModels
 
             _eventList.Clear();
 
-            EventList = GetEvents(_storage.GetAllEvents<IIdentity>().ToList());
+            EventList = GetEvents(_storage.GetAllEvents());
         }
 
         private void Search()
@@ -88,14 +88,13 @@ namespace ECom.EventViewer.ViewModels
             if (!string.IsNullOrEmpty(AggregateId))
             {
                 if (_eventList == null)
+                {
                     _eventList = new ObservableCollection<EventViewModel>();
+                }
 
                 _eventList.Clear();
 
-                string aggregateType = _storage.GetAggregateType(AggregateId);
-                IIdentity id = GetTypedAggregateId(AggregateId, aggregateType);
-
-                EventList = GetEvents(_storage.GetEventsForAggregate(id).ToList());
+                EventList = GetEvents(_storage.GetEventsForAggregate(AggregateId));
             }
             else
             {
@@ -105,7 +104,7 @@ namespace ECom.EventViewer.ViewModels
 
         #region Helpers
 
-        private ObservableCollection<EventViewModel> GetEvents(List<IEvent<IIdentity>> list)
+        private ObservableCollection<EventViewModel> GetEvents(IEnumerable<IEvent> list)
         {
             ObservableCollection<EventViewModel> eventsList = new ObservableCollection<EventViewModel>();
 

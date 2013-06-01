@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ECom.Site.Core;
 
 namespace Email.Tests
 {
@@ -12,7 +13,7 @@ namespace Email.Tests
 			[TestMethod]
 			public void must_generate_plain_text_body()
 			{
-				var data = new SimpleEmaiDataModel() { Name = "Alex" };
+				var data = new SimpleEmailDataModel() { Name = "Alex" };
 
 				var generator = new RazorMessageBodyGenerator();
 				var template = "Hello @Model.Name!";
@@ -25,7 +26,7 @@ namespace Email.Tests
 			[TestMethod]
 			public void must_generate_html_body()
 			{
-				var data = new SimpleEmaiDataModel() { Name = "Alex" };
+				var data = new SimpleEmailDataModel() { Name = "Alex" };
 
 				var generator = new RazorMessageBodyGenerator();
 				var template = "<html><head><title>Hello @Model.Name</title></head><body>Sample body</body></html>";
@@ -38,7 +39,7 @@ namespace Email.Tests
 			[TestMethod]
 			public void must_generate_html_body_with_links()
 			{
-				var data = new SimpleEmaiDataModel() { Name = "Alex", Param = "123" };
+				var data = new SimpleEmailDataModel() { Name = "Alex", Param = "123" };
 
 				var generator = new RazorMessageBodyGenerator();
 				var template = "<html><head><title>Hello @Model.Name</title></head><body>Click <a href='http://domain.com/@Model.Param/234'>here</a></body></html>";
@@ -50,7 +51,7 @@ namespace Email.Tests
 		}
 	}
 
-	public class SimpleEmaiDataModel
+	public class SimpleEmailDataModel
 	{
 		public string Name;
 		public string Param;

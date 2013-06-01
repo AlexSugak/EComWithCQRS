@@ -114,10 +114,17 @@ namespace ECom.EventStore.SQL
             }
         }
 
-		public IEnumerable<IEvent<T>> GetEventsForAggregate<T>(T aggregateId)
-            where T : IIdentity
+        public IEnumerable<IEvent<T>> GetEventsForAggregate<T>(T aggregateId) where T : IIdentity
         {
-            var events = new List<IEvent<T>>();
+            Argument.ExpectNotNull(() => aggregateId);
+
+            string id = aggregateId.GetId();
+            return GetEventsForAggregate(id).OfType<IEvent<T>>();
+        }
+
+		public IEnumerable<IEvent> GetEventsForAggregate(string aggregateId)
+        {
+            var events = new List<IEvent>();
 
             var commandText = @"SELECT Event FROM [Events] WHERE [AggregateId] = @aggregateId ORDER BY [Version] ASC";
 
@@ -127,13 +134,13 @@ namespace ECom.EventStore.SQL
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
-                    command.Parameters.Add(new SqlParameter("@aggregateId", aggregateId.GetId()));
+                    command.Parameters.Add(new SqlParameter("@aggregateId", aggregateId));
 
                     using (var reader = command.ExecuteReader())
                     {
                         while(reader.Read())
                         {
-                            events.Add(Deserialize<IEvent<T>>((byte[])reader["Event"]));
+                            events.Add(Deserialize<IEvent>((byte[])reader["Event"]));
                         }
                     }
                 }
@@ -142,10 +149,9 @@ namespace ECom.EventStore.SQL
             return events;
         }
 
-        public IEnumerable<IEvent<T>> GetAllEvents<T>()
-            where T : IIdentity
+        public IEnumerable<IEvent> GetAllEvents()
         {
-            var events = new List<IEvent<T>>();
+            var events = new List<IEvent>();
 
             var commandText = @"SELECT Event FROM [Events] ORDER BY [Version] ASC";
 
@@ -159,33 +165,13 @@ namespace ECom.EventStore.SQL
                     {
                         while (reader.Read())
                         {
-                            events.Add(Deserialize<IEvent<T>>((byte[])reader["Event"]));
+                            events.Add(Deserialize<IEvent>((byte[])reader["Event"]));
                         }
                     }
                 }
             }
 
             return events;
-        }
-
-        public string GetAggregateType(string aggregateId)
-        {
-            var commandText = @"SELECT [Type] FROM [Aggregates] WHERE [AggregateId] = @aggregateId";
-            string type = string.Empty;
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-
-                using (var command = new SqlCommand(commandText, connection))
-                {
-                    command.Parameters.Add(new SqlParameter("@aggregateId", aggregateId));
-
-                    type = (string)command.ExecuteScalar();
-                }
-            }
-
-            return type;
         }
 
         private byte[] Serialize(object theObject)

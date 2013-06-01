@@ -12,17 +12,14 @@ namespace ECom.Site.Areas.Admin.Models
     {
         public EventDetailsViewModel() { }
 
-        public EventDetailsViewModel(string aggregateType, IEvent<IIdentity> foundEvent)
+        public EventDetailsViewModel(IEvent<IIdentity> @event)
         {
-            if (aggregateType != null)
-            {
-                string reversedType = aggregateType.Reverse();
-                AggregateType = reversedType.Substring(0, reversedType.IndexOf('.')).Reverse().Wordify();
-            }
+            string rawType = @event.Id.GetType().Name.Replace("Id", String.Empty);
+            AggregateType = rawType.Wordify();
 
             JsConfig.DateHandler = JsonDateHandler.ISO8601;
             JsConfig.ExcludeTypeInfo = true;
-            EventDetails = HtmlEncode(JsvFormatter.Format(JsonSerializer.SerializeToString(foundEvent)));
+            EventDetails = HtmlEncode(JsvFormatter.Format(JsonSerializer.SerializeToString(@event)));
         }
 
         public string AggregateType { get; set; }

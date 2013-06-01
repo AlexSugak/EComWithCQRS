@@ -29,25 +29,21 @@ namespace ECom.Site.Controllers
 		{
 			FacebookUserDetals userDetails = FacebookAuth.LoadUserDetails(token);
 
-			FormsAuthentication.SetAuthCookie(userDetails.Email, true);
-
 			var userId = new UserId(userDetails.Email);
 			_bus.Send(new ReportUserLoggedIn(userId, userDetails.Name, userDetails.PictureUrl));
-			Thread.Sleep(200);
 			SetUserEmailIfNeeded(userId, new EmailAddress(userDetails.Email));
 
+            FormsAuthentication.SetAuthCookie(userDetails.Email, true);
 			return SuccessfullLoginRedirect(returnUrl);
 		}
 
 		[HttpGet]
 		public ActionResult VkontakteLogin(string uid, string firstName, string lastName, string photo, string returnUrl)
 		{
-			FormsAuthentication.SetAuthCookie(uid, true);
-
 			var userId = new UserId(uid);
 			_bus.Send(new ReportUserLoggedIn(userId, firstName + " " + lastName, photo));
-			Thread.Sleep(200);
 
+            FormsAuthentication.SetAuthCookie(uid, true);
 			return SuccessfullLoginRedirect(returnUrl);
 		}
 
@@ -57,13 +53,11 @@ namespace ECom.Site.Controllers
 			string accessToken = GoogleAuth.ObtainAccessToken(code, state);
 			GoogleUserDetals userDetails = GoogleAuth.LoadUserDetails(accessToken);
 
-			FormsAuthentication.SetAuthCookie(userDetails.Email, true);
-
 			var userId = new UserId(userDetails.Email);
 			_bus.Send(new ReportUserLoggedIn(userId, userDetails.Name, userDetails.PictureUrl));
-			Thread.Sleep(200);
 			SetUserEmailIfNeeded(userId, new EmailAddress(userDetails.Email));
 
+            FormsAuthentication.SetAuthCookie(userDetails.Email, true);
 			return SuccessfullLoginRedirect(null);
 		}
 

@@ -21,6 +21,7 @@ using FluentValidation.Attributes;
 using Email;
 using ECom.Site.Controllers;
 using ECom.Domain.Exceptions;
+using System.Threading.Tasks;
 
 namespace ECom.Site
 {
@@ -66,8 +67,8 @@ namespace ECom.Site
         {
             var eventStoreConnString = ConfigurationManager.ConnectionStrings["EventStore"].ConnectionString;
 
-            var bus = new Bus.Bus();
-            var eventStore = new EventStore.SQL.EventStore(eventStoreConnString, bus);
+            var bus = new Bus.Bus(false);
+            var eventStore = new EventStore.Redis.EventStore(ConfigurationManager.AppSettings["REDISCLOUD_URL_STRIPPED"], bus);
 			
 			var readModelRepo = new SimpleRepository("ReadModel", SimpleRepositoryOptions.RunMigrations);
 			var dtoManager = new SubSonicDtoManager(readModelRepo);
@@ -97,9 +98,8 @@ namespace ECom.Site
 			var mailBodyGenerator = new RazorMessageBodyGenerator();
 			var emailService = new EmailService(mailSender, readModel, mailBodyGenerator);
 
-			bus.RegisterHandler<OrderSubmited>(emailService.Handle);
+			bus.RegisterHandler<OrderSubmited>(e => Task.Factory.StartNew(() => emailService.Handle(e)));
 		}
-
 
 		protected void Application_Error(object sender, EventArgs e)
 		{

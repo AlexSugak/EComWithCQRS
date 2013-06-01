@@ -21,7 +21,7 @@ namespace ECom.Site.Tests
             // create the mock repository
             Mock<IEventStore> mock = new Mock<IEventStore>();
 
-            var allEvents = new List<IEvent<IIdentity>>()
+            var allEvents = new IEvent[]
                 {
                     new UserCreated(new UserId("test1@eee.com")) {Version = 1, Date = DateTime.Now},
                     new UserCreated(new UserId("test2@eee.com")) {Version = 2, Date = DateTime.Now},
@@ -30,7 +30,7 @@ namespace ECom.Site.Tests
                     new UserCreated(new UserId("test4@eee.com")) {Version = 5, Date = DateTime.Now}
                 };
             
-            mock.Setup(m => m.GetEventsForAggregate<IIdentity>(It.IsAny<IIdentity>())).Returns(allEvents.AsQueryable());
+            mock.Setup(m => m.GetEventsForAggregate(It.IsAny<string>())).Returns(allEvents.AsQueryable());
 
             // create  instance of a controller; set the page size
             EventViewerController controller = new EventViewerController(mock.Object);
@@ -53,14 +53,14 @@ namespace ECom.Site.Tests
             // - create the mock repository
             Mock<IEventStore> mock = new Mock<IEventStore>();
 
-            var allEvents = new List<IEvent<IIdentity>>()
+            var allEvents = new IEvent[]
                 {
                     new ProductAddedToOrder() {Id = new OrderId(777), Date = DateTime.Now, Version = 1},
                     new ProductAddedToOrder() {Id = new OrderId(777), Date = DateTime.Now, Version = 3},
                     new ProductAddedToOrder() {Id = new OrderId(777), Date = DateTime.Now, Version = 5}
                 };
 
-            mock.Setup(m => m.GetEventsForAggregate<IIdentity>(It.IsAny<IIdentity>())).Returns(allEvents.AsQueryable());
+            mock.Setup(m => m.GetEventsForAggregate(It.IsAny<string>())).Returns(allEvents.AsQueryable());
 
             // create  instance of a controller
             EventViewerController controller = new EventViewerController(mock.Object);

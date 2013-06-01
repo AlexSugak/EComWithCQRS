@@ -8,7 +8,7 @@ namespace ECom.Utility
 	public static class StringExtentions
 	{
 		/// <summary>
-		/// Makes StringInCamelCase to be splitted to String In Camel Case 
+		/// Splits 'StringInCamelCase' to 'String In Camel Case' 
 		/// </summary>
 		public static string Wordify(this string str)
 		{
@@ -31,7 +31,7 @@ namespace ECom.Utility
 		}
 
         /// <summary>
-        /// Reverses string value
+        /// Reverses string
         /// </summary>
         public static string Reverse(this string input)
         {
