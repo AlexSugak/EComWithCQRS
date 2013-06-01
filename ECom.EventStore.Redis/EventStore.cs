@@ -56,7 +56,7 @@ namespace ECom.EventStore.Redis
                 if (currentVersion != expectedVersion)
                 {
                     throw new ConcurrencyViolationException(String.Format(
-                                    "Expected {0} to have verion {1} but was {2}",
+                                    "Expected {0} to have version {1} but was {2}",
                                     aggregateType,
                                     expectedVersion,
                                     currentVersion));
