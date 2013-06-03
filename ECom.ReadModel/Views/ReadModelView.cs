@@ -9,15 +9,12 @@ namespace ECom.ReadModel.Views
 	public abstract class ReadModelView
 	{
 		protected readonly IDtoManager _manager;
-		protected readonly IReadModelFacade _readModel;
 
-		public ReadModelView(IDtoManager manager, IReadModelFacade readModel)
+		public ReadModelView(IDtoManager manager)
 		{
 			Argument.ExpectNotNull(() => manager);
-			Argument.ExpectNotNull(() => readModel);
 
 			_manager = manager;
-			_readModel = readModel;
 		}
 	}
 }

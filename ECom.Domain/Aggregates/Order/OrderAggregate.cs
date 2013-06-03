@@ -51,7 +51,7 @@ namespace ECom.Domain.Aggregates.Order
 
         private void Apply(ProductAddedToOrder e)
         {
-            _items.Add(new OrderItem(e.OrderItemId, e.Quantity ));
+            _items.Add(new OrderItem(e.OrderItemId, e.Quantity, e.Price ));
         }
 
 		public void RemoveItem(OrderItemId itemId)
@@ -79,7 +79,7 @@ namespace ECom.Domain.Aggregates.Order
 				throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Cannot submit order {0}. Order does not have any items added.", _id.Id));
 			}
 
-			ApplyChange(new OrderSubmited(_id, _userId));
+			ApplyChange(new OrderSubmited(_id, _userId, _items.Count, _items.Sum(i => i.Total)));
 		}
 
 		private void Apply(OrderSubmited e)

@@ -60,43 +60,42 @@ namespace ECom.Site
 			ModelBinders.Binders.Add(typeof(OrderItemId), new IdentityBinder());
 			ModelBinders.Binders.Add(typeof(UserId), new IdentityBinder());
 
-            InitServices();
+            Init();
         }
 
-        private static void InitServices()
+        private static void Init()
         {
-            var eventStoreConnString = ConfigurationManager.ConnectionStrings["EventStore"].ConnectionString;
-
             var bus = new Bus.Bus(false);
-            var eventStore = new EventStore.Redis.EventStore(ConfigurationManager.AppSettings["REDISCLOUD_URL_STRIPPED"], bus);
+            var redisUri = ConfigurationManager.AppSettings["REDISCLOUD_URL_STRIPPED"];
+            var eventStore = new EventStore.Redis.EventStore(redisUri, bus);
 			
-			var readModelRepo = new SimpleRepository("ReadModel", SimpleRepositoryOptions.RunMigrations);
-			var dtoManager = new SubSonicDtoManager(readModelRepo);
-			var readModel = new SubSonicReadModelFacade(readModelRepo);
+            var dtoManager = new RedisDtoManager(redisUri);
 
 			var commandHandlersAssemblies = new [] 
 			{ 
 				Assembly.Load(new AssemblyName("ECom.Domain"))
 			};
 
+            ReadModelRebuilder.Rebuild(redisUri);
+
 			MessageHandlersRegister.RegisterCommandHandlers(commandHandlersAssemblies, bus, eventStore);
-			RegisterEventHandlers(bus, readModel, dtoManager);
+			RegisterEventHandlers(bus, dtoManager);
 
             ServiceLocator.Bus = bus;
-            ServiceLocator.ReadModel = readModel;
-			ServiceLocator.IdentityGenerator = new SqlTableDomainIdentityGenerator(eventStoreConnString);
+            ServiceLocator.DtoManager = dtoManager;
+            ServiceLocator.IdentityGenerator = new RedisIdGenerator(redisUri);
             ServiceLocator.EventStore = eventStore;
         }
 
-		private static void RegisterEventHandlers(Bus.Bus bus, IReadModelFacade readModel, IDtoManager dtoManager)
+		private static void RegisterEventHandlers(Bus.Bus bus, IDtoManager dtoManager)
 		{
 			var eventHandlersAssemblies = new[] { Assembly.Load(new AssemblyName("ECom.ReadModel")) };
-			MessageHandlersRegister.RegisterEventHandlers(eventHandlersAssemblies, bus, dtoManager, readModel);
+			MessageHandlersRegister.RegisterEventHandlers(eventHandlersAssemblies, bus, dtoManager);
 
 
 			var mailSender = new MailGunEmailSender(ConfigurationManager.AppSettings["MailGunApiKey"], ConfigurationManager.AppSettings["MailGunAppDomain"]);
 			var mailBodyGenerator = new RazorMessageBodyGenerator();
-			var emailService = new EmailService(mailSender, readModel, mailBodyGenerator);
+			var emailService = new EmailService(mailSender, new UserDetailsView(dtoManager), mailBodyGenerator);
 
 			bus.RegisterHandler<OrderSubmited>(e => Task.Factory.StartNew(() => emailService.Handle(e)));
 		}

@@ -7,6 +7,7 @@ using ECom.Messages;
 using ECom.ReadModel;
 using ECom.Utility;
 using Email;
+using ECom.ReadModel.Views;
 
 namespace ECom.Site
 {
@@ -14,12 +15,12 @@ namespace ECom.Site
 		: IHandle<OrderSubmited>
 	{
 		private readonly IEmailSender _emailSender;
-		private readonly IReadModelFacade _readModel;
+		private readonly IUserDetailsView _readModel;
 		private readonly IMessageBodyGenerator _messageBodyGenerator;
 
 		private EmailAddress appAddress = new EmailAddress("noreply@crowdshop.com", "Crowdshop");
 
-		public EmailService(IEmailSender emailSender, IReadModelFacade readModel, IMessageBodyGenerator messageBodyGenerator)
+        public EmailService(IEmailSender emailSender, IUserDetailsView readModel, IMessageBodyGenerator messageBodyGenerator)
 		{
 			Argument.ExpectNotNull(() => emailSender);
 			Argument.ExpectNotNull(() => readModel);

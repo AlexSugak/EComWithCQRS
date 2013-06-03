@@ -54,11 +54,7 @@ RemoveItemFromOrder?(orderId, orderItemId)
 ItemRemovedFromOrder!(orderId, orderItemId)
 
 SubmitOrder?(orderId)
-OrderSubmited!(orderId, userId)
-
-
-
-
+OrderSubmited!(orderId, userId, int ItemsCount, decimal Total)
 
 
 

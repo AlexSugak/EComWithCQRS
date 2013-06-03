@@ -47,7 +47,8 @@ namespace ECom.Site.Areas.Shop.Models
 		{ 
 			get 
 			{
-				return ServiceLocator.ReadModel.GetOrderItems(OrderId).ToList();
+                //TODO: inject it
+				return new OrderItemsView(ServiceLocator.DtoManager).GetOrderItems(OrderId).ToList();
 			} 
 		}
 

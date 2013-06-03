@@ -15,12 +15,10 @@ namespace ECom.Site.Controllers
 	public abstract class CqrsController : BaseController
 	{
 		protected Bus.Bus _bus;
-        protected IReadModelFacade _readModel;
 
 		public CqrsController()
         {
             _bus = ServiceLocator.Bus;
-            _readModel = ServiceLocator.ReadModel;
 
 			ActionInvoker = new CqrsControllerActionInvoker();
         }

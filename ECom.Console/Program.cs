@@ -41,21 +41,13 @@ namespace ECom.Console
 			{
 				System.Console.WriteLine("Possible commands:");
                 System.Console.WriteLine("rebuild_read_model");
-				System.Console.WriteLine("new_id");
 				System.Console.WriteLine("exit");
 			}
 			else if (command == "rebuild_read_model")
 			{
 				System.Console.WriteLine("Starting read model rebuild process...");
-				ReadModelRebuilder.Rebuild(
-							ConfigurationManager.ConnectionStrings["ReadModel"].ConnectionString,
-							ConfigurationManager.ConnectionStrings["EventStore"].ConnectionString);
+                ReadModelRebuilder.Rebuild(ConfigurationManager.AppSettings["REDISCLOUD_URL_STRIPPED"]);
 				System.Console.WriteLine("Finished rebuilding read model.");
-			}
-			else if (command == "new_id")
-			{
-				var generator = new SqlTableDomainIdentityGenerator(ConfigurationManager.ConnectionStrings["EventStore"].ConnectionString);
-				System.Console.WriteLine(generator.GenerateNewId());
 			}
 			else if (command == "exit")
 			{

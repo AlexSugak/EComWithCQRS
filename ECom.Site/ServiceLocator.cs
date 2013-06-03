@@ -13,7 +13,7 @@ namespace ECom.Site
     {
         public static Bus.Bus Bus { get; set; }
         public static IEventStore EventStore { get; set; }
-        public static IReadModelFacade ReadModel { get; set; }
+        public static IDtoManager DtoManager { get; set; }
 		public static ProductPageParserFactory ProductPageParserFactory = new ProductPageParserFactory();
 		public static IDomainIdentityGenerator IdentityGenerator { get; set; }
     }

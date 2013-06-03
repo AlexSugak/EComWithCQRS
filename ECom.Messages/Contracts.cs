@@ -636,11 +636,15 @@ namespace ECom.Messages
 		public int Version { get; set; }
 		public DateTime Date { get; set; }
 		public UserId UserId { get; set; }
+		public int ItemsCount { get; set; }
+		public decimal Total { get; set; }
 		public OrderSubmited () {}
-		public OrderSubmited (OrderId orderId, UserId userId)
+		public OrderSubmited (OrderId orderId, UserId userId, int itemsCount, decimal total)
 		{
 			Id = orderId;
 			UserId = userId;
+			ItemsCount = itemsCount;
+			Total = total;
 		}
 		public override bool Equals(object obj)
 		{
@@ -653,11 +657,11 @@ namespace ECom.Messages
 			{
 				return false;
 			}
-			return Id == target.Id && UserId == target.UserId;
+			return Id == target.Id && UserId == target.UserId && ItemsCount == target.ItemsCount && Total == target.Total;
 		}
 		public override int GetHashCode()
 		{
-			return Id.GetHashCode() ^ UserId.GetHashCode();
+			return Id.GetHashCode() ^ UserId.GetHashCode() ^ ItemsCount.GetHashCode() ^ Total.GetHashCode();
 		}
 		public static bool operator ==(OrderSubmited a, OrderSubmited b)
 		{

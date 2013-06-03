@@ -23,10 +23,10 @@ namespace ECom.EventViewer
 
         private static void InitServices()
         {
-            var eventStoreConnString = ConfigurationManager.ConnectionStrings["EventStore"].ConnectionString;
+            var eventStoreConnString = ConfigurationManager.AppSettings["REDISCLOUD_URL_STRIPPED"];
 
             var bus = new Bus.Bus();
-            var eventStore = new EventStore.SQL.EventStore(eventStoreConnString, bus);
+            var eventStore = new EventStore.Redis.EventStore(eventStoreConnString, bus);
 
             ServiceLocator.Bus = bus;
             ServiceLocator.EventStore = eventStore;

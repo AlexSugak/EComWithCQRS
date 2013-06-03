@@ -61,7 +61,6 @@
     <Compile Include="Exceptions\EntityAlreadyExistsException.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlTableDomainIdentityGenerator.cs" />
     <Compile Include="ValueObjects\Money.cs" />
   </ItemGroup>
   <ItemGroup>

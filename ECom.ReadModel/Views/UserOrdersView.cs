@@ -16,6 +16,12 @@ namespace ECom.ReadModel.Views
 		Delivered
 	}
 
+    [Serializable]
+    public class UserOrders : Dto
+    {
+        public List<OrderId> Orders { get; set; }
+    }
+
 	[Serializable]
 	public class UserOrderDetails : Dto
 	{
@@ -46,20 +52,63 @@ namespace ECom.ReadModel.Views
 		}
 	}
 
+    public interface IUserOrdersView
+    {
+        UserOrderDetails GetOrderDetails(UserId userId, OrderId orderId);
+        IEnumerable<UserOrderDetails> GetUserOders(UserId userId);
+    }
+
 	public class UserOrdersView : ReadModelView,
+        IUserOrdersView,
 		IHandle<OrderSubmited>
 	{
-		public UserOrdersView(IDtoManager manager, IReadModelFacade readModel)
-			: base(manager, readModel)
+		public UserOrdersView(IDtoManager manager)
+			: base(manager)
 		{
 		}
 
 		public void Handle(OrderSubmited e)
 		{
-			IEnumerable<OrderItemDetails> orderItems = _readModel.GetOrderItems(e.Id);
-			var orderDetails = new UserOrderDetails(e.UserId, e.Id, orderItems.Count(), orderItems.Sum(i => i.Total), UserOrderStatus.WaitingForApproval);
+			var orderDetails = new UserOrderDetails(e.UserId, e.Id, e.ItemsCount, e.Total, UserOrderStatus.WaitingForApproval);
 
-			_manager.Add(orderDetails);
+			_manager.Add(orderDetails.ID, orderDetails);
+
+            string id = UserOrdersKey(e.UserId);
+            var orders = _manager.Get<UserOrders>(id);
+
+            if (orders == null)
+            {
+                _manager.Add<UserOrders>(id, new UserOrders { Orders = new List<OrderId> { e.Id } });
+            }
+            else
+            {
+                _manager.Update<UserOrders>(id, i => i.Orders.Add(e.Id));
+            }
 		}
-	}
+
+        public UserOrderDetails GetOrderDetails(UserId userId, OrderId orderId)
+        {
+            Argument.ExpectNotNull(() => userId);
+            Argument.ExpectNotNull(() => orderId);
+
+            return _manager.Get<UserOrderDetails>(UserOrderDetails.CompositeId(userId, orderId));
+        }
+
+        public IEnumerable<UserOrderDetails> GetUserOders(UserId userId)
+        {
+            var orderIds = _manager.Get<UserOrders>(UserOrdersKey(userId));
+
+            if (orderIds == null)
+            {
+                return Enumerable.Empty<UserOrderDetails>();
+            }
+
+            return orderIds.Orders.Select(id => _manager.Get<UserOrderDetails>(id));
+        }
+
+        private static string UserOrdersKey(UserId userId)
+        {
+            return userId.GetId() + "_orders";
+        }
+    }
 }

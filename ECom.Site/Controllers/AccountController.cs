@@ -19,6 +19,13 @@ namespace ECom.Site.Controllers
 {
 	public class AccountController : CqrsController
     {
+        private readonly IUserDetailsView _userDetailsView;
+
+        public AccountController()
+        {
+            _userDetailsView = new UserDetailsView(ServiceLocator.DtoManager);
+        }
+
         public ActionResult LogOn()
         {
             return View();
@@ -83,7 +90,7 @@ namespace ECom.Site.Controllers
 
 		private void SetUserEmailIfNeeded(UserId userId, EmailAddress email)
 		{
-			UserDetails userDetails = _readModel.GetUserDetails(userId);
+            UserDetails userDetails = _userDetailsView.GetUserDetails(userId);
 
 			if (String.IsNullOrWhiteSpace(userDetails.Email))
 			{
