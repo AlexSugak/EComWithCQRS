@@ -16,9 +16,9 @@ namespace ECom.Infrastructure
 			RegisterHandlersInAssembly(cmdHndlrsAssemblies, typeof(ICommand), bus, new[] { typeof(IEventStore) }, new[] { eventsStore });
 		}
 
-		public static void RegisterEventHandlers(IEnumerable<Assembly> eventHndlrsAssemblies, Bus.Bus bus, IDtoManager manager, IReadModelFacade readModel)
+		public static void RegisterEventHandlers(IEnumerable<Assembly> eventHndlrsAssemblies, Bus.Bus bus, IDtoManager manager)
 		{
-			RegisterHandlersInAssembly(eventHndlrsAssemblies, typeof(IEvent), bus, new[] { typeof(IDtoManager), typeof(IReadModelFacade) }, new object[] { manager, readModel });
+			RegisterHandlersInAssembly(eventHndlrsAssemblies, typeof(IEvent), bus, new[] { typeof(IDtoManager) }, new object[] { manager });
 		}
 
 		private static void RegisterHandlersInAssembly(IEnumerable<Assembly> assemblies, Type messageType, Bus.Bus bus, Type[] ctorArgTypes, object[] ctorArgs)
@@ -33,7 +33,10 @@ namespace ECom.Infrastructure
 										.Select(t => new
 										{
 											Type = t,
-											MessageTypes = t.GetInterfaces().Select(i => i.GetGenericArguments().First())
+											MessageTypes = t
+                                                .GetInterfaces()
+                                                .Where(i => i.IsGenericType)
+                                                .Select(i => i.GetGenericArguments().First())
 										});
 
 			foreach (var handler in handlerTypesWithMessages)

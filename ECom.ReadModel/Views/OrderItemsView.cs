@@ -7,6 +7,16 @@ using ECom.Utility;
 
 namespace ECom.ReadModel.Views
 {
+    [Serializable]
+    public class OrderItems : Dto
+    {
+        public List<OrderItemDetails> Items { get; set; }
+
+        public OrderItems()
+        {
+        }
+    }
+
 	[Serializable]
 	public class OrderItemDetails : Dto
 	{
@@ -62,33 +72,64 @@ namespace ECom.ReadModel.Views
 		}
 	}
 
+    public interface IOrderItemsView
+    {
+        IEnumerable<OrderItemDetails> GetOrderItems(OrderId orderId);
+    }
+    
+    //TODO: merge with order details
 	public class OrderItemsView : ReadModelView,
+        IOrderItemsView,
 		IHandle<ProductAddedToOrder>,
 		IHandle<ItemRemovedFromOrder>
 	{
-		public OrderItemsView(IDtoManager manager, IReadModelFacade readModel)
-			: base(manager, readModel)
+		public OrderItemsView(IDtoManager manager)
+			: base(manager)
 		{
 		}
 
 		public void Handle(ProductAddedToOrder e)
 		{
-			_manager.Add<OrderItemDetails>(new OrderItemDetails(
-				e.Id, 
-				e.OrderItemId,
-				e.ProductUri, 
-				e.Name, 
-				e.Description, 
-				e.Price, 
-				e.ImageUri, 
-				e.Size, 
-				e.Color,
-				e.Quantity));
+            var itemDetails = new OrderItemDetails(
+                e.Id,
+                e.OrderItemId,
+                e.ProductUri,
+                e.Name,
+                e.Description,
+                e.Price,
+                e.ImageUri,
+                e.Size,
+                e.Color,
+                e.Quantity);
+
+            string id = GetDtoKey(e.Id);
+            var items = _manager.Get<OrderItems>(id);
+
+            if (items == null)
+            {
+                _manager.Add<OrderItems>(id, new OrderItems { Items = new List<OrderItemDetails> { itemDetails } });
+            }
+            else
+            {
+                _manager.Update<OrderItems>(id, i => i.Items.Add(itemDetails));
+            }
 		}
 
 		public void Handle(ItemRemovedFromOrder e)
 		{
-			_manager.Delete<OrderItemDetails>(OrderItemDetails.GetItemCompositeId(e.Id, e.OrderItemId));
+			_manager.Update<OrderItems>(GetDtoKey(e.Id), i => i.Items.Remove(i.Items.First(it => it.ID == OrderItemDetails.GetItemCompositeId(e.Id, e.OrderItemId))));
 		}
-	}
+
+        public IEnumerable<OrderItemDetails> GetOrderItems(OrderId orderId)
+        {
+            var dto = _manager.Get<OrderItems>(GetDtoKey(orderId));
+
+            return dto != null ? dto.Items : Enumerable.Empty<OrderItemDetails>();
+        }
+
+        private static string GetDtoKey(OrderId orderId)
+        {
+            return orderId.GetId() + "_items";
+        }
+    }
 }

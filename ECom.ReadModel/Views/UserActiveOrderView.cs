@@ -24,18 +24,24 @@ namespace ECom.ReadModel.Views
 		}
 	}
 
+    public interface IUserActiveOrderView
+    {
+        OrderId GetUserActiveOrderId(UserId userId);
+    }
+
 	public class UserActiveOrderView : ReadModelView,
+        IUserActiveOrderView,
 		IHandle<NewOrderCreated>,
 		IHandle<OrderSubmited>
 	{
-		public UserActiveOrderView(IDtoManager manager, IReadModelFacade readModel)
-			: base(manager, readModel)
+		public UserActiveOrderView(IDtoManager manager)
+			: base(manager)
 		{
 		}
 
 		public void Handle(NewOrderCreated e)
 		{
-			_manager.Add<ActiveUserOrderDetails>(new ActiveUserOrderDetails(e.UserId.Id, e.Id.Id));
+			_manager.Add<ActiveUserOrderDetails>(e.UserId.Id, new ActiveUserOrderDetails(e.UserId.Id, e.Id.Id));
 		}
 
 		public void Handle(OrderSubmited e)
@@ -43,5 +49,18 @@ namespace ECom.ReadModel.Views
 			string userId = e.UserId.Id;
 			_manager.Delete<ActiveUserOrderDetails>(userId);
 		}
-	}
+
+        public OrderId GetUserActiveOrderId(UserId userId)
+        {
+            Argument.ExpectNotNull(() => userId);
+
+            var activeOrder = _manager.Get<ActiveUserOrderDetails>(userId);
+            if (activeOrder != null)
+            {
+                return new OrderId(activeOrder.OrderId);
+            }
+
+            return null;
+        }
+    }
 }

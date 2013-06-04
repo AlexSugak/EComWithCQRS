@@ -10,6 +10,6 @@ namespace ECom.Domain
 	/// </summary>
 	public interface IDomainIdentityGenerator
 	{
-		int GenerateNewId();
+		long GenerateNewId();
 	}
 }

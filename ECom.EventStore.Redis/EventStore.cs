@@ -17,7 +17,7 @@ namespace ECom.EventStore.Redis
     public class EventStore : IEventStore
     {
         private readonly string _redisHost;
-        private readonly string _allEventsListId = "urn:AllEvents";
+        private readonly string _allEventsListId = "urn:AllEventIds";
         private readonly IEventPublisher _publisher;
 
         public EventStore(string redisHost, IEventPublisher publisher)
@@ -42,13 +42,13 @@ namespace ECom.EventStore.Redis
 
             using (var client = new PooledRedisClientManager(_redisHost).GetClient())
             {
-                var aggregateRootEventsListId = GetAggregateRootEventsListId(aggregateId.GetId());
+                var aggregateRootEventsListId = AggregateRootEventsListId(aggregateId.GetId());
 
                 IEvent<T> lastEvent = null;
                 string lastEventId = client.Lists[aggregateRootEventsListId].LastOrDefault();
                 if (lastEventId != null)
                 {
-                    lastEvent = (IEvent<T>)client.As<IEvent>()[lastEventId];
+                    lastEvent = (IEvent<T>)client.As<IEvent>()[EventId(lastEventId)];
                 }
 
                 int currentVersion = lastEvent != null ? lastEvent.Version : 0;
@@ -69,7 +69,7 @@ namespace ECom.EventStore.Redis
                         var eventId = Guid.NewGuid().ToString();
 
                         //save event itself
-                        trans.QueueCommand(c => c.As<IEvent>().SetEntry(eventId, e));
+                        trans.QueueCommand(c => c.As<IEvent>().SetEntry(EventId(eventId), e));
                         //append event id to the list of aggregate events
                         trans.QueueCommand(c => c.AddItemToList(aggregateRootEventsListId, eventId));
                         //append event id to global list of events
@@ -100,10 +100,10 @@ namespace ECom.EventStore.Redis
 
             using (var client = new PooledRedisClientManager(_redisHost).GetClient())
             {
-                var aggregateRootEventsListId = GetAggregateRootEventsListId(aggregateId);
-                foreach (var eventId in client.Lists[aggregateRootEventsListId])
+                var aggregateEventIds = client.Lists[AggregateRootEventsListId(aggregateId)];
+                foreach (var eventId in aggregateEventIds)
                 {
-                    yield return client.As<IEvent>()[eventId];
+                    yield return client.As<IEvent>()[EventId(eventId)];
                 }
             }
         }
@@ -112,16 +112,22 @@ namespace ECom.EventStore.Redis
         {
             using (var client = new PooledRedisClientManager(_redisHost).GetClient())
             {
-                foreach (var eventId in client.Lists[_allEventsListId])
+                var allEventIds = client.Lists[_allEventsListId];
+                foreach (var eventId in allEventIds)
                 {
-                    yield return client.As<IEvent>()[eventId];
+                    yield return client.As<IEvent>()[EventId(eventId)];
                 }
             }
         }
 
-        private static string GetAggregateRootEventsListId(string id)
+        private static string AggregateRootEventsListId(string id)
         {
-            return String.Format(CultureInfo.InvariantCulture, "urn:AggregateRoots:{0}", id);
+            return String.Format(CultureInfo.InvariantCulture, "urn:AggregateRoot:{0}", id);
+        }
+
+        private static string EventId(string id)
+        {
+            return String.Format(CultureInfo.InvariantCulture, "urn:Event:{0}", id);
         }
     }
 }

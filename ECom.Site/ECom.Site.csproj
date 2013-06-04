@@ -288,10 +288,6 @@
       <Project>{62d77b50-c879-4ba1-905f-396d31356d6a}</Project>
       <Name>ECom.EventStore.Redis</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ECom.EventStore.SQL\ECom.EventStore.SQL.csproj">
-      <Project>{5125BFC0-A612-465B-8933-E7136D2E8727}</Project>
-      <Name>ECom.EventStore.SQL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ECom.Infrustructure\ECom.Infrastructure.csproj">
       <Project>{5600C6B0-89ED-4E30-BEF2-DD566E8F5454}</Project>
       <Name>ECom.Infrastructure</Name>

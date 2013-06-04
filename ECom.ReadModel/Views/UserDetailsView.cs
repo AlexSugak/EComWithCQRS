@@ -28,24 +28,37 @@ namespace ECom.ReadModel.Views
 		}
 	}
 
+    public interface IUserDetailsView
+    {
+        UserDetails GetUserDetails(UserId userId);
+    }
+
 	public class UserDetailsView : ReadModelView,
+        IUserDetailsView,
 		IHandle<UserLoggedInReported>,
 		IHandle<UserEmailSet>
 	{
-		public UserDetailsView(IDtoManager manager, IReadModelFacade readModel)
-			: base(manager, readModel)
+		public UserDetailsView(IDtoManager manager)
+			: base(manager)
 		{
 		}
 
 		public void Handle(UserLoggedInReported e)
 		{
 			_manager.Delete<UserDetails>(e.Id);
-			_manager.Add<UserDetails>(new UserDetails(e.Id.Id, e.UserName, e.PhotoUrl));
+			_manager.Add<UserDetails>(e.Id.Id, new UserDetails(e.Id.Id, e.UserName, e.PhotoUrl));
 		}
 
 		public void Handle(UserEmailSet e)
 		{
 			_manager.Update<UserDetails>(e.Id, ud => ud.Email = e.Email.RawAddress);
 		}
-	}
+
+        public UserDetails GetUserDetails(UserId userId)
+        {
+            Argument.ExpectNotNull(() => userId);
+
+            return _manager.Get<UserDetails>(userId);
+        }
+    }
 }

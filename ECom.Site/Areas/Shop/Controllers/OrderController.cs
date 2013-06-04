@@ -20,6 +20,19 @@ namespace ECom.Site.Areas.Shop.Controllers
 	[Authorize]
     public class OrderController : CqrsController
     {
+        private readonly IUserOrdersView _orderDetailsView;
+        private readonly IOrderItemsView _orderItemsView;
+        private readonly IUserDetailsView _userDetailsView;
+        private readonly IUserActiveOrderView _activeOrderView;
+
+        public OrderController()
+        {
+            _orderDetailsView = new UserOrdersView(ServiceLocator.DtoManager);
+            _orderItemsView = new OrderItemsView(ServiceLocator.DtoManager);
+            _userDetailsView = new UserDetailsView(ServiceLocator.DtoManager);
+            _activeOrderView = new UserActiveOrderView(ServiceLocator.DtoManager);
+        }
+
 		private UserId UserId
 		{
 			get { return new UserId(User.Identity.Name); }
@@ -35,9 +48,9 @@ namespace ECom.Site.Areas.Shop.Controllers
 		{
 			Argument.ExpectNotNull(() => id);
 
-			UserOrderDetails userOrder = ThrowNotFoundIfNull(_readModel.GetOrderDetails(UserId, id), "Order {0} not found for user {1}", id.Id, UserId.Id);
+            UserOrderDetails userOrder = ThrowNotFoundIfNull(_orderDetailsView.GetOrderDetails(UserId, id), "Order {0} not found for user {1}", id.Id, UserId.Id);
 
-			IEnumerable<OrderItemDetails> orderItems = _readModel.GetOrderItems(id);
+            IEnumerable<OrderItemDetails> orderItems = _orderItemsView.GetOrderItems(id);
 
 			return View(new OrderDetailsViewModel(userOrder, orderItems));
 		}
@@ -45,7 +58,7 @@ namespace ECom.Site.Areas.Shop.Controllers
 		[HttpGet]
 		public ActionResult MyOrders()
 		{
-			IEnumerable<UserOrderDetails> userOrders = _readModel.GetUserOders(UserId);
+            IEnumerable<UserOrderDetails> userOrders = _orderDetailsView.GetUserOders(UserId);
 
 			return View(new UserOrdersViewModel(userOrders));
 		}
@@ -80,12 +93,12 @@ namespace ECom.Site.Areas.Shop.Controllers
 		[OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
 		public ActionResult Add()
 		{
-			OrderId activeOrderId = _readModel.GetUserActiveOrderId(UserId);
-			UserDetails userDetails = _readModel.GetUserDetails(UserId);
+            OrderId activeOrderId = _activeOrderView.GetUserActiveOrderId(UserId);
+            UserDetails userDetails = _userDetailsView.GetUserDetails(UserId);
 
 			if (activeOrderId == null)
 			{
-				activeOrderId = new OrderId(ServiceLocator.IdentityGenerator.GenerateNewId());
+				activeOrderId = new OrderId((int)ServiceLocator.IdentityGenerator.GenerateNewId());
 				_bus.Send(new CreateNewOrder(activeOrderId, UserId));
 			}
 
@@ -102,7 +115,7 @@ namespace ECom.Site.Areas.Shop.Controllers
 
 			if (ModelState.IsValid)
 			{
-				var itemId = new OrderItemId(ServiceLocator.IdentityGenerator.GenerateNewId());
+				var itemId = new OrderItemId((int)ServiceLocator.IdentityGenerator.GenerateNewId());
 				var cmd = new AddProductToOrder(
 								model.OrderId, 
 								itemId,

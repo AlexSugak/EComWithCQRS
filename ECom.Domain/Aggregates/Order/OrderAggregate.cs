@@ -52,7 +52,7 @@ namespace ECom.Domain.Aggregates.Order
 
         private void Apply(ProductAddedToOrder e)
         {
-            _items.Add(new OrderItem(e.OrderItemId, e.Quantity ));
+            _items.Add(new OrderItem(e.OrderItemId, e.Quantity, e.Price ));
         }
 
 		public void RemoveItem(OrderItemId itemId)
