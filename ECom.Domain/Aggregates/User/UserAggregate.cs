@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ECom.Messages;
 using ECom.Utility;
+using ECom.Infrastructure;
 
 namespace ECom.Domain.Aggregates.User
 {
@@ -26,7 +27,7 @@ namespace ECom.Domain.Aggregates.User
 				throw new InvalidOperationException("User already has non zero version and cannot be created!");
 			}
 
-			ApplyChange(new UserCreated(userId));
+            ApplyChange(new UserCreated(TimeProvider.Now, this.Version + 1, userId));
 		}
 
 		public void Apply(UserCreated e)
@@ -38,7 +39,7 @@ namespace ECom.Domain.Aggregates.User
 		{
 			Argument.ExpectNotNullOrWhiteSpace(() => userName);
 
-			ApplyChange(new UserLoggedInReported(_id, userName, photoUrl));
+            ApplyChange(new UserLoggedInReported(TimeProvider.Now, this.Version + 1, _id, userName, photoUrl));
 		}
 
 		public void Apply(UserLoggedInReported e)
@@ -48,7 +49,7 @@ namespace ECom.Domain.Aggregates.User
 		{
 			Argument.ExpectNotNull(() => emailAddress);
 
-			ApplyChange(new UserEmailSet(_id, emailAddress));
+            ApplyChange(new UserEmailSet(TimeProvider.Now, this.Version + 1, _id, emailAddress));
 		}
 
 		public void Apply(UserEmailSet e)

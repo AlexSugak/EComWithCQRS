@@ -5,6 +5,7 @@ using System.Text;
 using ECom.Utility;
 using ECom.Messages;
 using System.Globalization;
+using ECom.Infrastructure;
 
 namespace ECom.Domain.Aggregates.Order
 {
@@ -30,7 +31,7 @@ namespace ECom.Domain.Aggregates.Order
 			Argument.ExpectNotNull(() => id);
 			Argument.ExpectNotNull(() => userId);
 
-            ApplyChange(new NewOrderCreated(id, userId));
+            ApplyChange(new NewOrderCreated(TimeProvider.Now, this.Version+1, id, userId));
         }
 
         private void Apply(NewOrderCreated e)
@@ -46,7 +47,7 @@ namespace ECom.Domain.Aggregates.Order
 			Argument.Expect(() => price > 0, "price", String.Format(CultureInfo.InvariantCulture, "price must be a positive value, was {0}", price));
 			Argument.Expect(() => quantity > 0, "quantity", String.Format(CultureInfo.InvariantCulture, "quantity must be a positive value, was {0}", quantity));
 
-			ApplyChange(new ProductAddedToOrder(_id, itemId, productUri, name, description, price, quantity, size, color, imageUrl));
+            ApplyChange(new ProductAddedToOrder(TimeProvider.Now, this.Version + 1, _id, itemId, productUri, name, description, price, quantity, size, color, imageUrl));
         }
 
         private void Apply(ProductAddedToOrder e)
@@ -59,7 +60,7 @@ namespace ECom.Domain.Aggregates.Order
 			Argument.ExpectNotNull(() => itemId);
 			Argument.Expect(() => _items.Exists(i => i.Id == itemId), "itemId", String.Format(CultureInfo.InvariantCulture, "Order does not contain item with id {0}", itemId.Id));
 
-			ApplyChange(new ItemRemovedFromOrder(_id, itemId));
+			ApplyChange(new ItemRemovedFromOrder(TimeProvider.Now, this.Version + 1, _id, itemId));
 		}
 
 		private void Apply(ItemRemovedFromOrder e)
@@ -79,7 +80,7 @@ namespace ECom.Domain.Aggregates.Order
 				throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Cannot submit order {0}. Order does not have any items added.", _id.Id));
 			}
 
-			ApplyChange(new OrderSubmited(_id, _userId));
+			ApplyChange(new OrderSubmited(TimeProvider.Now, this.Version + 1,_id, _userId));
 		}
 
 		private void Apply(OrderSubmited e)

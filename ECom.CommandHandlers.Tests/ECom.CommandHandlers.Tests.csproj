@@ -50,6 +50,7 @@
     <Compile Include="Specifications\OrderCommandSpecifications.cs" />
     <Compile Include="Specifications\ProductCommandsSpecifications.cs" />
     <Compile Include="Specifications\UserCommandSpecifications.cs" />
+    <Compile Include="StaticsInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECom.Bus\ECom.Bus.csproj">

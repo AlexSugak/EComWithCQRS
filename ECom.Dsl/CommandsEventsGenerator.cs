@@ -203,15 +203,8 @@ namespace ECom.Dsl
 			writer.WriteLine("{");
 			writer.Indent++;
 
-			writer.WriteLine("if (obj == null)");
-			writer.WriteLine("{");
-			writer.Indent++;
-			writer.WriteLine("return false;");
-			writer.Indent--;
-			writer.WriteLine("}");
-
-			writer.WriteLine("var target = obj as {0};", contract.Name);
-			writer.WriteLine("if (target == null)");
+            writer.WriteLine("var other = obj as {0};", contract.Name);
+			writer.WriteLine("if (other == null)");
 			writer.WriteLine("{");
 			writer.Indent++;
 			writer.WriteLine("return false;");
@@ -234,7 +227,7 @@ namespace ECom.Dsl
 					writer.Write(" && ");
 				}
 
-				writer.Write("{0} == target.{0}", name);
+				writer.Write("{0}.Equals(this.{1}, other.{1})", member.Type, name);
 
 				first = false;
 			}
@@ -249,10 +242,9 @@ namespace ECom.Dsl
 			writer.WriteLine("public override int GetHashCode()");
 			writer.WriteLine("{");
 			writer.Indent++;
+            writer.WriteLine("var hash = 17;");
 
-			writer.Write("return ");
 			bool first = true;
-
 			foreach (Member member in contract.Members)
 			{
 				string name = member.Name;
@@ -262,16 +254,20 @@ namespace ECom.Dsl
 					name = "Id";
 				}
 
-				if (!first)
-				{
-					writer.Write(" ^ ");
-				}
-
-				writer.Write("{0}.GetHashCode()", name);
-
+                var t = Type.GetType(member.Type);
+                if ((t == null) || !t.IsValueType)
+                {
+                    writer.WriteLine("if (typeof({0}).IsValueType || ({1} != null)) ", member.Type, name);
+                    writer.Indent++;
+                }
+				writer.WriteLine("hash = hash * 29 + {0}.GetHashCode();", name);
+                if ((t == null) || !t.IsValueType)
+                {
+                    writer.Indent--;
+                }
 				first = false;
 			}
-			writer.WriteLine(";");
+			writer.WriteLine("return hash;");
 
 			writer.Indent--;
 			writer.WriteLine("}");

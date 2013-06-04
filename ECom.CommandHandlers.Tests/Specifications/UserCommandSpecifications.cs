@@ -7,6 +7,7 @@ using ECom.Utility;
 using ECom.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ECom.Domain.Exceptions;
+using ECom.Infrastructure;
 
 namespace ECom.CommandHandlers.Tests.Specifications
 {
@@ -36,8 +37,8 @@ namespace ECom.CommandHandlers.Tests.Specifications
 				Given = Enumerable.Empty<IEvent>(),
 				When = new ReportUserLoggedIn(_userId, "name", null),
 				Expect = new IEvent[] { 
-					new UserCreated(_userId),
-					new UserLoggedInReported(_userId, "name", null)
+					new UserCreated(TimeProvider.Now, 1, _userId),
+					new UserLoggedInReported(TimeProvider.Now, 2, _userId, "name", null)
 				}
 			};
 
@@ -50,12 +51,12 @@ namespace ECom.CommandHandlers.Tests.Specifications
 			var spec = new CommandSpecification<ReportUserLoggedIn>
 			{
 				Given = new IEvent[] { 
-					new UserCreated(_userId),
-					new UserLoggedInReported(_userId, "name", null) 
+					new UserCreated(TimeProvider.Now, 1, _userId),
+					new UserLoggedInReported(TimeProvider.Now, 2, _userId, "name", null) 
 				},
 				When = new ReportUserLoggedIn(_userId, "name", null),
 				Expect = new IEvent[] { 
-					new UserLoggedInReported(_userId, "name", null)
+					new UserLoggedInReported(TimeProvider.Now, 3, _userId, "name", null)
 				}
 			};
 

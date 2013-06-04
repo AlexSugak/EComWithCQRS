@@ -65,6 +65,10 @@
     <Compile Include="ValueObjects\Money.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ECom.Infrustructure\ECom.Infrastructure.csproj">
+      <Project>{5600c6b0-89ed-4e30-bef2-dd566e8f5454}</Project>
+      <Name>ECom.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECom.Messages\ECom.Messages.csproj">
       <Project>{1A2F56CD-4A1C-4435-8D11-3736D18ABAE6}</Project>
       <Name>ECom.Messages</Name>

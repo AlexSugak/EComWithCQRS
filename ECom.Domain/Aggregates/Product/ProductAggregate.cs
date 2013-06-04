@@ -5,6 +5,7 @@ using System.Text;
 using ECom.Messages;
 using ECom.Utility;
 using ECom.Domain.Aggregates.Product.Exceptions;
+using ECom.Infrastructure;
 
 namespace ECom.Domain.Aggregates.Product
 {
@@ -26,7 +27,7 @@ namespace ECom.Domain.Aggregates.Product
             Argument.ExpectNotNull(() => id);
             Argument.ExpectNotNullOrWhiteSpace(() => name);
 
-			ApplyChange(new ProductAdded(id, name, price));
+			ApplyChange(new ProductAdded(TimeProvider.Now, this.Version + 1, id, name, price));
         }
 
 		public override ProductId Id
@@ -37,7 +38,7 @@ namespace ECom.Domain.Aggregates.Product
         private void Apply(ProductAdded e)
         {
             _id = e.Id;
-            _name = e.Name;
+            _name = e.ProductName;
             _price = e.Price;
         }
 

@@ -1,4 +1,5 @@
-﻿using ECom.Messages;
+﻿using ECom.Infrastructure;
+using ECom.Messages;
 using ECom.Site.Areas.Admin.Controllers;
 using ECom.Site.Areas.Admin.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,11 +24,11 @@ namespace ECom.Site.Tests
 
             var allEvents = new IEvent[]
                 {
-                    new UserCreated(new UserId("test1@eee.com")) {Version = 1, Date = DateTime.Now},
-                    new UserCreated(new UserId("test2@eee.com")) {Version = 2, Date = DateTime.Now},
-                    new UserCreated(new UserId("test3@eee.com")) {Version = 3, Date = DateTime.Now},
-                    new UserCreated(new UserId("test4@eee.com")) {Version = 4, Date = DateTime.Now},
-                    new UserCreated(new UserId("test4@eee.com")) {Version = 5, Date = DateTime.Now}
+                    new UserCreated(DateTime.Now, 1,new UserId( "test1@eee.com")),
+                    new UserCreated(DateTime.Now, 2, new UserId("test2@eee.com")),
+                    new UserCreated(DateTime.Now, 3, new UserId("test3@eee.com")),
+                    new UserCreated(DateTime.Now, 4, new UserId("test4@eee.com")),
+                    new UserCreated(DateTime.Now, 5, new UserId("test5@eee.com"))
                 };
             
             mock.Setup(m => m.GetEventsForAggregate(It.IsAny<string>())).Returns(allEvents.AsQueryable());
@@ -55,9 +56,9 @@ namespace ECom.Site.Tests
 
             var allEvents = new IEvent[]
                 {
-                    new ProductAddedToOrder() {Id = new OrderId(777), Date = DateTime.Now, Version = 1},
-                    new ProductAddedToOrder() {Id = new OrderId(777), Date = DateTime.Now, Version = 3},
-                    new ProductAddedToOrder() {Id = new OrderId(777), Date = DateTime.Now, Version = 5}
+                    new ProductAddedToOrder(TimeProvider.Now, 1, new OrderId(777), null, null, null, null, 0, 0, null, null, null),
+                    new ProductAddedToOrder(TimeProvider.Now, 3, new OrderId(777), null, null, null, null, 0, 0, null, null, null),
+                    new ProductAddedToOrder(TimeProvider.Now, 5, new OrderId(777), null, null, null, null, 0, 0, null, null, null),
                 };
 
             mock.Setup(m => m.GetEventsForAggregate(It.IsAny<string>())).Returns(allEvents.AsQueryable());

@@ -66,6 +66,10 @@
     <Compile Include="EventViewerControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ECom.Infrustructure\ECom.Infrastructure.csproj">
+      <Project>{5600c6b0-89ed-4e30-bef2-dd566e8f5454}</Project>
+      <Name>ECom.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECom.Messages\ECom.Messages.csproj">
       <Project>{1a2f56cd-4a1c-4435-8d11-3736d18abae6}</Project>
       <Name>ECom.Messages</Name>
