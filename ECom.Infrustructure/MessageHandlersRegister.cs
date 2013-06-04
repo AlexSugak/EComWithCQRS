@@ -21,21 +21,33 @@ namespace ECom.Infrastructure
 			RegisterHandlersInAssembly(eventHndlrsAssemblies, typeof(IEvent), bus, new[] { typeof(IDtoManager) }, new object[] { manager });
 		}
 
+		public static void RegisterEventHandlers(IEnumerable<Type> eventHndlrs, Bus.Bus bus, IDtoManager manager)
+		{
+			RegisterHandlers(eventHndlrs, typeof(IEvent), bus, new[] { typeof(IDtoManager) }, new object[] { manager });
+		}
+
 		private static void RegisterHandlersInAssembly(IEnumerable<Assembly> assemblies, Type messageType, Bus.Bus bus, Type[] ctorArgTypes, object[] ctorArgs)
 		{
+			var handlerTypes = assemblies
+								.SelectMany(a => a.GetTypes())
+								.Where(t => !t.IsInterface && t.GetInterfaces()
+									.Any(i => i.IsGenericType
+										&& i.GetGenericTypeDefinition() == typeof(IHandle<>)
+										&& messageType.IsAssignableFrom(i.GetGenericArguments().First())));
+
+			RegisterHandlers(handlerTypes, messageType, bus, ctorArgTypes, ctorArgs);
+		}
+
+		private static void RegisterHandlers(IEnumerable<Type> handlers, Type messageType, Bus.Bus bus, Type[] ctorArgTypes, object[] ctorArgs)
+		{
 			//among classes in handlers assemblies select any which handle specified message type
-			var handlerTypesWithMessages = assemblies
-										.SelectMany(a => a.GetTypes())
-										.Where(t => !t.IsInterface && t.GetInterfaces()
-											.Any(i => i.IsGenericType
-												&& i.GetGenericTypeDefinition() == typeof(IHandle<>)
-												&& messageType.IsAssignableFrom(i.GetGenericArguments().First())))
+			var handlerTypesWithMessages = handlers
 										.Select(t => new
 										{
 											Type = t,
 											MessageTypes = t
                                                 .GetInterfaces()
-                                                .Where(i => i.IsGenericType)
+												.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IHandle<>))
                                                 .Select(i => i.GetGenericArguments().First())
 										});
 

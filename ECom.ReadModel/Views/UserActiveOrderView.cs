@@ -29,7 +29,8 @@ namespace ECom.ReadModel.Views
         OrderId GetUserActiveOrderId(UserId userId);
     }
 
-	public class UserActiveOrderView : ReadModelView,
+	public class UserActiveOrderView : Projection,
+		IProjection<ActiveUserOrderDetails>,
         IUserActiveOrderView,
 		IHandle<NewOrderCreated>,
 		IHandle<OrderSubmited>

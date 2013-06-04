@@ -78,7 +78,8 @@ namespace ECom.ReadModel.Views
     }
     
     //TODO: merge with order details
-	public class OrderItemsView : ReadModelView,
+	public class OrderItemsView : Projection,
+        IProjection<OrderItemDetails>,
         IOrderItemsView,
 		IHandle<ProductAddedToOrder>,
 		IHandle<ItemRemovedFromOrder>
@@ -102,34 +103,28 @@ namespace ECom.ReadModel.Views
                 e.Color,
                 e.Quantity);
 
-            string id = GetDtoKey(e.Id);
-            var items = _manager.Get<OrderItems>(id);
+            var items = _manager.Get<OrderItems>(e.Id);
 
             if (items == null)
             {
-                _manager.Add<OrderItems>(id, new OrderItems { Items = new List<OrderItemDetails> { itemDetails } });
+                _manager.Add<OrderItems>(e.Id, new OrderItems { Items = new List<OrderItemDetails> { itemDetails } });
             }
             else
             {
-                _manager.Update<OrderItems>(id, i => i.Items.Add(itemDetails));
+                _manager.Update<OrderItems>(e.Id, i => i.Items.Add(itemDetails));
             }
 		}
 
 		public void Handle(ItemRemovedFromOrder e)
 		{
-			_manager.Update<OrderItems>(GetDtoKey(e.Id), i => i.Items.Remove(i.Items.First(it => it.ID == OrderItemDetails.GetItemCompositeId(e.Id, e.OrderItemId))));
+			_manager.Update<OrderItems>(e.Id, i => i.Items.Remove(i.Items.First(it => it.ID == OrderItemDetails.GetItemCompositeId(e.Id, e.OrderItemId))));
 		}
 
         public IEnumerable<OrderItemDetails> GetOrderItems(OrderId orderId)
         {
-            var dto = _manager.Get<OrderItems>(GetDtoKey(orderId));
+            var dto = _manager.Get<OrderItems>(orderId);
 
             return dto != null ? dto.Items : Enumerable.Empty<OrderItemDetails>();
-        }
-
-        private static string GetDtoKey(OrderId orderId)
-        {
-            return orderId.GetId() + "_items";
         }
     }
 }
