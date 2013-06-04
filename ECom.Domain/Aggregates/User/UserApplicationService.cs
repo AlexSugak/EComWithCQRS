@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ECom.Domain.Exceptions;
 using ECom.Messages;
 using ECom.Utility;
 

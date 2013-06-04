@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using ECom.Domain.Exceptions;
+﻿using ECom.Messages;
 using ECom.Utility;
+using System;
+using System.Globalization;
+using System.Web.Mvc;
 
 namespace ECom.Site.Controllers
 {
@@ -14,11 +11,11 @@ namespace ECom.Site.Controllers
 		/// <summary>
 		/// Throws <see cref="EntityNotFoundException"/> if value passed is null or returns the value itself if it is not null
 		/// </summary>
-		protected T ThrowNotFoundIfNull<T>(T value, string message = "", params object[] args)
+		protected T ThrowNotFoundIfNull<T>(T value, IIdentity entityId, string message = "", params object[] args)
 		{
 			if (value == null)
 			{
-				throw new EntityNotFoundException(message, args);
+				throw new ReferencedEntityNotFoundException(typeof(T).Name, entityId, string.Format(message, args), null);
 			}
 
 			return value;

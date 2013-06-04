@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using ECom.Domain;
+﻿using ECom.Infrastructure;
+using ECom.Messages;
 using ECom.ReadModel;
 using ECom.ReadModel.Parsers;
-using ECom.Messages;
 
 namespace ECom.Site
 {

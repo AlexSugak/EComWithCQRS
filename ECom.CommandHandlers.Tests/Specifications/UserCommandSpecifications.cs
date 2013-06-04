@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using ECom.Domain;
 using ECom.Messages;
-using ECom.Utility;
-using ECom.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ECom.Domain.Exceptions;
-using ECom.Infrastructure;
+using System.Linq;
 
 namespace ECom.CommandHandlers.Tests.Specifications
 {

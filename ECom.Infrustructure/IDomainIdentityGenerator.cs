@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ECom.Domain
+namespace ECom.Infrastructure
 {
 	/// <summary>
 	/// Used to generate new domain identities

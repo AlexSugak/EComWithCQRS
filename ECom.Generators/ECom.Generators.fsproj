@@ -43,6 +43,7 @@
   <ItemGroup>
     <None Include="EventsGenerator.fsx" />
     <None Include="CommandsGenerator.fsx" />
+    <None Include="ExceptionsGenerator.fsx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECom.Messages\ECom.Messages.csproj">

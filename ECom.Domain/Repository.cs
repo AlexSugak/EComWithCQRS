@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ECom.Messages;
 using System.Linq;
-using System.Text;
-using ECom.Messages;
-using ECom.Domain.Exceptions;
-using System.Globalization;
 
 namespace ECom.Domain
 {
@@ -39,12 +34,7 @@ namespace ECom.Domain
 
             if (events.Count == 0)
             {
-                throw new AggregateRootNotFoundException(
-                                String.Format(
-                                        CultureInfo.InvariantCulture, 
-                                        "{0} with id {1} was not found", 
-                                        typeof(TAggregate).Name, 
-                                        id));
+                throw new AggregateRootNotFoundException(typeof(TAggregate), id);
             }
 
             var aggregate = new TAggregate();//TODO: refactor to not have default ctor on aggregate roots

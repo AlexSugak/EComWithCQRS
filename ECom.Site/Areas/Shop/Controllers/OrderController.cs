@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
-using ECom.Domain.Exceptions;
-using ECom.Messages;
+﻿using ECom.Messages;
 using ECom.ReadModel.Parsers;
 using ECom.ReadModel.Views;
 using ECom.Site.Areas.Shop.Models;
 using ECom.Site.Controllers;
 using ECom.Site.Core;
 using ECom.Utility;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Web.Mvc;
 
 namespace ECom.Site.Areas.Shop.Controllers
 {
@@ -48,7 +43,7 @@ namespace ECom.Site.Areas.Shop.Controllers
 		{
 			Argument.ExpectNotNull(() => id);
 
-            UserOrderDetails userOrder = ThrowNotFoundIfNull(_orderDetailsView.GetOrderDetails(UserId, id), "Order {0} not found for user {1}", id.Id, UserId.Id);
+            UserOrderDetails userOrder = ThrowNotFoundIfNull(_orderDetailsView.GetOrderDetails(UserId, id),  id, "Order {0} not found for user {1}", id.Id, UserId.Id);
 
             IEnumerable<OrderItemDetails> orderItems = _orderItemsView.GetOrderItems(id);
 
