@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using ECom.Messages;
 using ECom.Utility;
-using ECom.Infrastructure;
 
 namespace ECom.Domain.Aggregates.User
 {

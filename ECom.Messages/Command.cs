@@ -14,7 +14,6 @@ namespace ECom.Messages
         where T : IIdentity
     {
         T Id { get; }
-        int Version { get; set; }
     }
 
     public interface IFunctionalCommand : ICommand

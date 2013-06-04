@@ -1,9 +1,11 @@
-﻿using ECom.Messages;
-using ECom.Utility;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using System.Text;
+using ECom.Utility;
+using ECom.Messages;
+using System.Globalization;
+using ECom.Infrastructure;
 
 namespace ECom.Domain.Aggregates.Order
 {
@@ -78,7 +80,11 @@ namespace ECom.Domain.Aggregates.Order
 				throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Cannot submit order {0}. Order does not have any items added.", _id.Id));
 			}
 
-			ApplyChange(new OrderSubmited(TimeProvider.Now, this.Version + 1,_id, _userId, this._items.Count, this._items.Sum(x => x.Total)));
+<<<<<<< .merge_file_a16084
+			ApplyChange(new OrderSubmited(TimeProvider.Now, this.Version + 1,_id, _userId));
+=======
+			ApplyChange(new OrderSubmited(_id, _userId, _items.Count, _items.Sum(i => i.Total)));
+>>>>>>> .merge_file_a12680
 		}
 
 		private void Apply(OrderSubmited e)

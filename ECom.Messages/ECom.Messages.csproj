@@ -45,13 +45,9 @@
   <ItemGroup>
     <Compile Include="AbstractIdentity.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="Commands.cs" />
     <Compile Include="ConcreteIdentity.cs" />
     <Compile Include="ConcurrencyViolationException.cs" />
-    <Compile Include="Contracts.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Contracts.tt</DependentUpon>
-    </Compile>
     <Compile Include="EmailAddress.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="Events.cs" />
@@ -59,12 +55,6 @@
     <Compile Include="IHandle.cs" />
     <Compile Include="IMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Contracts.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Contracts.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

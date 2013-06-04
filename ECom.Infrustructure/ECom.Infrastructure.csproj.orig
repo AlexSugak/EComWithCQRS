@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B23E0F3C-00F1-4947-9A54-0541558E1E67}</ProjectGuid>
+    <ProjectGuid>{5600C6B0-89ED-4E30-BEF2-DD566E8F5454}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ECom.Domain</RootNamespace>
-    <AssemblyName>ECom.Domain</AssemblyName>
+    <RootNamespace>ECom.Infrastructure</RootNamespace>
+    <AssemblyName>ECom.Infrastructure</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,9 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SubSonic.Core">
+      <HintPath>..\Libraries\SubSonic.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,25 +43,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Aggregates\Order\OrderApplicationService.cs" />
-    <Compile Include="Aggregates\Order\OrderAggregate.cs" />
-    <Compile Include="Aggregates\Order\OrderItem.cs" />
-    <Compile Include="Aggregates\User\UserAggregate.cs" />
-    <Compile Include="Aggregates\User\UserApplicationService.cs" />
-    <Compile Include="AggregateRoot.cs" />
-    <Compile Include="Exceptions\EntityNotFoundException.cs" />
-    <Compile Include="IDomainIdentityGenerator.cs" />
-    <Compile Include="Exceptions\AggregateRootNotFoundException.cs" />
-    <Compile Include="Exceptions\EntityAlreadyExistsException.cs" />
-    <Compile Include="Repository.cs" />
+    <Compile Include="MessageHandlersRegister.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadModelRebuilder.cs" />
     <Compile Include="TimeProvider.cs" />
-    <Compile Include="ValueObjects\Money.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ECom.Bus\ECom.Bus.csproj">
+      <Project>{B7955834-0FD4-492C-9464-89A7ED23B191}</Project>
+      <Name>ECom.Bus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECom.EventStore.SQL\ECom.EventStore.SQL.csproj">
+      <Project>{5125BFC0-A612-465B-8933-E7136D2E8727}</Project>
+      <Name>ECom.EventStore.SQL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ECom.Messages\ECom.Messages.csproj">
       <Project>{1A2F56CD-4A1C-4435-8D11-3736D18ABAE6}</Project>
       <Name>ECom.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ECom.ReadModel\ECom.ReadModel.csproj">
+      <Project>{36F4FE8A-339F-46F5-9DA9-7C15339CFB48}</Project>
+      <Name>ECom.ReadModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\ECom.Utility\ECom.Utility.csproj">
       <Project>{7236D0AE-E702-4E06-9165-14D28E2678A0}</Project>

@@ -71,7 +71,7 @@ namespace ECom.Site.Areas.Shop.Controllers
 			{
 				if (model.IsEmailChanged)
 				{
-					_bus.Send(new SetUserEmail(UserId, new EmailAddress(model.Email)));
+					_bus.Send(new SetUserEmail(UserId, new EmailAddress(model.Email), 0));
 					Thread.Sleep(200);
 				}
 
@@ -126,7 +126,7 @@ namespace ECom.Site.Areas.Shop.Controllers
 								model.Quantity.Value, 
 								model.Size, 
 								model.Color, 
-								String.IsNullOrEmpty(model.ImageUrl) ? null : new Uri(model.ImageUrl));
+								String.IsNullOrEmpty(model.ImageUrl) ? null : new Uri(model.ImageUrl), 0);
 				_bus.Send(cmd);
 
 				//TODO: figure out how to avoid this

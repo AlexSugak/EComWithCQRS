@@ -1,14 +1,12 @@
-﻿using ECom.Infrastructure;
+﻿using ECom.Domain;
 using ECom.Messages;
 using ECom.Site.Areas.Admin.Controllers;
 using ECom.Site.Areas.Admin.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.SessionState;
 
 namespace ECom.Site.Tests
 {
