@@ -31,8 +31,7 @@ namespace ECom.CommandHandlers
 
 		public void Handle(CreateNewOrder cmd)
 		{
-			var order = new OrderAggregate();
-			order.Create(cmd.Id, cmd.UserId);
+            var order = new OrderAggregate(cmd.Id, cmd.UserId);
 
 			_repository.Save(order, 0);
 		}

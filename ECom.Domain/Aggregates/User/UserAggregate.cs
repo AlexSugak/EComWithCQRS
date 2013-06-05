@@ -9,7 +9,6 @@ namespace ECom.Domain.Aggregates.User
 {
 	public class UserAggregate : AggregateRoot<UserId>
 	{
-		private UserId _id;
 		private string _name;
 
         private UserAggregate()
@@ -17,12 +16,7 @@ namespace ECom.Domain.Aggregates.User
             // This ctor is needed for the repository to create empty object to load events into
         }
 
-		public override UserId Id
-		{
-			get { return _id; }
-		}
-
-		public void Create(UserId userId)
+        public UserAggregate(UserId userId)
 		{
 			Argument.ExpectNotNull(() => userId);
 			
@@ -36,14 +30,14 @@ namespace ECom.Domain.Aggregates.User
 
 		public void Apply(UserCreated e)
 		{
-			_id = e.Id;
+			Id = e.Id;
 		}
 
 		public void ReportLoggedIn(string userName, string photoUrl)
 		{
 			Argument.ExpectNotNullOrWhiteSpace(() => userName);
 
-            ApplyChange(new UserLoggedInReported(TimeProvider.Now, this.Version + 1, _id, userName, photoUrl));
+            ApplyChange(new UserLoggedInReported(TimeProvider.Now, this.Version + 1, Id, userName, photoUrl));
 		}
 
 		public void Apply(UserLoggedInReported e)
@@ -53,7 +47,7 @@ namespace ECom.Domain.Aggregates.User
 		{
 			Argument.ExpectNotNull(() => emailAddress);
 
-            ApplyChange(new UserEmailSet(TimeProvider.Now, this.Version + 1, _id, emailAddress));
+            ApplyChange(new UserEmailSet(TimeProvider.Now, this.Version + 1, Id, emailAddress));
 		}
 
 		public void Apply(UserEmailSet e)

@@ -9,7 +9,6 @@ namespace ECom.Domain.Aggregates.Order
 {
     public sealed class OrderAggregate : AggregateRoot<OrderId>
     {
-		private OrderId _id;
 		private UserId _userId;
 
 		private readonly List<OrderItem> _items = new List<OrderItem>();
@@ -20,12 +19,7 @@ namespace ECom.Domain.Aggregates.Order
             // This ctor is needed for the repository to create empty object to load events into
         }
 
-		public override OrderId Id
-		{
-			get { return _id; }
-		}
-
-        public void Create(OrderId id, UserId userId)
+        public OrderAggregate(OrderId id, UserId userId)
         {
 			Argument.ExpectNotNull(() => id);
 			Argument.ExpectNotNull(() => userId);
@@ -35,7 +29,7 @@ namespace ECom.Domain.Aggregates.Order
 
         private void Apply(NewOrderCreated e)
         {
-            _id = e.Id;
+            Id = e.Id;
 			_userId = e.UserId;
         }
 
@@ -46,7 +40,7 @@ namespace ECom.Domain.Aggregates.Order
 			Argument.Expect(() => price > 0, "price", String.Format(CultureInfo.InvariantCulture, "price must be a positive value, was {0}", price));
 			Argument.Expect(() => quantity > 0, "quantity", String.Format(CultureInfo.InvariantCulture, "quantity must be a positive value, was {0}", quantity));
 
-            ApplyChange(new ProductAddedToOrder(TimeProvider.Now, this.Version + 1, _id, itemId, productUri, name, description, price, quantity, size, color, imageUrl));
+            ApplyChange(new ProductAddedToOrder(TimeProvider.Now, this.Version + 1, Id, itemId, productUri, name, description, price, quantity, size, color, imageUrl));
         }
 
         private void Apply(ProductAddedToOrder e)
@@ -59,7 +53,7 @@ namespace ECom.Domain.Aggregates.Order
 			Argument.ExpectNotNull(() => itemId);
 			Argument.Expect(() => _items.Exists(i => i.Id == itemId), "itemId", String.Format(CultureInfo.InvariantCulture, "Order does not contain item with id {0}", itemId.Id));
 
-			ApplyChange(new ItemRemovedFromOrder(TimeProvider.Now, this.Version + 1, _id, itemId));
+			ApplyChange(new ItemRemovedFromOrder(TimeProvider.Now, this.Version + 1, Id, itemId));
 		}
 
 		private void Apply(ItemRemovedFromOrder e)
@@ -71,15 +65,15 @@ namespace ECom.Domain.Aggregates.Order
 		{
 			if (_isSubmitted)
 			{
-				throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Cannot submit order {0}. Order already submitted.", _id.Id));
+				throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Cannot submit order {0}. Order already submitted.", Id.Id));
 			}
 
 			if (!_items.Any())
 			{
-				throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Cannot submit order {0}. Order does not have any items added.", _id.Id));
+				throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Cannot submit order {0}. Order does not have any items added.", Id.Id));
 			}
 
-			ApplyChange(new OrderSubmited(TimeProvider.Now, this.Version + 1,_id, _userId, this._items.Count, this._items.Sum(x => x.Total)));
+			ApplyChange(new OrderSubmited(TimeProvider.Now, this.Version + 1,Id, _userId, this._items.Count, this._items.Sum(x => x.Total)));
 		}
 
 		private void Apply(OrderSubmited e)

@@ -29,8 +29,7 @@ namespace ECom.Domain.Aggregates.User
 			}
 			catch (AggregateRootNotFoundException)
 			{
-				user = new UserAggregate();
-				user.Create(cmd.Id);
+                user = new UserAggregate(cmd.Id);
 			}
 
 			user.ReportLoggedIn(cmd.UserName, cmd.PhotoUrl);

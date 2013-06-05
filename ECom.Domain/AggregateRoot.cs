@@ -27,7 +27,7 @@ namespace ECom.Domain
 			Version = 0;
 		}
 
-        public abstract T Id { get; }
+        public T Id { get; protected set; }
 
         public int Version { get; private set; }
 

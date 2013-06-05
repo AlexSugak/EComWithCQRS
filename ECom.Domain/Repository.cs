@@ -6,7 +6,7 @@ namespace ECom.Domain
 {
     public interface IRepository<TAggregate, TIdentity>
         where TIdentity : IIdentity
-        where TAggregate : IAggregateRoot<TIdentity>, new()
+        where TAggregate : IAggregateRoot<TIdentity>
     {
         void Save(TAggregate aggregate, int expectedVersion);
         TAggregate Get(TIdentity id);
@@ -14,7 +14,7 @@ namespace ECom.Domain
 
     public class Repository<TAggregate, TIdentity> : IRepository<TAggregate, TIdentity>
         where TIdentity : IIdentity
-        where TAggregate : IAggregateRoot<TIdentity>, new()
+        where TAggregate : IAggregateRoot<TIdentity>
     {
         private readonly IEventStore _storage;
 
@@ -38,7 +38,7 @@ namespace ECom.Domain
                 throw new AggregateRootNotFoundException(typeof(TAggregate), id);
             }
 
-            var aggregate = Activator.CreateInstance<TAggregate>();
+            var aggregate = (TAggregate)Activator.CreateInstance(typeof(TAggregate), true);
 
             aggregate.LoadsFromHistory(events);
             return aggregate;
