@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using ECom.Domain;
 using ECom.Messages;
-using ECom.Utility;
-using ECom.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ECom.Domain.Exceptions;
+using System;
+using System.Linq;
 
 namespace ECom.CommandHandlers.Tests.Specifications
 {
@@ -22,9 +18,10 @@ namespace ECom.CommandHandlers.Tests.Specifications
 		[TestInitialize]
 		public override void SetUp()
 		{
+            StaticsInitializer.Dummy();
 			base.SetUp();
 
-			_orderId = new OrderId(123);
+            _orderId = new OrderId(123);
 			_userId = new UserId("user123");
 
 			_productId = new OrderItemId(2345);
@@ -44,7 +41,7 @@ namespace ECom.CommandHandlers.Tests.Specifications
 				Given = Enumerable.Empty<IEvent>(),
 				When = new CreateNewOrder(_orderId, _userId),
 				Expect = new[] { 
-					new NewOrderCreated(_orderId, _userId) 
+					new NewOrderCreated(TimeProvider.Now, 1,_orderId, _userId) 
 				}
 			};
 
@@ -61,11 +58,11 @@ namespace ECom.CommandHandlers.Tests.Specifications
 			var spec = new CommandSpecification<AddProductToOrder>
 			{
 				Given = new IEvent[] {
-					new NewOrderCreated(_orderId, _userId)
+					new NewOrderCreated(TimeProvider.Now, 1,_orderId, _userId)
 				},
-				When = new AddProductToOrder(_orderId, _productId, _productUri, "product 1", null, 123, 2, null, null, null),
+				When = new AddProductToOrder(_orderId, _productId, _productUri, "product 1", null, 123, 2, null, null, null, 1),
 				Expect = new[] { 
-					new ProductAddedToOrder(_orderId, _productId, _productUri, "product 1", null, 123, 2, null, null, null) 
+					new ProductAddedToOrder(TimeProvider.Now, 2, _orderId, _productId, _productUri, "product 1", null, 123, 2, null, null, null) 
 				}
 			};
 
@@ -82,12 +79,12 @@ namespace ECom.CommandHandlers.Tests.Specifications
 			var spec = new CommandSpecification<RemoveItemFromOrder>
 			{
 				Given = new IEvent[] {
-					new NewOrderCreated(_orderId, _userId),
-					new ProductAddedToOrder(_orderId, _productId, _productUri, "product 1", null, 123, 2, null, null, null)
+					new NewOrderCreated(TimeProvider.Now, 1,_orderId, _userId),
+					new ProductAddedToOrder(TimeProvider.Now, 2, _orderId, _productId, _productUri, "product 1", null, 123, 2, null, null, null)
 				},
-				When = new RemoveItemFromOrder(_orderId, _productId),
+				When = new RemoveItemFromOrder(_orderId, _productId, 0),
 				Expect = new[] { 
-					new ItemRemovedFromOrder(_orderId, _productId)
+					new ItemRemovedFromOrder(TimeProvider.Now, 3, _orderId, _productId)
 				}
 			};
 
@@ -100,9 +97,9 @@ namespace ECom.CommandHandlers.Tests.Specifications
 			var spec = new FailingCommandSpecification<RemoveItemFromOrder>
 			{
 				Given = new IEvent[] {
-					new NewOrderCreated(_orderId, _userId),
+					new NewOrderCreated(TimeProvider.Now, 1,_orderId, _userId),
 				},
-				When = new RemoveItemFromOrder(_orderId, _productId),
+				When = new RemoveItemFromOrder(_orderId, _productId, 0),
 				ExpectException = new ArgumentException()
 			};
 

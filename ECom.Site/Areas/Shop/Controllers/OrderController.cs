@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
-using ECom.Domain.Exceptions;
-using ECom.Messages;
+﻿using ECom.Messages;
 using ECom.ReadModel.Parsers;
 using ECom.ReadModel.Views;
 using ECom.Site.Areas.Shop.Models;
 using ECom.Site.Controllers;
 using ECom.Site.Core;
 using ECom.Utility;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Web.Mvc;
 
 namespace ECom.Site.Areas.Shop.Controllers
 {
@@ -48,7 +43,7 @@ namespace ECom.Site.Areas.Shop.Controllers
 		{
 			Argument.ExpectNotNull(() => id);
 
-            UserOrderDetails userOrder = ThrowNotFoundIfNull(_orderDetailsView.GetOrderDetails(UserId, id), "Order {0} not found for user {1}", id.Id, UserId.Id);
+            UserOrderDetails userOrder = ThrowNotFoundIfNull(_orderDetailsView.GetOrderDetails(UserId, id),  id, "Order {0} not found for user {1}", id.Id, UserId.Id);
 
             IEnumerable<OrderItemDetails> orderItems = _orderItemsView.GetOrderItems(id);
 
@@ -71,11 +66,11 @@ namespace ECom.Site.Areas.Shop.Controllers
 			{
 				if (model.IsEmailChanged)
 				{
-					_bus.Send(new SetUserEmail(UserId, new EmailAddress(model.Email)));
+					_bus.Send(new SetUserEmail(UserId, new EmailAddress(model.Email), 0));
 					Thread.Sleep(200);
 				}
 
-				_bus.Send(new SubmitOrder(model.OrderId));
+				_bus.Send(new SubmitOrder(model.OrderId, 0));
 
 				return RedirectToAction("Submitted", new { id = model.OrderId.Id });
 			}
@@ -126,7 +121,7 @@ namespace ECom.Site.Areas.Shop.Controllers
 								model.Quantity.Value, 
 								model.Size, 
 								model.Color, 
-								String.IsNullOrEmpty(model.ImageUrl) ? null : new Uri(model.ImageUrl));
+								String.IsNullOrEmpty(model.ImageUrl) ? null : new Uri(model.ImageUrl), 0);
 				_bus.Send(cmd);
 
 				//TODO: figure out how to avoid this

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using ECom.Messages;
+using System;
 using System.Web.Mvc;
-using ECom.Messages;
-using ECom.Domain;
 
 namespace ECom.Site.Core
 {

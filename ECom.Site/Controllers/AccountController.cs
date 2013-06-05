@@ -94,7 +94,7 @@ namespace ECom.Site.Controllers
 
 			if (String.IsNullOrWhiteSpace(userDetails.Email))
 			{
-				_bus.Send(new SetUserEmail(userId, email));
+				_bus.Send(new SetUserEmail(userId, email, 0));
 			}
 		}
     }

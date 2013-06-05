@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ECom.Messages;
+using System;
 using System.Linq;
-using System.Text;
-using ECom.Messages;
-using ECom.Domain.Exceptions;
-using System.Globalization;
 
 namespace ECom.Domain
 {
@@ -12,7 +8,7 @@ namespace ECom.Domain
         where TIdentity : IIdentity
         where TAggregate : IAggregateRoot<TIdentity>, new()
     {
-        void Save(TAggregate aggregate);
+        void Save(TAggregate aggregate, int expectedVersion);
         TAggregate Get(TIdentity id);
     }
 
@@ -27,9 +23,9 @@ namespace ECom.Domain
             _storage = storage;
         }
 
-        public void Save(TAggregate aggregate)
+        public void Save(TAggregate aggregate, int expectedVersion)
         {
-            _storage.SaveAggregateEvents(aggregate.Id, aggregate.GetType().FullName, aggregate.GetUncommittedChanges());
+            _storage.SaveAggregateEvents(aggregate.Id, aggregate.GetType().FullName, aggregate.GetUncommittedChanges(), expectedVersion);
 			aggregate.MarkChangesAsCommitted();
         }
 
@@ -39,15 +35,10 @@ namespace ECom.Domain
 
             if (events.Count == 0)
             {
-                throw new AggregateRootNotFoundException(
-                                String.Format(
-                                        CultureInfo.InvariantCulture, 
-                                        "{0} with id {1} was not found", 
-                                        typeof(TAggregate).Name, 
-                                        id));
+                throw new AggregateRootNotFoundException(typeof(TAggregate), id);
             }
 
-            var aggregate = new TAggregate();//TODO: refactor to not have default ctor on aggregate roots
+            var aggregate = Activator.CreateInstance<TAggregate>();
 
             aggregate.LoadsFromHistory(events);
             return aggregate;

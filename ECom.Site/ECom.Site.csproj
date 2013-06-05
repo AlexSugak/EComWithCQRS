@@ -14,7 +14,7 @@
     <RootNamespace>ECom.Site</RootNamespace>
     <AssemblyName>ECom.Site</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <MvcBuildViews>false</MvcBuildViews>
+    <MvcBuildViews>true</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -279,10 +279,6 @@
     <ProjectReference Include="..\ECom.Bus\ECom.Bus.csproj">
       <Project>{B7955834-0FD4-492C-9464-89A7ED23B191}</Project>
       <Name>ECom.Bus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ECom.Domain\ECom.Domain.csproj">
-      <Project>{b23e0f3c-00f1-4947-9a54-0541558e1e67}</Project>
-      <Name>ECom.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\ECom.EventStore.Redis\ECom.EventStore.Redis.csproj">
       <Project>{62d77b50-c879-4ba1-905f-396d31356d6a}</Project>

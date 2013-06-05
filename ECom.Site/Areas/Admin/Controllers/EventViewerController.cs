@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using ECom.Domain;
-using ECom.Messages;
-using ECom.Utility;
-using ECom.Site.Controllers;
-using System.Configuration;
+﻿using ECom.Messages;
 using ECom.Site.Areas.Admin.Models;
+using ECom.Site.Controllers;
 using ECom.Site.Core;
 using MvcContrib.Pagination;
-using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace ECom.Site.Areas.Admin.Controllers
 {
@@ -122,54 +117,6 @@ namespace ECom.Site.Areas.Admin.Controllers
         #endregion
 
         #region ReflectionMethods
-
-        private IIdentity GetTypedAggregateId(string agrId, string agrType)
-        {
-            if (!string.IsNullOrEmpty(agrType))
-            {
-                // obtain existing aggregate roots
-                var type = typeof(AggregateRoot<>);
-                var types = AppDomain.CurrentDomain.GetAssemblies().ToList()
-                    .SelectMany(s => s.GetTypes())
-                    .Where(p => IsSubclassOfRawGeneric(type, p) && p != type).ToList();
-
-                // compare with value from DB
-                var agrRoot = types.Find(p => p.FullName == agrType);
-
-                if (agrRoot != null)
-                {
-                    // get type which implements IIdentity (OrderId, UserId and so on)
-                    var myType = agrRoot.BaseType.GetGenericArguments()[0];
-                    
-                    // get argument type (Type of aggregate id: int, guid, string)
-                    var argumentType = myType.BaseType.BaseType.GetGenericArguments()[0];
-
-                    object arg;
-
-                    // create instance of a argument type class 
-                    if (argumentType.IsClass && argumentType.FullName == "System.String")
-                    {
-                        arg = agrId;
-                    }
-                    else if (argumentType.IsClass)
-                    {
-                        arg = Activator.CreateInstance(argumentType, agrId);
-                    }
-                    else
-                    {
-                        TypeConverter tc = TypeDescriptor.GetConverter(argumentType);
-                        arg = tc.ConvertFromString(agrId);
-                    }
-
-                    // create instance of a class which implements IIdentity
-                    IIdentity obj = (IIdentity)Activator.CreateInstance(myType, arg);
-
-                    return obj;
-                }
-            }
-
-            return new NullId();
-        }
 
         private static bool IsSubclassOfRawGeneric(Type generic, Type toCheck)
         {
