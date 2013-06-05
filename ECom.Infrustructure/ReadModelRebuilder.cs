@@ -18,6 +18,9 @@ using ECom.ReadModel.Views;
 
 namespace ECom.Infrastructure
 {
+	/// <summary>
+	/// Rebuilds read model from events 
+	/// </summary>
 	public static class ReadModelRebuilder
 	{
 		public static void Rebuild(string redisDbUri)
@@ -35,6 +38,7 @@ namespace ECom.Infrastructure
 				oldProjections = new Projections();
 			}
 
+			//find all projection types
 			var projections = readModelAssembly.GetTypes()
 											.Where(t => !t.IsAbstract
 												&& t.GetInterfaces()
@@ -48,7 +52,7 @@ namespace ECom.Infrastructure
 															.Select(i => i.GetGenericArguments().First())
 											});
 
-
+			//compute hash for each projection and its DTOs
 			var projectionInfos = projections.Select((p, i) => {
 				var projectionHash =
 					GetClassHash(p.ProjectionType) +
@@ -64,6 +68,7 @@ namespace ECom.Infrastructure
 				};
 			});
 
+			//projections wich no longer exist
 			var obsoleteProjections = oldProjections.Items.Where(kvp => !projectionInfos.Any(p => p.Name == kvp.Key))
 															.Select(kvp => kvp.Value)
 															.ToArray();
@@ -82,7 +87,6 @@ namespace ECom.Infrastructure
 				return;
 			}
 
-            var dtoTypes = readModelAssembly.GetTypes().Where(t => !t.IsAbstract && typeof(Dto).IsAssignableFrom(t));
 			foreach (var projection in projectionsToRebuild)
 			{
 				//drop dtos requiring rebuild
@@ -94,12 +98,14 @@ namespace ECom.Infrastructure
 				MessageHandlersRegister.RegisterEventHandlers(new[] { projection.ProjectionType }, bus, dtoManager);
 			}
 
+			//republish all events to registered projections requiring rebuild
             var allEvents = eventStore.GetAllEvents();
             foreach (var e in allEvents)
             {
                 bus.Publish(e);
             }
 
+			//save updated projections with hashes
 			var newProjectionInfos = new Dictionary<string, ProjectionInfo>();
 			projectionInfos.ToList()
 							.ForEach(p => newProjectionInfos
@@ -141,13 +147,11 @@ namespace ECom.Infrastructure
 			genericDeleteAll.Invoke(manager, new object[0]);
 		}
 
-        private static string GetClassHash(Type type1)
+        private static string GetClassHash(Type type)
         {
-            var location = type1.Assembly.Location;
+            var location = type.Assembly.Location;
             var mod = ModuleDefinition.ReadModule(location);
             var builder = new StringBuilder();
-            var type = type1;
-
 
             var typeDefinition = mod.GetType(type.FullName);
             builder.AppendLine(typeDefinition.Name);
@@ -175,6 +179,7 @@ namespace ECom.Infrastructure
                     builder.AppendLine("    " + instruction);
                 }
             }
+
             foreach (var field in typeDefinition.Fields.OrderBy(f => f.ToString()))
             {
                 builder.AppendLine("  " + field);
