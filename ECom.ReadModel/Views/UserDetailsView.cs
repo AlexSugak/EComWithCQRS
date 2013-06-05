@@ -33,7 +33,8 @@ namespace ECom.ReadModel.Views
         UserDetails GetUserDetails(UserId userId);
     }
 
-	public class UserDetailsView : ReadModelView,
+	public class UserDetailsView : Projection,
+        IProjection<UserDetails>,
         IUserDetailsView,
 		IHandle<UserLoggedInReported>,
 		IHandle<UserEmailSet>
