@@ -250,7 +250,7 @@ let commands = [
                 command "CreateNewOrder"            [orderId; userId]
                 command "AddProductToOrder"         [orderId; orderItemId; uri "ProductUri"; string "Name"; string "Description"; decimal "Price"; int "Quantity"; string "Size"; string "Color"; uri "ImageUri"; version]
                 command "RemoveItemFromOrder"       [orderId; orderItemId; version]
-                command "SubmitOrder"               [orderId]
+                command "SubmitOrder"               [orderId; version]
                
                 footer
             ]

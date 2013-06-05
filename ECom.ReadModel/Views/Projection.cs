@@ -6,11 +6,16 @@ using ECom.Utility;
 
 namespace ECom.ReadModel.Views
 {
-	public abstract class ReadModelView
+    public interface IProjection<T>
+      where T : Dto
+    {
+    }
+
+	public abstract class Projection
 	{
 		protected readonly IDtoManager _manager;
 
-		public ReadModelView(IDtoManager manager)
+		public Projection(IDtoManager manager)
 		{
 			Argument.ExpectNotNull(() => manager);
 

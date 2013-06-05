@@ -11,7 +11,7 @@ namespace ECom.Domain
         where T : IIdentity
 	{
 		T Id { get; }
-		int Version { get; set; }
+		int Version { get; }
 		IEnumerable<IEvent<T>> GetUncommittedChanges();
 		void MarkChangesAsCommitted();
 		void LoadsFromHistory(IEnumerable<IEvent<T>> history);
@@ -29,7 +29,7 @@ namespace ECom.Domain
 
         public abstract T Id { get; }
 
-        public int Version { get; set; }
+        public int Version { get; private set; }
 
         public IEnumerable<IEvent<T>> GetUncommittedChanges()
         {
@@ -57,12 +57,10 @@ namespace ECom.Domain
         private void ApplyChange(IEvent<T> @event, bool isNew)
         {
             this.AsDynamic().Apply(@event);
-			Version += 1;
+			this.Version += 1;
 
 			if (isNew)
 			{
-                //@event.Version = Version;
-                //@event.Date = DateTime.Now;
 				_changes.Add(@event);
 			}
         }

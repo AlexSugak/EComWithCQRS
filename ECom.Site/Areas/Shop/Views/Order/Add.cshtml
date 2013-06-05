@@ -78,7 +78,7 @@
 			column.For(x => x.Price);
 			column.For(x => x.Quantity);
 			column.For(x => x.Total);
-			column.For(x => Html.Command(new RemoveItemFromOrder(new OrderId(x.OrderId), new OrderItemId(x.ItemId)).WithEnvelope())).Encode(false);
+			column.For(x => Html.Command(new RemoveItemFromOrder(new OrderId(x.OrderId), new OrderItemId(x.ItemId), 0).WithEnvelope())).Encode(false);
 		}).Attributes(@class => "table table-striped").Empty("Add some items to your order.")
 	</div>
 

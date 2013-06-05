@@ -80,7 +80,7 @@
     <Compile Include="Parsers\ProductPageParserFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedisDtoManager.cs" />
-    <Compile Include="Views\ReadModelView.cs" />
+    <Compile Include="Views\Projection.cs" />
     <Compile Include="Views\UserActiveOrderView.cs" />
     <Compile Include="Views\OrderItemsView.cs" />
     <Compile Include="Views\UserDetailsView.cs" />

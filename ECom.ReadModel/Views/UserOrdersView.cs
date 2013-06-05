@@ -58,7 +58,8 @@ namespace ECom.ReadModel.Views
         IEnumerable<UserOrderDetails> GetUserOders(UserId userId);
     }
 
-	public class UserOrdersView : ReadModelView,
+	public class UserOrdersView : Projection,
+        IProjection<UserOrderDetails>,
         IUserOrdersView,
 		IHandle<OrderSubmited>
 	{
@@ -73,16 +74,15 @@ namespace ECom.ReadModel.Views
 
 			_manager.Add(orderDetails.ID, orderDetails);
 
-            string id = UserOrdersKey(e.UserId);
-            var orders = _manager.Get<UserOrders>(id);
+            var orders = _manager.Get<UserOrders>(e.UserId);
 
             if (orders == null)
             {
-                _manager.Add<UserOrders>(id, new UserOrders { Orders = new List<OrderId> { e.Id } });
+                _manager.Add<UserOrders>(e.UserId, new UserOrders { Orders = new List<OrderId> { e.Id } });
             }
             else
             {
-                _manager.Update<UserOrders>(id, i => i.Orders.Add(e.Id));
+                _manager.Update<UserOrders>(e.UserId, i => i.Orders.Add(e.Id));
             }
 		}
 
@@ -96,7 +96,7 @@ namespace ECom.ReadModel.Views
 
         public IEnumerable<UserOrderDetails> GetUserOders(UserId userId)
         {
-            var orderIds = _manager.Get<UserOrders>(UserOrdersKey(userId));
+            var orderIds = _manager.Get<UserOrders>(userId);
 
             if (orderIds == null)
             {
@@ -104,11 +104,6 @@ namespace ECom.ReadModel.Views
             }
 
             return orderIds.Orders.Select(id => _manager.Get<UserOrderDetails>(id));
-        }
-
-        private static string UserOrdersKey(UserId userId)
-        {
-            return userId.GetId() + "_orders";
         }
     }
 }

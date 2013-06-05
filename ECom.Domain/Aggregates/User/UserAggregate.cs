@@ -12,6 +12,11 @@ namespace ECom.Domain.Aggregates.User
 		private UserId _id;
 		private string _name;
 
+        private UserAggregate()
+        {
+            // This ctor is needed for the repository to create empty object to load events into
+        }
+
 		public override UserId Id
 		{
 			get { return _id; }

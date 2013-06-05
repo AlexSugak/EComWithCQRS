@@ -33,7 +33,7 @@ namespace ECom.CommandHandlers.Tests
             }
         }
 
-        public void SaveAggregateEvents<T>(T aggregateId, string aggregateType, IEnumerable<IEvent<T>> events)
+        public void SaveAggregateEvents<T>(T aggregateId, string aggregateType, IEnumerable<IEvent<T>> events, int expectedVersion)
             where T : IIdentity
         {
             if (_events.ContainsKey(aggregateId.GetId()))

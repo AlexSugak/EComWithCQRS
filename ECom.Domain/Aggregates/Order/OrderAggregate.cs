@@ -15,8 +15,9 @@ namespace ECom.Domain.Aggregates.Order
 		private readonly List<OrderItem> _items = new List<OrderItem>();
 		private bool _isSubmitted;
 
-        public OrderAggregate()
+        private OrderAggregate()
         {
+            // This ctor is needed for the repository to create empty object to load events into
         }
 
 		public override OrderId Id

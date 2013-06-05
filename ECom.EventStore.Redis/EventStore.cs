@@ -19,6 +19,7 @@ namespace ECom.EventStore.Redis
         private readonly string _redisHost;
         private readonly string _allEventsListId = "urn:AllEventIds";
         private readonly IEventPublisher _publisher;
+        private readonly JsonSerializer serializer;
 
         public EventStore(string redisHost, IEventPublisher publisher)
         {
@@ -27,9 +28,18 @@ namespace ECom.EventStore.Redis
 
             _redisHost = redisHost;
             _publisher = publisher;
+
+            //
+            // We need to provide KnownTypes to serizalizer, and those are events
+            // We consider events to be anything assignable to IEvent, also we load only events from the same assembly as IEvent
+            //
+            var ieventType = typeof(IEvent);
+            var eventTypes = ieventType.Assembly.GetTypes().Where(x => ieventType.IsAssignableFrom(x) && x.IsClass).ToArray();
+            
+            this.serializer = new JsonSerializer(eventTypes);
         }
 
-        public void SaveAggregateEvents<T>(T aggregateId, string aggregateType, IEnumerable<IEvent<T>> events) where T : IIdentity
+        public void SaveAggregateEvents<T>(T aggregateId, string aggregateType, IEnumerable<IEvent<T>> events, int expectedVersion) where T : IIdentity
         {
             Argument.ExpectNotNull(() => aggregateId);
             Argument.ExpectNotNull(() => events);
@@ -48,28 +58,30 @@ namespace ECom.EventStore.Redis
                 string lastEventId = client.Lists[aggregateRootEventsListId].LastOrDefault();
                 if (lastEventId != null)
                 {
-                    lastEvent = (IEvent<T>)client.As<IEvent>()[EventId(lastEventId)];
+                    lastEvent = (IEvent<T>)this.serializer.Deserialize<IEvent>(client[EventId(lastEventId)]);
                 }
 
-                int currentVersion = lastEvent != null ? lastEvent.Version : 0;
-                int expectedVersion = events.First().Version - 1;
-                if (currentVersion != expectedVersion)
-                {
-                    throw new ConcurrencyViolationException(String.Format(
-                                    "Expected {0} to have version {1} but was {2}",
-                                    aggregateType,
-                                    expectedVersion,
-                                    currentVersion));
-                }
+                //TODO: Reconcider concurrency validation
+
+                //int currentVersion = lastEvent != null ? lastEvent.Version : 0;
+                //int expectedVersion = events.First().Version - 1;
+                //if (currentVersion != expectedVersion)
+                //{
+                //    throw new ConcurrencyViolationException(String.Format(
+                //                    "Expected {0} to have version {1} but was {2}",
+                //                    aggregateType,
+                //                    expectedVersion,
+                //                    currentVersion));
+                //}
 
                 using (var trans = client.CreateTransaction())
                 {
                     foreach (var e in events)
                     {
                         var eventId = Guid.NewGuid().ToString();
-
+                        
                         //save event itself
-                        trans.QueueCommand(c => c.As<IEvent>().SetEntry(EventId(eventId), e));
+                        trans.QueueCommand(c => c.SetEntry(EventId(eventId), this.serializer.Serialize(e)));
                         //append event id to the list of aggregate events
                         trans.QueueCommand(c => c.AddItemToList(aggregateRootEventsListId, eventId));
                         //append event id to global list of events
@@ -103,7 +115,7 @@ namespace ECom.EventStore.Redis
                 var aggregateEventIds = client.Lists[AggregateRootEventsListId(aggregateId)];
                 foreach (var eventId in aggregateEventIds)
                 {
-                    yield return client.As<IEvent>()[EventId(eventId)];
+                    yield return this.serializer.Deserialize<IEvent>(client[EventId(eventId)]);
                 }
             }
         }
@@ -115,7 +127,7 @@ namespace ECom.EventStore.Redis
                 var allEventIds = client.Lists[_allEventsListId];
                 foreach (var eventId in allEventIds)
                 {
-                    yield return client.As<IEvent>()[EventId(eventId)];
+                    yield return this.serializer.Deserialize<IEvent>(client[EventId(eventId)]);
                 }
             }
         }

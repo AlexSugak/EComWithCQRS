@@ -1,4 +1,5 @@
 ﻿using ECom.Messages;
+using System;
 using System.Linq;
 
 namespace ECom.Domain
@@ -7,7 +8,7 @@ namespace ECom.Domain
         where TIdentity : IIdentity
         where TAggregate : IAggregateRoot<TIdentity>, new()
     {
-        void Save(TAggregate aggregate);
+        void Save(TAggregate aggregate, int expectedVersion);
         TAggregate Get(TIdentity id);
     }
 
@@ -22,9 +23,9 @@ namespace ECom.Domain
             _storage = storage;
         }
 
-        public void Save(TAggregate aggregate)
+        public void Save(TAggregate aggregate, int expectedVersion)
         {
-            _storage.SaveAggregateEvents(aggregate.Id, aggregate.GetType().FullName, aggregate.GetUncommittedChanges());
+            _storage.SaveAggregateEvents(aggregate.Id, aggregate.GetType().FullName, aggregate.GetUncommittedChanges(), expectedVersion);
 			aggregate.MarkChangesAsCommitted();
         }
 
@@ -37,7 +38,7 @@ namespace ECom.Domain
                 throw new AggregateRootNotFoundException(typeof(TAggregate), id);
             }
 
-            var aggregate = new TAggregate();//TODO: refactor to not have default ctor on aggregate roots
+            var aggregate = Activator.CreateInstance<TAggregate>();
 
             aggregate.LoadsFromHistory(events);
             return aggregate;

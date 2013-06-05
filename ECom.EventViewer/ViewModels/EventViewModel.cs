@@ -19,6 +19,7 @@ namespace ECom.EventViewer.ViewModels
 
             string classNameReversed = eventObj.ToString().Reverse();
 
+            // WTF is that? Where're the nulls checks?
             AggregateId = ((IEvent<IIdentity>)eventObj).Id.GetId();
             EventName = classNameReversed.Substring(0, classNameReversed.IndexOf('.')).Reverse().Wordify();
             EventVersion = ((IEvent<IIdentity>)eventObj).Version;

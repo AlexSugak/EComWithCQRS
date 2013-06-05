@@ -35,7 +35,7 @@ namespace ECom.Domain.Aggregates.User
 
 			user.ReportLoggedIn(cmd.UserName, cmd.PhotoUrl);
 
-			_repository.Save(user);
+			_repository.Save(user, 0);
 		}
 
 		public void Handle(SetUserEmail cmd)
@@ -44,7 +44,7 @@ namespace ECom.Domain.Aggregates.User
 
 			user.SetEmailAddress(cmd.Email);
 
-			_repository.Save(user);
+			_repository.Save(user, cmd.OriginalVersion);
 		}
 	}
 }

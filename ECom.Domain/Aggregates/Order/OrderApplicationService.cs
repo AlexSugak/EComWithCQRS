@@ -34,7 +34,7 @@ namespace ECom.CommandHandlers
 			var order = new OrderAggregate();
 			order.Create(cmd.Id, cmd.UserId);
 
-			_repository.Save(order);
+			_repository.Save(order, 0);
 		}
 
 		public void Handle(AddProductToOrder cmd)
@@ -43,7 +43,7 @@ namespace ECom.CommandHandlers
 
 			order.AddProduct(cmd.OrderItemId, cmd.ProductUri, cmd.Name, cmd.Description, cmd.Price, cmd.Quantity, cmd.Size, cmd.Color, cmd.ImageUri);
 
-			_repository.Save(order);
+			_repository.Save(order, cmd.OriginalVersion);
 		}
 
 		public void Handle(RemoveItemFromOrder cmd)
@@ -52,7 +52,7 @@ namespace ECom.CommandHandlers
 
 			order.RemoveItem(cmd.OrderItemId);
 
-			_repository.Save(order);
+			_repository.Save(order, cmd.OriginalVersion);
 		}
 
 		public void Handle(SubmitOrder cmd)
@@ -61,7 +61,7 @@ namespace ECom.CommandHandlers
 
 			order.Submit();
 
-			_repository.Save(order);
+			_repository.Save(order, cmd.OriginalVersion);
 		}
 	}
 }

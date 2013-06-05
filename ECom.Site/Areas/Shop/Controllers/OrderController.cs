@@ -70,7 +70,7 @@ namespace ECom.Site.Areas.Shop.Controllers
 					Thread.Sleep(200);
 				}
 
-				_bus.Send(new SubmitOrder(model.OrderId));
+				_bus.Send(new SubmitOrder(model.OrderId, 0));
 
 				return RedirectToAction("Submitted", new { id = model.OrderId.Id });
 			}

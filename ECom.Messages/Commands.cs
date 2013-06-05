@@ -543,16 +543,25 @@ public sealed class SubmitOrder: ICommand<OrderId>, IEquatable<SubmitOrder>
         get { return this.orderId; }
     }
 
-    public SubmitOrder(OrderId orderId)
+    [DataMember(Name = "OriginalVersion")]
+    private Int32 originalVersion;
+
+    public Int32 OriginalVersion
+    {
+        get { return this.originalVersion; }
+    }
+
+    public SubmitOrder(OrderId orderId, Int32 originalVersion)
     {
         this.orderId = orderId;
+        this.originalVersion = originalVersion;
     }
     
     public bool Equals(SubmitOrder other)
     {
         if (this != null)
 		{
-			return other != null && OrderId.Equals(this.OrderId, other.OrderId);
+			return other != null && OrderId.Equals(this.OrderId, other.OrderId) && Int32.Equals(this.OriginalVersion, other.OriginalVersion);
 		}
 		return other == null;
     }
@@ -569,6 +578,7 @@ public sealed class SubmitOrder: ICommand<OrderId>, IEquatable<SubmitOrder>
         
         if (this.OrderId != null)
             hash = hash * 29 + this.OrderId.GetHashCode();
+        hash = hash * 29 + this.OriginalVersion.GetHashCode();
         
         return hash;
     }
