@@ -103,7 +103,7 @@ namespace ECom.ReadModel.Views
                 return Enumerable.Empty<UserOrderDetails>();
             }
 
-            return orderIds.Orders.Select(id => _manager.Get<UserOrderDetails>(id));
+            return orderIds.Orders.Select(id => _manager.Get<UserOrderDetails>(UserOrderDetails.CompositeId(userId, id)));
         }
     }
 }
