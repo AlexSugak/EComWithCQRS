@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ECom.Domain;
-using ECom.Utility;
-using ECom.Messages;
+﻿using ECom.Domain;
 using ECom.Domain.Aggregates.Order;
+using ECom.Messages;
+using ECom.Utility;
 
 namespace ECom.CommandHandlers
 {
@@ -57,7 +53,7 @@ namespace ECom.CommandHandlers
 		public void Handle(SubmitOrder cmd)
 		{
 			OrderAggregate order = _repository.Get(cmd.Id);
-
+            
 			order.Submit();
 
 			_repository.Save(order, cmd.OriginalVersion);

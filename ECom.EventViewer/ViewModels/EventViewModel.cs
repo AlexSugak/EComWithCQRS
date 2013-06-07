@@ -1,4 +1,5 @@
-﻿using ECom.EventViewer.Service;
+﻿using ECom.EventStore.Redis;
+using ECom.EventViewer.Service;
 using ECom.Messages;
 using ECom.Utility;
 using ServiceStack.Text;
@@ -12,6 +13,20 @@ namespace ECom.EventViewer.ViewModels
     public class EventViewModel
     {
         private readonly IEventStore _storage;
+        private static readonly ECom.EventStore.Redis.JsonSerializer serializer;
+
+        static EventViewModel()
+        {
+            //
+            // We need to provide KnownTypes to serizalizer, and those are events
+            // We consider events to be anything assignable to IEvent, also we load only events from the same assembly as IEvent
+            //
+            var ieventType = typeof(IEvent);
+            var eventTypes = ieventType.Assembly.GetTypes().Where(x => ieventType.IsAssignableFrom(x) && x.IsClass).ToArray();
+
+            EventViewModel.serializer = new ECom.EventStore.Redis.JsonSerializer(eventTypes);
+
+        }
 
         public EventViewModel(IEvent eventObj)
         {
@@ -34,7 +49,7 @@ namespace ECom.EventViewer.ViewModels
 
             JsConfig.DateHandler = JsonDateHandler.ISO8601;
             JsConfig.ExcludeTypeInfo = true;
-            EventDetails = JsvFormatter.Format(JsonSerializer.SerializeToString((IEvent<IIdentity>)eventObj));
+            EventDetails = JsvFormatter.Format(EventViewModel.serializer.Serialize(eventObj));
         }
 
         internal EventViewModel()

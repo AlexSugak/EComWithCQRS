@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace ECom.Messages
@@ -30,9 +31,10 @@ namespace ECom.Messages
 	/// equality and ToString once and for all.
 	/// </summary>
 	/// <typeparam name="TKey">The type of the key.</typeparam>
-    [Serializable]
+    [DataContract(IsReference=false)]
 	public abstract class AbstractIdentity<TKey> : IIdentity
 	{
+        [DataMember]
 		public abstract TKey Id { get; protected set; }
 
 		public string GetId()

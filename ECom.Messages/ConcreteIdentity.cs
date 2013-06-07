@@ -4,10 +4,11 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using ECom.Utility;
+using System.Runtime.Serialization;
 
 namespace ECom.Messages
 {
-    [Serializable]
+    [DataContract(IsReference=false)]
     public sealed class NullId : IIdentity
     {
         public const string TagValue = "";
@@ -24,7 +25,7 @@ namespace ECom.Messages
         }
     }
 
-    [Serializable]
+    [DataContract]
 	public abstract class GuidIdentity : AbstractIdentity<Guid>
 	{
 		public GuidIdentity() { }
@@ -38,7 +39,7 @@ namespace ECom.Messages
 		public override Guid Id { get; protected set; }
 	}
 
-    [Serializable]
+    [DataContract]
 	public abstract class StringIdentity : AbstractIdentity<string>
 	{
 		public StringIdentity() { }
@@ -52,7 +53,7 @@ namespace ECom.Messages
 		public override string Id { get; protected set; }
 	}
 
-	[Serializable]
+    [DataContract]
 	public abstract class IntIdentity : AbstractIdentity<int>
 	{
 		public IntIdentity() { }
@@ -65,7 +66,7 @@ namespace ECom.Messages
 		public override int Id { get; protected set; }
 	}
 
-    [Serializable]
+    [DataContract]
 	public sealed class CatalogId : GuidIdentity
 	{
         public const string TagValue = "catalog";
@@ -82,7 +83,7 @@ namespace ECom.Messages
 		}
 	}
 
-    [Serializable]
+    [DataContract]
 	public sealed class ProductId : StringIdentity
 	{
         public const string TagValue = "product";
@@ -100,7 +101,7 @@ namespace ECom.Messages
 		}
 	}
 
-    [Serializable]
+    [DataContract]
 	public sealed class DiscountId : GuidIdentity
 	{
         public const string TagValue = "discount";
@@ -117,7 +118,7 @@ namespace ECom.Messages
 		}
 	}
 
-    [Serializable]
+    [DataContract]
 	public sealed class OrderId : IntIdentity
 	{
         public const string TagValue = "order";
@@ -134,7 +135,7 @@ namespace ECom.Messages
 		}
 	}
 
-	[Serializable]
+    [DataContract]
 	public sealed class OrderItemId : IntIdentity
 	{
 		public const string TagValue = "order-item";
@@ -151,7 +152,7 @@ namespace ECom.Messages
 		}
 	}
 
-	[Serializable]
+    [DataContract]
 	public sealed class UserId : StringIdentity
 	{
 		public const string TagValue = "user";
