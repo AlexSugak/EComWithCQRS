@@ -217,9 +217,9 @@ let productId = arg "ProductId" typeof<ProductId>
 let events = [
                 header
                 // User
-                aggEvent "UserCreated"              [userId]
-                aggEvent "UserLoggedInReported"     [userId; string "UserName"; string "PhotoUrl"]
-                aggEvent "UserEmailSet"             [userId; email]
+                aggEvent "UserCreated"              [userId; string "UserName"; email; string "PhotoUrl"]
+                aggEvent "UserDataUpdated"          [userId; string "UserName"; string "PhotoUrl"]
+                aggEvent "UserEmailChanged"         [userId; email;]
 
                 // Order
                 aggEvent "NewOrderCreated"          [orderId; userId]

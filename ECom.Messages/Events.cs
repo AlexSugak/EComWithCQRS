@@ -47,18 +47,45 @@ public sealed class UserCreated: IEvent<UserId>, IEquatable<UserCreated>
         get { return this.userId; }
     }
 
-    public UserCreated(DateTime date, Int32 version, UserId userId)
+    [DataMember(Name = "UserName")]
+    private String userName;
+
+    public String UserName
+    {
+        get { return this.userName; }
+    }
+
+    [DataMember(Name = "Email")]
+    private EmailAddress email;
+
+    public EmailAddress Email
+    {
+        get { return this.email; }
+    }
+
+    [DataMember(Name = "PhotoUrl")]
+    private String photoUrl;
+
+    public String PhotoUrl
+    {
+        get { return this.photoUrl; }
+    }
+
+    public UserCreated(DateTime date, Int32 version, UserId userId, String userName, EmailAddress email, String photoUrl)
     {
         this.date = date;
         this.version = version;
         this.userId = userId;
+        this.userName = userName;
+        this.email = email;
+        this.photoUrl = photoUrl;
     }
         
     public bool Equals(UserCreated other)
     {
         if (this != null)
 		{
-			return other != null && DateTime.Equals(this.Date, other.Date) && Int32.Equals(this.Version, other.Version) && UserId.Equals(this.UserId, other.UserId);
+			return other != null && DateTime.Equals(this.Date, other.Date) && Int32.Equals(this.Version, other.Version) && UserId.Equals(this.UserId, other.UserId) && String.Equals(this.UserName, other.UserName) && EmailAddress.Equals(this.Email, other.Email) && String.Equals(this.PhotoUrl, other.PhotoUrl);
 		}
 		return other == null;
     }
@@ -77,6 +104,12 @@ public sealed class UserCreated: IEvent<UserId>, IEquatable<UserCreated>
         hash = hash * 29 + this.Version.GetHashCode();
         if (this.UserId != null)
             hash = hash * 29 + this.UserId.GetHashCode();
+        if (this.UserName != null)
+            hash = hash * 29 + this.UserName.GetHashCode();
+        if (this.Email != null)
+            hash = hash * 29 + this.Email.GetHashCode();
+        if (this.PhotoUrl != null)
+            hash = hash * 29 + this.PhotoUrl.GetHashCode();
         
         return hash;
     }
@@ -102,7 +135,7 @@ public sealed class UserCreated: IEvent<UserId>, IEquatable<UserCreated>
 
 [GeneratedCodeAttribute("EventsGenerator.fsx", "1.0.0.0")]
 [DataContract(Namespace = "http://crowdshop.com/contracts/events/")]
-public sealed class UserLoggedInReported: IEvent<UserId>, IEquatable<UserLoggedInReported>
+public sealed class UserDataUpdated: IEvent<UserId>, IEquatable<UserDataUpdated>
 {
     public UserId Id
     {
@@ -149,7 +182,7 @@ public sealed class UserLoggedInReported: IEvent<UserId>, IEquatable<UserLoggedI
         get { return this.photoUrl; }
     }
 
-    public UserLoggedInReported(DateTime date, Int32 version, UserId userId, String userName, String photoUrl)
+    public UserDataUpdated(DateTime date, Int32 version, UserId userId, String userName, String photoUrl)
     {
         this.date = date;
         this.version = version;
@@ -158,7 +191,7 @@ public sealed class UserLoggedInReported: IEvent<UserId>, IEquatable<UserLoggedI
         this.photoUrl = photoUrl;
     }
         
-    public bool Equals(UserLoggedInReported other)
+    public bool Equals(UserDataUpdated other)
     {
         if (this != null)
 		{
@@ -169,7 +202,7 @@ public sealed class UserLoggedInReported: IEvent<UserId>, IEquatable<UserLoggedI
 
     public override bool Equals(object obj)
     {
-        var other = obj as UserLoggedInReported;
+        var other = obj as UserDataUpdated;
         return other != null && this.Equals(other);
     }
 
@@ -189,7 +222,7 @@ public sealed class UserLoggedInReported: IEvent<UserId>, IEquatable<UserLoggedI
         return hash;
     }
 
-    public static bool operator ==(UserLoggedInReported a, UserLoggedInReported b)
+    public static bool operator ==(UserDataUpdated a, UserDataUpdated b)
     {
 	    if (System.Object.ReferenceEquals(a, b))
 		{
@@ -202,7 +235,7 @@ public sealed class UserLoggedInReported: IEvent<UserId>, IEquatable<UserLoggedI
 		return a.Equals(b);
 	}
 
-	public static bool operator !=(UserLoggedInReported a, UserLoggedInReported b)
+	public static bool operator !=(UserDataUpdated a, UserDataUpdated b)
 	{
 		return !(a == b);
 	}
@@ -210,7 +243,7 @@ public sealed class UserLoggedInReported: IEvent<UserId>, IEquatable<UserLoggedI
 
 [GeneratedCodeAttribute("EventsGenerator.fsx", "1.0.0.0")]
 [DataContract(Namespace = "http://crowdshop.com/contracts/events/")]
-public sealed class UserEmailSet: IEvent<UserId>, IEquatable<UserEmailSet>
+public sealed class UserEmailChanged: IEvent<UserId>, IEquatable<UserEmailChanged>
 {
     public UserId Id
     {
@@ -249,7 +282,7 @@ public sealed class UserEmailSet: IEvent<UserId>, IEquatable<UserEmailSet>
         get { return this.email; }
     }
 
-    public UserEmailSet(DateTime date, Int32 version, UserId userId, EmailAddress email)
+    public UserEmailChanged(DateTime date, Int32 version, UserId userId, EmailAddress email)
     {
         this.date = date;
         this.version = version;
@@ -257,7 +290,7 @@ public sealed class UserEmailSet: IEvent<UserId>, IEquatable<UserEmailSet>
         this.email = email;
     }
         
-    public bool Equals(UserEmailSet other)
+    public bool Equals(UserEmailChanged other)
     {
         if (this != null)
 		{
@@ -268,7 +301,7 @@ public sealed class UserEmailSet: IEvent<UserId>, IEquatable<UserEmailSet>
 
     public override bool Equals(object obj)
     {
-        var other = obj as UserEmailSet;
+        var other = obj as UserEmailChanged;
         return other != null && this.Equals(other);
     }
 
@@ -286,7 +319,7 @@ public sealed class UserEmailSet: IEvent<UserId>, IEquatable<UserEmailSet>
         return hash;
     }
 
-    public static bool operator ==(UserEmailSet a, UserEmailSet b)
+    public static bool operator ==(UserEmailChanged a, UserEmailChanged b)
     {
 	    if (System.Object.ReferenceEquals(a, b))
 		{
@@ -299,7 +332,7 @@ public sealed class UserEmailSet: IEvent<UserId>, IEquatable<UserEmailSet>
 		return a.Equals(b);
 	}
 
-	public static bool operator !=(UserEmailSet a, UserEmailSet b)
+	public static bool operator !=(UserEmailChanged a, UserEmailChanged b)
 	{
 		return !(a == b);
 	}

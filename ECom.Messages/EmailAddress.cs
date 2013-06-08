@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ECom.Utility;
+using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
+using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using ECom.Utility;
 
 namespace ECom.Messages
 {
-	[Serializable]
+	[DataContract(IsReference=false)]
 	public class EmailAddress
 	{
+        [DataMember(Name="Address")]
 		private readonly string _address;
-		private readonly string _name;
+
+        [DataMember(Name = "Name", IsRequired = false, EmitDefaultValue = false)]
+        private readonly string _name;
 
 		public EmailAddress(string address, string name = null)
 		{

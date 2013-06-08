@@ -91,55 +91,55 @@ namespace ECom.Site
 			bus.RegisterHandler<OrderSubmited>(e => Task.Factory.StartNew(() => emailService.Handle(e)));
 		}
 
-		protected void Application_Error(object sender, EventArgs e)
-		{
-			Exception exception = Server.GetLastError();
+        //protected void Application_Error(object sender, EventArgs e)
+        //{
+        //    Exception exception = Server.GetLastError();
 
-			Response.Clear();
+        //    Response.Clear();
 
-			HttpException httpException = exception as HttpException;
-			var notFoundException = exception as EntityNotFoundException;
+        //    HttpException httpException = exception as HttpException;
+        //    var notFoundException = exception as EntityNotFoundException;
 
-			RouteData routeData = new RouteData();
-			routeData.Values.Add("controller", "Error");
+        //    RouteData routeData = new RouteData();
+        //    routeData.Values.Add("controller", "Error");
 
-			if (notFoundException != null)
-			{
-				routeData.Values.Add("action", "EntityNotFound");
-			}
-			else if (httpException == null)
-			{
-				routeData.Values.Add("action", "General");
-			}
-			else //It's an Http Exception, Let's handle it.
-			{
-				switch (httpException.GetHttpCode())
-				{
-					case 404:
-						routeData.Values.Add("action", "PageNotFound");
-						break;
+        //    if (notFoundException != null)
+        //    {
+        //        routeData.Values.Add("action", "EntityNotFound");
+        //    }
+        //    else if (httpException == null)
+        //    {
+        //        routeData.Values.Add("action", "General");
+        //    }
+        //    else //It's an Http Exception, Let's handle it.
+        //    {
+        //        switch (httpException.GetHttpCode())
+        //        {
+        //            case 404:
+        //                routeData.Values.Add("action", "PageNotFound");
+        //                break;
 
-					// Here you can handle Views to other error codes.
-					// I choose a General error template  
-					default:
-						routeData.Values.Add("action", "General");
-						break;
-				}
-			}
+        //            // Here you can handle Views to other error codes.
+        //            // I choose a General error template  
+        //            default:
+        //                routeData.Values.Add("action", "General");
+        //                break;
+        //        }
+        //    }
 
-			// Pass exception details to the target error View.
-			routeData.Values.Add("error", exception);
+        //    // Pass exception details to the target error View.
+        //    routeData.Values.Add("error", exception);
 
-			// Clear the error on server.
-			Server.ClearError();
+        //    // Clear the error on server.
+        //    Server.ClearError();
 
-			// Avoid IIS7 getting in the middle
-			Response.TrySkipIisCustomErrors = true;
+        //    // Avoid IIS7 getting in the middle
+        //    Response.TrySkipIisCustomErrors = true;
 
-			// Call target Controller and pass the routeData.
-			IController errorController = new ErrorController();
-			errorController.Execute(new RequestContext(
-				 new HttpContextWrapper(Context), routeData));
-		}
+        //    // Call target Controller and pass the routeData.
+        //    IController errorController = new ErrorController();
+        //    errorController.Execute(new RequestContext(
+        //         new HttpContextWrapper(Context), routeData));
+        //}
     }
 }

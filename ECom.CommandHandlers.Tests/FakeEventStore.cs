@@ -17,6 +17,9 @@ namespace ECom.CommandHandlers.Tests
 
         public void SetupEventsHistory(IEnumerable<IEvent> events)
         {
+            if (events == null)
+                return;
+
             foreach(var @event in events)
             {
                 var aggregateIdProp = @event.GetType().GetProperty("Id");

@@ -66,8 +66,9 @@ namespace ECom.Site.Areas.Shop.Controllers
 			{
 				if (model.IsEmailChanged)
 				{
-					_bus.Send(new SetUserEmail(UserId, new EmailAddress(model.Email), 0));
-					Thread.Sleep(200);
+                    var user = _userDetailsView.GetUserDetails(UserId);
+                    if (user.Email != model.Email)
+					    _bus.Send(new ChangeUserEmail(UserId, new EmailAddress(model.Email), user.Version));
 				}
 
 				_bus.Send(new SubmitOrder(model.OrderId, 0));

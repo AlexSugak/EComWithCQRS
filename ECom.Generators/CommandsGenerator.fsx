@@ -245,8 +245,10 @@ let commands = [
                 //
                 // Public
                 //
-                command "ReportUserLoggedIn"        [userId; string "UserName"; string "PhotoUrl"]
-                command "SetUserEmail"              [userId; email; version]
+                command "CreateUser"                [userId; string "UserName"; email; string "PhotoUrl"]
+                command "UpdateUserData"            [userId; string "UserName"; string "PhotoUrl"; version]
+                command "ChangeUserEmail"           [userId; email; version]
+                
                 command "CreateNewOrder"            [orderId; userId]
                 command "AddProductToOrder"         [orderId; orderItemId; uri "ProductUri"; string "Name"; string "Description"; decimal "Price"; int "Quantity"; string "Size"; string "Color"; uri "ImageUri"; version]
                 command "RemoveItemFromOrder"       [orderId; orderItemId; version]

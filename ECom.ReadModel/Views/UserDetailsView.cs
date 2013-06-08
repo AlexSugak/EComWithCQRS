@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ECom.Messages;
+﻿using ECom.Messages;
 using ECom.Utility;
+using System;
 
 namespace ECom.ReadModel.Views
 {
@@ -14,17 +11,19 @@ namespace ECom.ReadModel.Views
 		public string Name { get; set; }
 		public string PhotoUrl { get; set; }
 		public string Email { get; set; }
+        public int Version { get; set; }
 
 		public UserDetails()
 		{
 		}
 
-		public UserDetails(string email, string name, string photoUrl)
+		public UserDetails(string id, string email, string name, string photoUrl)
 		{
 			ID = email;
 			Name = name;
 			PhotoUrl = photoUrl ?? String.Empty;
-			Email = String.Empty;
+			Email = email;
+            Version = 0;
 		}
 	}
 
@@ -36,24 +35,29 @@ namespace ECom.ReadModel.Views
 	public class UserDetailsView : Projection,
         IProjection<UserDetails>,
         IUserDetailsView,
-		IHandle<UserLoggedInReported>,
-		IHandle<UserEmailSet>
+        IHandle<UserCreated>,
+        IHandle<UserDataUpdated>,
+        IHandle<UserEmailChanged>
 	{
 		public UserDetailsView(IDtoManager manager)
 			: base(manager)
 		{
 		}
 
-		public void Handle(UserLoggedInReported e)
+        public void Handle(UserCreated e)
+        {
+            _manager.Add<UserDetails>(e.Id.Id, new UserDetails(e.Id.Id, e.Email.RawAddress, e.UserName, e.PhotoUrl));
+        }
+
+		public void Handle(UserDataUpdated e)
 		{
-			_manager.Delete<UserDetails>(e.Id);
-			_manager.Add<UserDetails>(e.Id.Id, new UserDetails(e.Id.Id, e.UserName, e.PhotoUrl));
+            _manager.Update<UserDetails>(e.Id, ud => { ud.Name = e.UserName; ud.PhotoUrl = e.PhotoUrl; ud.Version = e.Version; });
 		}
 
-		public void Handle(UserEmailSet e)
-		{
-			_manager.Update<UserDetails>(e.Id, ud => ud.Email = e.Email.RawAddress);
-		}
+        public void Handle(UserEmailChanged e)
+        {
+            _manager.Update<UserDetails>(e.Id, ud => { ud.Email = e.Email.RawAddress; ud.Version = e.Version; });
+        }
 
         public UserDetails GetUserDetails(UserId userId)
         {

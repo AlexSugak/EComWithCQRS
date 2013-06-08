@@ -37,8 +37,17 @@ namespace ECom.Site.Controllers
 			FacebookUserDetals userDetails = FacebookAuth.LoadUserDetails(token);
 
 			var userId = new UserId(userDetails.Email);
-			_bus.Send(new ReportUserLoggedIn(userId, userDetails.Name, userDetails.PictureUrl));
-			SetUserEmailIfNeeded(userId, new EmailAddress(userDetails.Email));
+
+            var user = _userDetailsView.GetUserDetails(userId);
+            if (user == null)
+            {
+                _bus.Send(new CreateUser(userId, userDetails.Name, new EmailAddress(userDetails.Email), userDetails.PictureUrl));
+            }
+            else
+                if ((userDetails.Name != user.Name) || (userDetails.PictureUrl != user.PhotoUrl))
+                {
+                    _bus.Send(new UpdateUserData(userId, userDetails.Name, userDetails.PictureUrl, user.Version));
+                }
 
             FormsAuthentication.SetAuthCookie(userDetails.Email, true);
 			return SuccessfullLoginRedirect(returnUrl);
@@ -48,7 +57,18 @@ namespace ECom.Site.Controllers
 		public ActionResult VkontakteLogin(string uid, string firstName, string lastName, string photo, string returnUrl)
 		{
 			var userId = new UserId(uid);
-			_bus.Send(new ReportUserLoggedIn(userId, firstName + " " + lastName, photo));
+            var userName = string.Format("{0} {1}", firstName, lastName);
+
+            var user = _userDetailsView.GetUserDetails(userId);
+            if (user == null)
+            {
+                _bus.Send(new CreateUser(userId, userName, new EmailAddress(uid), photo));
+            }
+            else
+                if ((userName != user.Name) || (photo != user.PhotoUrl))
+                {
+                    _bus.Send(new UpdateUserData(userId, userName, photo, user.Version));
+                }
 
             FormsAuthentication.SetAuthCookie(uid, true);
 			return SuccessfullLoginRedirect(returnUrl);
@@ -61,8 +81,17 @@ namespace ECom.Site.Controllers
 			GoogleUserDetals userDetails = GoogleAuth.LoadUserDetails(accessToken);
 
 			var userId = new UserId(userDetails.Email);
-			_bus.Send(new ReportUserLoggedIn(userId, userDetails.Name, userDetails.PictureUrl));
-			SetUserEmailIfNeeded(userId, new EmailAddress(userDetails.Email));
+
+            var user = _userDetailsView.GetUserDetails(userId);
+            if (user == null)
+            {
+                _bus.Send(new CreateUser(userId, userDetails.Name, new EmailAddress(userDetails.Email), userDetails.PictureUrl));
+            }
+            else
+                if ((userDetails.Name != user.Name) || (userDetails.PictureUrl != user.PhotoUrl))
+                {
+                    _bus.Send(new UpdateUserData(userId, userDetails.Name, userDetails.PictureUrl, user.Version));
+                }
 
             FormsAuthentication.SetAuthCookie(userDetails.Email, true);
 			return SuccessfullLoginRedirect(null);
@@ -85,16 +114,6 @@ namespace ECom.Site.Controllers
 			else
 			{
 				return RedirectToAction("Index", "Home");
-			}
-		}
-
-		private void SetUserEmailIfNeeded(UserId userId, EmailAddress email)
-		{
-            UserDetails userDetails = _userDetailsView.GetUserDetails(userId);
-
-			if (String.IsNullOrWhiteSpace(userDetails.Email))
-			{
-				_bus.Send(new SetUserEmail(userId, email, 0));
 			}
 		}
     }

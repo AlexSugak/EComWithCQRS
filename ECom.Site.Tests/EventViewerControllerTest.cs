@@ -22,11 +22,11 @@ namespace ECom.Site.Tests
 
             var allEvents = new IEvent[]
                 {
-                    new UserCreated(DateTime.Now, 1,new UserId( "test1@eee.com")),
-                    new UserCreated(DateTime.Now, 2, new UserId("test2@eee.com")),
-                    new UserCreated(DateTime.Now, 3, new UserId("test3@eee.com")),
-                    new UserCreated(DateTime.Now, 4, new UserId("test4@eee.com")),
-                    new UserCreated(DateTime.Now, 5, new UserId("test5@eee.com"))
+                    new UserCreated(DateTime.Now, 1,new UserId( "test1@eee.com"), "", new EmailAddress("test@eee.com"), null),
+                    new UserCreated(DateTime.Now, 2,new UserId( "test2@eee.com"), "", new EmailAddress("test@eee.com"), null),
+                    new UserCreated(DateTime.Now, 3,new UserId( "test3@eee.com"), "", new EmailAddress("test@eee.com"), null),
+                    new UserCreated(DateTime.Now, 4,new UserId( "test4@eee.com"), "", new EmailAddress("test@eee.com"), null),
+                    new UserCreated(DateTime.Now, 5,new UserId( "test5@eee.com"), "", new EmailAddress("test@eee.com"), null),
                 };
             
             mock.Setup(m => m.GetEventsForAggregate(It.IsAny<string>())).Returns(allEvents.AsQueryable());

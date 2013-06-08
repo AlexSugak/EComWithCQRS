@@ -19,18 +19,12 @@ namespace ECom.Domain.Aggregates.Order
             // This ctor is needed for the repository to create empty object to load events into
         }
 
-        public OrderAggregate(OrderId id, UserId userId)
+        public OrderAggregate(OrderId orderId, UserId userId)
         {
-			Argument.ExpectNotNull(() => id);
+			Argument.ExpectNotNull(() => orderId);
 			Argument.ExpectNotNull(() => userId);
 
-            ApplyChange(new NewOrderCreated(TimeProvider.Now, this.Version+1, id, userId));
-        }
-
-        private void Apply(NewOrderCreated e)
-        {
-            Id = e.Id;
-			_userId = e.UserId;
+            ApplyChange(new NewOrderCreated(TimeProvider.Now, this.Version+1, orderId, userId));
         }
 
         public void AddProduct(OrderItemId itemId, Uri productUri, string name, string description, decimal price, int quantity, string size, string color, Uri imageUrl)
@@ -40,12 +34,7 @@ namespace ECom.Domain.Aggregates.Order
 			Argument.Expect(() => price > 0, "price", String.Format(CultureInfo.InvariantCulture, "price must be a positive value, was {0}", price));
 			Argument.Expect(() => quantity > 0, "quantity", String.Format(CultureInfo.InvariantCulture, "quantity must be a positive value, was {0}", quantity));
 
-            ApplyChange(new ProductAddedToOrder(TimeProvider.Now, this.Version + 1, Id, itemId, productUri, name, description, price, quantity, size, color, imageUrl));
-        }
-
-        private void Apply(ProductAddedToOrder e)
-        {
-            _items.Add(new OrderItem(e.OrderItemId, e.Quantity, e.Price ));
+            ApplyChange(new ProductAddedToOrder(TimeProvider.Now, this.Version + 1, this.Id, itemId, productUri, name, description, price, quantity, size, color, imageUrl));
         }
 
 		public void RemoveItem(OrderItemId itemId)
@@ -53,12 +42,7 @@ namespace ECom.Domain.Aggregates.Order
 			Argument.ExpectNotNull(() => itemId);
 			Argument.Expect(() => _items.Exists(i => i.Id == itemId), "itemId", String.Format(CultureInfo.InvariantCulture, "Order does not contain item with id {0}", itemId.Id));
 
-			ApplyChange(new ItemRemovedFromOrder(TimeProvider.Now, this.Version + 1, Id, itemId));
-		}
-
-		private void Apply(ItemRemovedFromOrder e)
-		{
-			_items.Remove(_items.Find(i => i.Id == e.OrderItemId)); 
+			ApplyChange(new ItemRemovedFromOrder(TimeProvider.Now, this.Version + 1, this.Id, itemId));
 		}
 
 		public void Submit()
@@ -73,12 +57,28 @@ namespace ECom.Domain.Aggregates.Order
 				throw new InvalidOperationException(String.Format(CultureInfo.InvariantCulture, "Cannot submit order {0}. Order does not have any items added.", Id.Id));
 			}
 
-			ApplyChange(new OrderSubmited(TimeProvider.Now, this.Version + 1,Id, _userId, this._items.Count, this._items.Sum(x => x.Total)));
+			ApplyChange(new OrderSubmited(TimeProvider.Now, this.Version + 1, this.Id, this._userId, this._items.Count, this._items.Sum(x => x.Total)));
 		}
+
+        private void Apply(NewOrderCreated e)
+        {
+            this.Id = e.OrderId;
+            this._userId = e.UserId;
+        }
+
+        private void Apply(ProductAddedToOrder e)
+        {
+            this._items.Add(new OrderItem(e.OrderItemId, e.Quantity, e.Price));
+        }
+
+        private void Apply(ItemRemovedFromOrder e)
+        {
+            this._items.Remove(_items.Find(i => i.Id == e.OrderItemId));
+        }
 
 		private void Apply(OrderSubmited e)
 		{
-			_isSubmitted = true;
+			this._isSubmitted = true;
 		}
 	}
 }

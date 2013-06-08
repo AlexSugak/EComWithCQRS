@@ -16,7 +16,106 @@ namespace ECom.Messages
 
 [GeneratedCodeAttribute("CommandsGenerator.fsx", "1.0.0.0")]
 [DataContract(Namespace = "http://teamboard.com/contracts/commands/")]
-public sealed class ReportUserLoggedIn: ICommand<UserId>, IEquatable<ReportUserLoggedIn>
+public sealed class CreateUser: ICommand<UserId>, IEquatable<CreateUser>
+{
+    public UserId Id
+    {
+        get { return this.userId; }
+    }
+
+    [DataMember(Name = "UserId")]
+    private UserId userId;
+
+    public UserId UserId
+    {
+        get { return this.userId; }
+    }
+
+    [DataMember(Name = "UserName")]
+    private String userName;
+
+    public String UserName
+    {
+        get { return this.userName; }
+    }
+
+    [DataMember(Name = "Email")]
+    private EmailAddress email;
+
+    public EmailAddress Email
+    {
+        get { return this.email; }
+    }
+
+    [DataMember(Name = "PhotoUrl")]
+    private String photoUrl;
+
+    public String PhotoUrl
+    {
+        get { return this.photoUrl; }
+    }
+
+    public CreateUser(UserId userId, String userName, EmailAddress email, String photoUrl)
+    {
+        this.userId = userId;
+        this.userName = userName;
+        this.email = email;
+        this.photoUrl = photoUrl;
+    }
+    
+    public bool Equals(CreateUser other)
+    {
+        if (this != null)
+		{
+			return other != null && UserId.Equals(this.UserId, other.UserId) && String.Equals(this.UserName, other.UserName) && EmailAddress.Equals(this.Email, other.Email) && String.Equals(this.PhotoUrl, other.PhotoUrl);
+		}
+		return other == null;
+    }
+
+    public override bool Equals(object obj)
+    {
+        var other = obj as CreateUser;
+        return other != null && this.Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        var hash = 17;
+        
+        if (this.UserId != null)
+            hash = hash * 29 + this.UserId.GetHashCode();
+        if (this.UserName != null)
+            hash = hash * 29 + this.UserName.GetHashCode();
+        if (this.Email != null)
+            hash = hash * 29 + this.Email.GetHashCode();
+        if (this.PhotoUrl != null)
+            hash = hash * 29 + this.PhotoUrl.GetHashCode();
+        
+        return hash;
+    }
+
+    public static bool operator ==(CreateUser a, CreateUser b)
+    {
+	    if (System.Object.ReferenceEquals(a, b))
+		{
+			return true;
+		}
+		if (((object)a == null) || ((object)b == null))
+		{
+			return false;
+		}
+		return a.Equals(b);
+	}
+
+	public static bool operator !=(CreateUser a, CreateUser b)
+	{
+		return !(a == b);
+	}
+}
+
+[GeneratedCodeAttribute("CommandsGenerator.fsx", "1.0.0.0")]
+[DataContract(Namespace = "http://teamboard.com/contracts/commands/")]
+public sealed class UpdateUserData: ICommand<UserId>, IEquatable<UpdateUserData>
 {
     public UserId Id
     {
@@ -47,25 +146,34 @@ public sealed class ReportUserLoggedIn: ICommand<UserId>, IEquatable<ReportUserL
         get { return this.photoUrl; }
     }
 
-    public ReportUserLoggedIn(UserId userId, String userName, String photoUrl)
+    [DataMember(Name = "OriginalVersion")]
+    private Int32 originalVersion;
+
+    public Int32 OriginalVersion
+    {
+        get { return this.originalVersion; }
+    }
+
+    public UpdateUserData(UserId userId, String userName, String photoUrl, Int32 originalVersion)
     {
         this.userId = userId;
         this.userName = userName;
         this.photoUrl = photoUrl;
+        this.originalVersion = originalVersion;
     }
     
-    public bool Equals(ReportUserLoggedIn other)
+    public bool Equals(UpdateUserData other)
     {
         if (this != null)
 		{
-			return other != null && UserId.Equals(this.UserId, other.UserId) && String.Equals(this.UserName, other.UserName) && String.Equals(this.PhotoUrl, other.PhotoUrl);
+			return other != null && UserId.Equals(this.UserId, other.UserId) && String.Equals(this.UserName, other.UserName) && String.Equals(this.PhotoUrl, other.PhotoUrl) && Int32.Equals(this.OriginalVersion, other.OriginalVersion);
 		}
 		return other == null;
     }
 
     public override bool Equals(object obj)
     {
-        var other = obj as ReportUserLoggedIn;
+        var other = obj as UpdateUserData;
         return other != null && this.Equals(other);
     }
 
@@ -79,11 +187,12 @@ public sealed class ReportUserLoggedIn: ICommand<UserId>, IEquatable<ReportUserL
             hash = hash * 29 + this.UserName.GetHashCode();
         if (this.PhotoUrl != null)
             hash = hash * 29 + this.PhotoUrl.GetHashCode();
+        hash = hash * 29 + this.OriginalVersion.GetHashCode();
         
         return hash;
     }
 
-    public static bool operator ==(ReportUserLoggedIn a, ReportUserLoggedIn b)
+    public static bool operator ==(UpdateUserData a, UpdateUserData b)
     {
 	    if (System.Object.ReferenceEquals(a, b))
 		{
@@ -96,7 +205,7 @@ public sealed class ReportUserLoggedIn: ICommand<UserId>, IEquatable<ReportUserL
 		return a.Equals(b);
 	}
 
-	public static bool operator !=(ReportUserLoggedIn a, ReportUserLoggedIn b)
+	public static bool operator !=(UpdateUserData a, UpdateUserData b)
 	{
 		return !(a == b);
 	}
@@ -104,7 +213,7 @@ public sealed class ReportUserLoggedIn: ICommand<UserId>, IEquatable<ReportUserL
 
 [GeneratedCodeAttribute("CommandsGenerator.fsx", "1.0.0.0")]
 [DataContract(Namespace = "http://teamboard.com/contracts/commands/")]
-public sealed class SetUserEmail: ICommand<UserId>, IEquatable<SetUserEmail>
+public sealed class ChangeUserEmail: ICommand<UserId>, IEquatable<ChangeUserEmail>
 {
     public UserId Id
     {
@@ -135,14 +244,14 @@ public sealed class SetUserEmail: ICommand<UserId>, IEquatable<SetUserEmail>
         get { return this.originalVersion; }
     }
 
-    public SetUserEmail(UserId userId, EmailAddress email, Int32 originalVersion)
+    public ChangeUserEmail(UserId userId, EmailAddress email, Int32 originalVersion)
     {
         this.userId = userId;
         this.email = email;
         this.originalVersion = originalVersion;
     }
     
-    public bool Equals(SetUserEmail other)
+    public bool Equals(ChangeUserEmail other)
     {
         if (this != null)
 		{
@@ -153,7 +262,7 @@ public sealed class SetUserEmail: ICommand<UserId>, IEquatable<SetUserEmail>
 
     public override bool Equals(object obj)
     {
-        var other = obj as SetUserEmail;
+        var other = obj as ChangeUserEmail;
         return other != null && this.Equals(other);
     }
 
@@ -170,7 +279,7 @@ public sealed class SetUserEmail: ICommand<UserId>, IEquatable<SetUserEmail>
         return hash;
     }
 
-    public static bool operator ==(SetUserEmail a, SetUserEmail b)
+    public static bool operator ==(ChangeUserEmail a, ChangeUserEmail b)
     {
 	    if (System.Object.ReferenceEquals(a, b))
 		{
@@ -183,7 +292,7 @@ public sealed class SetUserEmail: ICommand<UserId>, IEquatable<SetUserEmail>
 		return a.Equals(b);
 	}
 
-	public static bool operator !=(SetUserEmail a, SetUserEmail b)
+	public static bool operator !=(ChangeUserEmail a, ChangeUserEmail b)
 	{
 		return !(a == b);
 	}

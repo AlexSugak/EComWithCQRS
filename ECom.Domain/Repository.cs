@@ -1,4 +1,5 @@
 ﻿using ECom.Messages;
+using ECom.Utility;
 using System;
 using System.Linq;
 
@@ -31,6 +32,8 @@ namespace ECom.Domain
 
 		public TAggregate Get(TIdentity id)
         {
+            Argument.ExpectNotNull(() => id);
+
             var events = _storage.GetEventsForAggregate(id).ToList();
 
             if (events.Count == 0)

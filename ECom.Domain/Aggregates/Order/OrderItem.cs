@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using ECom.Messages;
 using ECom.Utility;
+using System;
 using System.Globalization;
-using ECom.Messages;
 
 namespace ECom.Domain.Aggregates.Order
 {
